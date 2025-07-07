@@ -1,0 +1,131 @@
+.mainTask{
+    padding: 1.5rem 1.5rem 2.5rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #fff;
+    min-height: 205px;
+    position: relative;
+}
+
+.mainTaskDone{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 5;
+    background: rgba(0, 0, 0, .4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+}
+
+.mainTaskDone svg{
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+}
+
+.mainTaskDoneText{
+    text-align: center;
+    color: #fff;
+    font-size: 3.3rem;
+    font-weight: 500;
+}
+
+@media (max-width: 998px) {
+    .mainTaskDoneText{
+        font-size: 2.6rem;
+    }
+}
+
+.mainTask:before, .mainTask:after{
+    content: "";
+    display: block;
+    width: 50%;
+    height: 60px;
+    border-radius: 50%;
+    background: #7F58FF;
+    position: absolute;
+    top: -30px;
+    left: 0;
+    filter: blur(100px);
+    pointer-events: none;
+}
+
+.mainTask:after{
+    height: 80px;
+    left: 60px;
+}
+
+.mainTaskText{
+    margin-top: 3rem;
+    font-size: 1.5rem;
+    line-height: 1.08;
+    font-family: 'Inter', sans-serif;
+}
+
+.mainTaskWrap{
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    justify-content: space-between;
+    position: relative;
+    z-index: 2;
+}
+
+.mainTaskPoints{
+    padding: 0.9rem 1.4rem;
+    border-radius: 8px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 500;
+}
+
+.mainTaskPoints svg{
+    width: 16px;
+    height: 13px;
+    flex-shrink: 0;
+}
+
+.mainTaskType{
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    overflow: hidden;
+    position: relative;
+}
+
+.mainTaskType:before{
+    content: "";
+    display: block;
+    width: 100%;
+    height: 65%;
+    border-radius: 50%;
+    background: #D7CBFF;
+    filter: blur(18px);
+    position: absolute;
+    bottom: -50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.mainTaskType svg{
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+}

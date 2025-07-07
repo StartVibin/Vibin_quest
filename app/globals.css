@@ -1,42 +1,194 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@font-face {
+    font-family: 'Inter';
+    src: url('/fonts/Inter.ttf') format('truetype');
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@font-face {
+    font-family: 'Ruberoid';
+    src: url('/fonts/Ruberoid-ExtraLight.eot');
+    src: local('Ruberoid Extra Light'), local('Ruberoid-ExtraLight'),
+        url('/fonts/Ruberoid-ExtraLight.eot?#iefix') format('embedded-opentype'),
+        url('/fonts/Ruberoid-ExtraLight.woff2') format('woff2'),
+        url('/fonts/Ruberoid-ExtraLight.woff') format('woff'),
+        url('/fonts/Ruberoid-ExtraLight.ttf') format('truetype');
+    font-weight: 200;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Ruberoid';
+    src: url('/fonts/Ruberoid-Bold.eot');
+    src: local('Ruberoid Bold'), local('Ruberoid-Bold'),
+        url('/fonts/Ruberoid-Bold.eot?#iefix') format('embedded-opentype'),
+        url('/fonts/Ruberoid-Bold.woff2') format('woff2'),
+        url('/fonts/Ruberoid-Bold.woff') format('woff'),
+        url('/fonts/Ruberoid-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Ruberoid';
+    src: url('/fonts/Ruberoid-ExtraBold.eot');
+    src: local('Ruberoid Extra Bold'), local('Ruberoid-ExtraBold'),
+        url('/fonts/Ruberoid-ExtraBold.eot?#iefix') format('embedded-opentype'),
+        url('/fonts/Ruberoid-ExtraBold.woff2') format('woff2'),
+        url('/fonts/Ruberoid-ExtraBold.woff') format('woff'),
+        url('/fonts/Ruberoid-ExtraBold.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Ruberoid';
+    src: url('/fonts/Ruberoid-Light.eot');
+    src: local('Ruberoid Light'), local('Ruberoid-Light'),
+        url('/fonts/Ruberoid-Light.eot?#iefix') format('embedded-opentype'),
+        url('/fonts/Ruberoid-Light.woff2') format('woff2'),
+        url('/fonts/Ruberoid-Light.woff') format('woff'),
+        url('/fonts/Ruberoid-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Ruberoid';
+    src: url('/fonts/Ruberoid-Medium.eot');
+    src: local('Ruberoid Medium'), local('Ruberoid-Medium'),
+        url('/fonts/Ruberoid-Medium.eot?#iefix') format('embedded-opentype'),
+        url('/fonts/Ruberoid-Medium.woff2') format('woff2'),
+        url('/fonts/Ruberoid-Medium.woff') format('woff'),
+        url('/fonts/Ruberoid-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Ruberoid';
+    src: url('/fonts/Ruberoid-SemiBold.eot');
+    src: local('Ruberoid Semi Bold'), local('Ruberoid-SemiBold'),
+        url('/fonts/Ruberoid-SemiBold.eot?#iefix') format('embedded-opentype'),
+        url('/fonts/Ruberoid-SemiBold.woff2') format('woff2'),
+        url('/fonts/Ruberoid-SemiBold.woff') format('woff'),
+        url('/fonts/Ruberoid-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Ruberoid';
+    src: url('/fonts/Ruberoid-Thin.eot');
+    src: local('Ruberoid Thin'), local('Ruberoid-Thin'),
+        url('/fonts/Ruberoid-Thin.eot?#iefix') format('embedded-opentype'),
+        url('/fonts/Ruberoid-Thin.woff2') format('woff2'),
+        url('/fonts/Ruberoid-Thin.woff') format('woff'),
+        url('/fonts/Ruberoid-Thin.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Ruberoid';
+    src: url('/fonts/Ruberoid-Regular.eot');
+    src: local('Ruberoid'), local('Ruberoid-Regular'),
+        url('/fonts/Ruberoid-Regular.eot?#iefix') format('embedded-opentype'),
+        url('/fonts/Ruberoid-Regular.woff2') format('woff2'),
+        url('/fonts/Ruberoid-Regular.woff') format('woff'),
+        url('/fonts/Ruberoid-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Ruberoid';
+    src: url('/fonts/Ruberoid-UltraLight.eot');
+    src: local('Ruberoid Ultra Light'), local('Ruberoid-UltraLight'),
+        url('/fonts/Ruberoid-UltraLight.eot?#iefix') format('embedded-opentype'),
+        url('/fonts/Ruberoid-UltraLight.woff2') format('woff2'),
+        url('/fonts/Ruberoid-UltraLight.woff') format('woff'),
+        url('/fonts/Ruberoid-UltraLight.ttf') format('truetype');
+    font-weight: 200;
+    font-style: normal;
+}
+
+:root{
+	font-size: 10px;
+}
+
+body{
+	margin: 0;
+	padding: 0;
+	overflow-x: hidden;
+	font-size: 1.6rem;
+	color: #18222E;
+    font-family: 'Ruberoid', sans-serif;
+    background: #F4F5FF;
+}
+
+*,
+*:after,
+*:before{
+	box-sizing: border-box;
+}
+
+a, button, input, textarea, select{
+	transition: .2s linear;
+	font-size: 1.6rem;
+    font-family: 'Ruberoid', sans-serif;
+}
+
+select {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	text-indent: 1px;
+	text-overflow: '';
   }
+
+a{
+	text-decoration: none;
+	color: #000;
+	cursor: default;
 }
 
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
+ul{
+	margin: 0;
+	padding: 0;
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+li{
+	list-style-type: none;
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+h1, h2, h3, h4, h5, h5, p{
+	margin: 0;
+	font-weight: normal;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button{
+	appearance: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+button, input, textarea{
+	border: none;
+	background: none;
+	outline: none;
+}
+
+input{
+	cursor: text;
+}
+
+input::placeholder{
+	color: #777E90;
+}
+
+input:focus::placeholder{
+	opacity: 0;	
+}
+
+@media (any-hover: hover) {
+	a, button{
+		cursor: pointer;
+	}
 }
