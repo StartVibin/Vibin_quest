@@ -387,6 +387,7 @@
 
 .statsBlockItemTitle svg{
     width: 12px;
+    height: 12px;
     flex-shrink: 0;
     color: #18222E;
 }
@@ -408,7 +409,7 @@
     }
 }
 
-.statsBlockItemPoints svg{
+.statsBlockItemPoints img {
     width: 16px;
     height: 13px;
     flex-shrink: 0;
@@ -539,4 +540,10 @@
 .mainTaskButton:hover{
     border: 1px solid #7323B8;
     color: #7323B8;
+}
+
+.ratingTableText img {
+    width: 16px;
+    height: 13px;
+    flex-shrink: 0;
 }

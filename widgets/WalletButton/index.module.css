@@ -1,0 +1,31 @@
+.walletButton {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 1.2rem 1.6rem;
+    background: rgba(255, 255, 255, .3);
+    border: 1px solid #A0A3C1;
+    border-radius: 12px;
+    font-size: 1.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.walletButton:hover {
+    color: #7323B8;
+    border: 1px solid #7323B8;
+}
+
+.walletButton svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+@media (max-width: 998px) {
+    .walletButton {
+        padding: 0.8rem;
+        font-size: 1.4rem;
+    }
+} 

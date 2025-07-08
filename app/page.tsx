@@ -52,8 +52,7 @@ export default function Home() {
                                     Connect
                                 </button>
                             }
-                            description="Connect your X to Gon app to get points."
-                            done
+                            description="Connect your X to Vibin app to get points."
                         />
 
                         <TaskItem
@@ -64,7 +63,7 @@ export default function Home() {
                                     Connect
                                 </button>
                             }
-                            description="Connect your Telegram to Gon app to get points."
+                            description="Connect your Telegram to Vibin app to get points."
                         />
 
                         <TaskItem
@@ -75,7 +74,7 @@ export default function Home() {
                                     Connect
                                 </button>
                             }
-                            description="Connect your email to the Gon app to get points."
+                            description="Connect your email to the Vibin app to get points."
                         />
 
                         <TaskItem
@@ -97,7 +96,7 @@ export default function Home() {
                                     Join Us
                                 </button>
                             }
-                            description="Connect your Telegram to Gon app to get points."
+                            description="Connect your Telegram to Vibin app to get points."
                         />
 
                         <TaskItem
@@ -119,7 +118,7 @@ export default function Home() {
                                     Make a post
                                 </button>
                             }
-                            description="Make a post on X about Gon (daily)"
+                            description="Make a post on X about Vibin (daily)"
                         />
                     </div>
 

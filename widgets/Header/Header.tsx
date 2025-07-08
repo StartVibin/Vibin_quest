@@ -14,9 +14,10 @@ import {
     Link as LinkIcon,
     Database,
     Target,
-    Wallet,
     Notify,
 } from "@/shared/icons";
+
+import WalletButton from "@/widgets/WalletButton";
 
 const Header = () => {
     return (
@@ -81,10 +82,7 @@ const Header = () => {
                             <span>1</span>
                         </button>
 
-                        <button className={styles.headerConnect}>
-                            <Wallet />
-                            Connect Wallet
-                        </button>
+                        <WalletButton />
                     </div>
                 </div>
             </div>

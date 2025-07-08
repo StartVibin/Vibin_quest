@@ -90,7 +90,7 @@
     font-weight: 500;
 }
 
-.mainTaskPoints svg{
+.mainTaskPoints img {
     width: 16px;
     height: 13px;
     flex-shrink: 0;
@@ -122,7 +122,15 @@
     transform: translate(-50%, -50%);
 }
 
-.mainTaskType svg{
+.mainTaskType svg {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+}
+
+.mainTaskType img {
     width: 32px;
     height: 32px;
     flex-shrink: 0;
