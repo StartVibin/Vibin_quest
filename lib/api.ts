@@ -2,6 +2,8 @@
 // API CONFIGURATION
 // ============================================================================
 
+import { WalletAuthUser } from "./types"
+
 const API_BASE_URL = 'http://localhost:5000/api/v1'
 const DISCORD_API_BASE = 'https://discord.com/api'
 
@@ -88,7 +90,7 @@ export interface WalletAuthRequest {
 export interface WalletAuthResponse {
   success: boolean
   message: string
-  user?: any
+  user?: WalletAuthUser
   error?: string
 }
 

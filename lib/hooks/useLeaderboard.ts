@@ -2,15 +2,15 @@ import { useState, useEffect, useCallback } from 'react'
 import { getLeaderboard } from '@/lib/api'
 import { LeaderboardEntry } from '@/lib/types'
 
-interface LeaderboardData {
-  users: LeaderboardEntry[]
-  pagination: {
-    page: number
-    limit: number
-    total: number
-    totalPages: number
-  }
-}
+// interface LeaderboardData {
+//   users: LeaderboardEntry[]
+//   pagination: {
+//     page: number
+//     limit: number
+//     total: number
+//     totalPages: number
+//   }
+// }
 
 interface UseLeaderboardReturn {
   leaderboard: LeaderboardEntry[]

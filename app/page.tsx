@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import cn from "classnames";
+import { useEffect, useState } from 'react';
 
 import styles from "./page.module.css";
 import base from "@/shared/styles/base.module.css";
@@ -16,8 +17,23 @@ import {
 } from "@/shared/icons";
 import { TaskItem } from "@/shared/ui/TaskItem";
 import { GameTouch } from "@/widgets/GameTouch";
+import { handleXConnect, handleXFollow, handleXRepost, handleXReply, handleXPost, checkXActionStatus } from "@/lib/utils";
+import { Mailbox } from "@/shared/icons/Mailbox";
+import { TelegramLoginButton } from "@/widgets/TelegramLoginButton";
 
 export default function Home() {
+    const [isXConnected, setIsXConnected] = useState(false);
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            setIsXConnected(localStorage.getItem('x_verified') === 'true');
+        }
+    }, []);
+
+    // const handleTelegramAuth = (user) => {
+    //     localStorage.setItem('telegram_verified', 'true');
+    //     // Optionally, update your app state/UI here
+    // };
+
     return (
         <div className={styles.main}>
             <div className={base.container}>
@@ -48,27 +64,27 @@ export default function Home() {
                             points={100}
                             logo={<Twitter />}
                             button={
-                                <button className={styles.mainTaskButton}>
+                                <button 
+                                    className={styles.mainTaskButton}
+                                    onClick={handleXConnect}
+                                >
                                     Connect
                                 </button>
                             }
                             description="Connect your X to Vibin app to get points."
+                            done={isXConnected}
                         />
 
                         <TaskItem
                             points={100}
                             logo={<Telegram />}
-                            button={
-                                <button className={styles.mainTaskButton}>
-                                    Connect
-                                </button>
-                            }
+                            button={<TelegramLoginButton />}
                             description="Connect your Telegram to Vibin app to get points."
                         />
 
                         <TaskItem
                             points={100}
-                            logo={<Twitter />}
+                            logo={<Mailbox/>}
                             button={
                                 <button className={styles.mainTaskButton}>
                                     Connect
@@ -81,11 +97,15 @@ export default function Home() {
                             points={100}
                             logo={<Twitter />}
                             button={
-                                <button className={styles.mainTaskButton}>
-                                    Follow
+                                <button 
+                                    className={styles.mainTaskButton}
+                                    onClick={() => handleXFollow('StartVibin')}
+                                >
+                                    {checkXActionStatus('follow') ? 'Followed' : 'Follow'}
                                 </button>
                             }
                             description="Follow us on X to get points"
+                            done={checkXActionStatus('follow')}
                         />
 
                         <TaskItem
@@ -103,22 +123,45 @@ export default function Home() {
                             points={100}
                             logo={<Twitter />}
                             button={
-                                <button className={styles.mainTaskButton}>
-                                    Like, repost, comment
+                                <button 
+                                    className={styles.mainTaskButton}
+                                    onClick={() => handleXReply('1940467598610911339')}
+                                >
+                                    {checkXActionStatus('reply') ? 'Replied' : 'Reply'}
                                 </button>
                             }
-                            description="Like, repost, comment."
+                            description="Reply to our tweets to get points"
+                            done={checkXActionStatus('reply')}
                         />
 
                         <TaskItem
                             points={100}
                             logo={<Twitter />}
                             button={
-                                <button className={styles.mainTaskButton}>
-                                    Make a post
+                                <button 
+                                    className={styles.mainTaskButton}
+                                    onClick={() => handleXRepost('1940467598610911339')}
+                                >
+                                    {checkXActionStatus('repost') ? 'Reposted' : 'Repost'}
+                                </button>
+                            }
+                            description="Repost our content to get points"
+                            done={checkXActionStatus('repost')}
+                        />
+
+                        <TaskItem
+                            points={100}
+                            logo={<Twitter />}
+                            button={
+                                <button 
+                                    className={styles.mainTaskButton}
+                                    onClick={() => handleXPost()}
+                                >
+                                    {checkXActionStatus('post') ? 'Posted' : 'Post'}
                                 </button>
                             }
                             description="Make a post on X about Vibin (daily)"
+                            done={checkXActionStatus('post')}
                         />
                     </div>
 

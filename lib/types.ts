@@ -44,3 +44,22 @@ export interface ComponentProps {
   className?: string
   children?: React.ReactNode
 }
+
+export type WalletAuthUser = {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  walletAddress: string;
+  xId: string;
+  xJoined: boolean;
+  telegramId: string;
+  telegramJoined: boolean;
+  discordId: string;
+  discordJoined: boolean;
+  isWhitelist: boolean;
+  referralCode: string;
+  referralPoints: number;
+  gamePoints: number;
+  socialPoints: number;
+  totalPoints: number;
+};
