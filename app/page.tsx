@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import cn from "classnames";
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 import styles from "./page.module.css";
 import base from "@/shared/styles/base.module.css";
@@ -35,16 +35,14 @@ export default function Home() {
 
     if (!isHydrated) return null;
 
-    // const handleTelegramOAuth = useCallback(() => {
-    //     const botUsername = "MyVibinBot"; // your bot username, no @
-    //     // The Telegram Login Widget does not use a redirect, but you can set origin
-    //     const url = `https://telegram.me/${botUsername}?start=login`;
-    //     window.open(
-    //         url,
-    //         "telegram_oauth",
-    //         "width=500,height=600,scrollbars=yes,resizable=yes"
-    //     );
-    // }, []);
+    const handleTelegramOAuth = useCallback(() => {
+        const url = "https://oauth.telegram.org/auth?bot_id=7822342729&origin=https%3A%2F%2Fvibin-quest.vercel.app&embed=1&request_access=write&return_to=https%3A%2F%2Fvibin-quest.vercel.app%2Flogin";
+        window.open(
+            url,
+            "telegram_oauth",
+            "width=500,height=600,scrollbars=yes,resizable=yes"
+        );
+    }, []);
 
     return (
         <div className={styles.main}>
@@ -91,13 +89,9 @@ export default function Home() {
                             points={100}
                             logo={<Telegram />}
                             button={
-                                showTelegramWidget ? (
-                                    <TelegramLoginButton />
-                                ) : (
-                                    <button className={styles.mainTaskButton} onClick={() => setShowTelegramWidget(true)}>
-                                        Connect
-                                    </button>
-                                )
+                                <button className={styles.mainTaskButton} onClick={handleTelegramOAuth}>
+                                    Connect
+                                </button>
                             }
                             description="Connect your Telegram to Vibin app to get points."
                         />
