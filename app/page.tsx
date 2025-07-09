@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import cn from "classnames";
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useCallback } from 'react';
 
 import styles from "./page.module.css";
 import base from "@/shared/styles/base.module.css";
@@ -19,21 +19,13 @@ import { TaskItem } from "@/shared/ui/TaskItem";
 import { GameTouch } from "@/widgets/GameTouch";
 import { handleXConnect, handleXFollow, handleXRepost, handleXReply, handleXPost, checkXActionStatus } from "@/lib/utils";
 import { Mailbox } from "@/shared/icons/Mailbox";
-import { TelegramLoginButton } from "@/widgets/TelegramLoginButton";
 
 export default function Home() {
-    const [isHydrated, setIsHydrated] = useState(false);
-    const [isXConnected, setIsXConnected] = useState(false);
-    const [showTelegramWidget, setShowTelegramWidget] = useState(false);
-
     useEffect(() => {
-        setIsHydrated(true);
         if (typeof window !== 'undefined') {
-            setIsXConnected(localStorage.getItem('x_verified') === 'true');
+            // setIsXConnected(localStorage.getItem('x_verified') === 'true'); // REMOVE THIS LINE
         }
     }, []);
-
-    if (!isHydrated) return null;
 
     const handleTelegramOAuth = useCallback(() => {
         const url = "https://oauth.telegram.org/auth?bot_id=7822342729&origin=https%3A%2F%2Fvibin-quest.vercel.app&embed=1&request_access=write&return_to=https%3A%2F%2Fvibin-quest.vercel.app%2Flogin";
@@ -82,7 +74,7 @@ export default function Home() {
                                 </button>
                             }
                             description="Connect your X to Vibin app to get points."
-                            done={isXConnected}
+                            done={checkXActionStatus('connect')}
                         />
 
                         <TaskItem
