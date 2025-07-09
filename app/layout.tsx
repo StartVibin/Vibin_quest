@@ -46,7 +46,7 @@ export default function RootLayout({
                         <Script
                             async
                             src="https://telegram.org/js/telegram-widget.js?22"
-                            data-telegram-login="OAuth_By_Telegram_Bot" // <-- your bot username, no @
+                            data-telegram-login="MyVibinBot" // <-- your bot username, no @
                             data-size="large"
                             data-radius="5"
                             data-onauth="onTelegramAuth(user)"
