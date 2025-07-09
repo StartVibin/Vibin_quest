@@ -57,6 +57,7 @@ export const handleDiscordJoin = () => {
 }
 
 export const checkDiscordVerification = (): boolean => {
+  if (typeof window === 'undefined') return false;
   // Check if Discord verification is stored in localStorage
   const isVerified = localStorage.getItem('discord_verified') === 'true'
   const verifiedAt = localStorage.getItem('discord_verified_at')
@@ -104,6 +105,7 @@ export async function generateCodeChallenge(codeVerifier: string): Promise<strin
 }
 
 export const handleXConnect = async () => {
+  if (typeof window === 'undefined') return;
   // X OAuth 2.0 configuration
   const clientId = process.env.NEXT_PUBLIC_X_CLIENT_ID
   const redirectUri = `${window.location.origin}/x-callback`
@@ -139,8 +141,13 @@ export const handleXConnect = async () => {
 }
 
 // X API Actions
+const getAccessToken = () => {
+  if (typeof window === 'undefined') return null;
+  return localStorage.getItem('x_access_token');
+}
+
 export const handleXFollow = async (username: string = 'StartVibin') => {
-  const accessToken = localStorage.getItem('x_access_token')
+  const accessToken = getAccessToken();
   if (!accessToken) {
     alert('Please connect your X account first')
     return
@@ -165,7 +172,7 @@ export const handleXFollow = async (username: string = 'StartVibin') => {
 }
 
 export const handleXRepost = async (tweetId: string = '1940467598610911339') => {
-  const accessToken = localStorage.getItem('x_access_token')
+  const accessToken = getAccessToken();
   if (!accessToken) {
     alert('Please connect your X account first')
     return
@@ -190,7 +197,7 @@ export const handleXRepost = async (tweetId: string = '1940467598610911339') => 
 }
 
 export const handleXReply = async (tweetId: string = '1940467598610911339') => {
-  const accessToken = localStorage.getItem('x_access_token')
+  const accessToken = getAccessToken();
   if (!accessToken) {
     alert('Please connect your X account first')
     return
@@ -215,7 +222,7 @@ export const handleXReply = async (tweetId: string = '1940467598610911339') => {
 }
 
 export const handleXPost = async () => {
-  const accessToken = localStorage.getItem('x_access_token')
+  const accessToken = getAccessToken();
   if (!accessToken) {
     alert('Please connect your X account first')
     return
@@ -240,6 +247,7 @@ export const handleXPost = async () => {
 }
 
 export const checkXActionStatus = (action: string): boolean => {
+  if (typeof window === 'undefined') return false;
   switch (action) {
     case 'follow':
       return localStorage.getItem('x_followed_vibin') === 'true'

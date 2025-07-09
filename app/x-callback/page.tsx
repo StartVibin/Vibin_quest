@@ -1,9 +1,10 @@
 "use client";
 
+import { Suspense } from "react";
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function XCallback() {
+function XCallback() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
@@ -33,8 +34,12 @@ export default function XCallback() {
         }
 
         // Verify state parameter
-        const storedState = localStorage.getItem('x_oauth_state');
-        const codeVerifier = localStorage.getItem('x_code_verifier');
+        let storedState = null;
+        let codeVerifier = null;
+        if (typeof window !== 'undefined') {
+          storedState = localStorage.getItem('x_oauth_state');
+          codeVerifier = localStorage.getItem('x_code_verifier');
+        }
         console.log("🚀 ~ processCallback ~ storedState:", storedState)
         console.log("🚀 ~ processCallback ~ codeVerifier:", codeVerifier)
         if (storedState !== state || !codeVerifier) {
@@ -60,9 +65,11 @@ export default function XCallback() {
         }
 
         // Store the real access token (for demo; use secure storage in production)
-        localStorage.setItem('x_access_token', data.access_token);
-        localStorage.setItem('x_verified', 'true');
-        localStorage.setItem('x_verified_at', new Date().toISOString());
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('x_access_token', data.access_token);
+          localStorage.setItem('x_verified', 'true');
+          localStorage.setItem('x_verified_at', new Date().toISOString());
+        }
 
         // Fetch X user profile and log to console (via backend to avoid CORS)
         try {
@@ -78,8 +85,10 @@ export default function XCallback() {
         }
 
         // Clean up temporary data
-        localStorage.removeItem('x_oauth_state');
-        localStorage.removeItem('x_code_verifier');
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('x_oauth_state');
+          localStorage.removeItem('x_code_verifier');
+        }
 
         setStatus('success');
         setMessage('X account connected successfully!');
@@ -133,5 +142,13 @@ export default function XCallback() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function XCallbackPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <XCallback />
+    </Suspense>
   );
 } 

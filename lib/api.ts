@@ -90,8 +90,11 @@ export interface WalletAuthRequest {
 export interface WalletAuthResponse {
   success: boolean
   message: string
-  user?: WalletAuthUser
-  error?: string
+  data?: {
+    user: WalletAuthUser;
+    isNewUser: boolean;
+  };
+  error?: string;
 }
 
 // User profile

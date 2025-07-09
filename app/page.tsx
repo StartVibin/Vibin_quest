@@ -22,12 +22,17 @@ import { Mailbox } from "@/shared/icons/Mailbox";
 import { TelegramLoginButton } from "@/widgets/TelegramLoginButton";
 
 export default function Home() {
+    const [isHydrated, setIsHydrated] = useState(false);
     const [isXConnected, setIsXConnected] = useState(false);
+
     useEffect(() => {
+        setIsHydrated(true);
         if (typeof window !== 'undefined') {
             setIsXConnected(localStorage.getItem('x_verified') === 'true');
         }
     }, []);
+
+    if (!isHydrated) return null;
 
     // const handleTelegramAuth = (user) => {
     //     localStorage.setItem('telegram_verified', 'true');
