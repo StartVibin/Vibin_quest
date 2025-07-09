@@ -24,6 +24,7 @@ import { TelegramLoginButton } from "@/widgets/TelegramLoginButton";
 export default function Home() {
     const [isHydrated, setIsHydrated] = useState(false);
     const [isXConnected, setIsXConnected] = useState(false);
+    const [showTelegramWidget, setShowTelegramWidget] = useState(false);
 
     useEffect(() => {
         setIsHydrated(true);
@@ -69,7 +70,7 @@ export default function Home() {
                             points={100}
                             logo={<Twitter />}
                             button={
-                                <button 
+                                <button
                                     className={styles.mainTaskButton}
                                     onClick={handleXConnect}
                                 >
@@ -83,13 +84,21 @@ export default function Home() {
                         <TaskItem
                             points={100}
                             logo={<Telegram />}
-                            button={<TelegramLoginButton />}
+                            button={
+                                showTelegramWidget ? (
+                                    <TelegramLoginButton />
+                                ) : (
+                                    <button className={styles.mainTaskButton} onClick={() => setShowTelegramWidget(true)}>
+                                        Connect
+                                    </button>
+                                )
+                            }
                             description="Connect your Telegram to Vibin app to get points."
                         />
 
                         <TaskItem
                             points={100}
-                            logo={<Mailbox/>}
+                            logo={<Mailbox />}
                             button={
                                 <button className={styles.mainTaskButton}>
                                     Connect
@@ -102,7 +111,7 @@ export default function Home() {
                             points={100}
                             logo={<Twitter />}
                             button={
-                                <button 
+                                <button
                                     className={styles.mainTaskButton}
                                     onClick={() => handleXFollow('StartVibin')}
                                 >
@@ -128,7 +137,7 @@ export default function Home() {
                             points={100}
                             logo={<Twitter />}
                             button={
-                                <button 
+                                <button
                                     className={styles.mainTaskButton}
                                     onClick={() => handleXReply('1940467598610911339')}
                                 >
@@ -143,7 +152,7 @@ export default function Home() {
                             points={100}
                             logo={<Twitter />}
                             button={
-                                <button 
+                                <button
                                     className={styles.mainTaskButton}
                                     onClick={() => handleXRepost('1940467598610911339')}
                                 >
@@ -158,7 +167,7 @@ export default function Home() {
                             points={100}
                             logo={<Twitter />}
                             button={
-                                <button 
+                                <button
                                     className={styles.mainTaskButton}
                                     onClick={() => handleXPost()}
                                 >
