@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import cn from "classnames";
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 
 import styles from "./page.module.css";
 import base from "@/shared/styles/base.module.css";
