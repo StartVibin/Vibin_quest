@@ -28,7 +28,7 @@ export default function Home() {
     }, []);
 
     const handleTelegramOAuth = useCallback(() => {
-        const url = "https://oauth.telegram.org/auth?bot_id=7822342729&origin=https%3A%2F%2Fvibin-quest.vercel.app&embed=1&request_access=write&return_to=https%3A%2F%2Fvibin-quest.vercel.app%2Flogin";
+        const url = "https://oauth.telegram.org/auth?bot_id=7822342729&origin=https%3A%2F%2Fvibin-quest.vercel.app&embed=1&request_access=write&return_to=https%3A%2F%2Fvibin-quest.vercel.app%2Fwidgets%2Flogin";
         window.open(
             url,
             "telegram_oauth",
