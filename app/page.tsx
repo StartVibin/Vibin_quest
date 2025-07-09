@@ -35,16 +35,16 @@ export default function Home() {
 
     if (!isHydrated) return null;
 
-    const handleTelegramOAuth = useCallback(() => {
-        const botUsername = "MyVibinBot"; // your bot username, no @
-        // The Telegram Login Widget does not use a redirect, but you can set origin
-        const url = `https://telegram.me/${botUsername}?start=login`;
-        window.open(
-            url,
-            "telegram_oauth",
-            "width=500,height=600,scrollbars=yes,resizable=yes"
-        );
-    }, []);
+    // const handleTelegramOAuth = useCallback(() => {
+    //     const botUsername = "MyVibinBot"; // your bot username, no @
+    //     // The Telegram Login Widget does not use a redirect, but you can set origin
+    //     const url = `https://telegram.me/${botUsername}?start=login`;
+    //     window.open(
+    //         url,
+    //         "telegram_oauth",
+    //         "width=500,height=600,scrollbars=yes,resizable=yes"
+    //     );
+    // }, []);
 
     return (
         <div className={styles.main}>
