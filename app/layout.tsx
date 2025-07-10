@@ -1,60 +1,46 @@
 import type { Metadata } from "next";
-
 import "./globals.css";
-
-import { Header } from "@/widgets/Header";
+import AuthProvider from "./auth-provider";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Web3Provider from "@/provider/WagmiProvider";
 import ReactQueryProvider from "@/provider/ReactQueryProvider";
-import Script from "next/script";
+import { Header } from "@/widgets/Header";
 
 export const metadata: Metadata = {
-    title: "Vibin'",
-    icons: {
-        icon: [
-            {
-                url: '/img/icon.svg',
-                type: 'image/svg+xml',
-            },
-            {
-                url: '/favicon.ico',
-                sizes: 'any',
-            }
-        ],
-    },
+  title: "Vibin' Quest",
+  description: "Participate in Vibin' Quests",
 };
 
 export default function RootLayout({
-    children,
+  children,
 }: Readonly<{
-    children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-    return (
-        <html lang="en">
-            <body>
-                <Script id="telegram-auth-callback">
-                    {`
-                        function onTelegramAuth(user) {
-                            alert('Logged in as ' + user.first_name + ' ' + user.last_name + ' (' + user.id + (user.username ? ', @' + user.username : '') + ')');
-                        }
-                    `}
-                </Script>
-                <ReactQueryProvider>
-                    <Web3Provider>
-                        <Header />
-
-                        {children}
-                        <Script
-                            async
-                            src="https://telegram.org/js/telegram-widget.js?22"
-                            data-telegram-login="MyVibinBot" // <-- your bot username, no @
-                            data-size="large"
-                            data-radius="5"
-                            data-onauth="onTelegramAuth(user)"
-                            data-request-access="write"
-                        />
-                    </Web3Provider>
-                </ReactQueryProvider>
-            </body>
-        </html>
-    );
+  return (
+    <html lang="en">
+      <body>
+        <ReactQueryProvider>
+          <Web3Provider>
+            <AuthProvider>
+              <Header />
+              {children}
+              <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+              />
+            </AuthProvider>
+          </Web3Provider>
+        </ReactQueryProvider>
+      </body>
+    </html>
+  );
 }

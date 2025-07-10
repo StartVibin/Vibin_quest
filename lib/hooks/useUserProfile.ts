@@ -5,10 +5,8 @@ import { getUserProfile } from '@/lib/api'
 interface UserProfile {
   walletAddress: string
   xJoined: boolean
-  discordJoined: boolean
   telegramJoined: boolean
   xId: string
-  discordId: string
   telegramId: string
   gamePoints: number
   referralPoints: number

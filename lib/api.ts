@@ -5,7 +5,6 @@
 import { WalletAuthUser } from "./types"
 
 const API_BASE_URL = 'http://localhost:5000/api/v1'
-const DISCORD_API_BASE = 'https://discord.com/api'
 
 // API endpoints
 export const API_ENDPOINTS = {
@@ -26,11 +25,7 @@ export const API_ENDPOINTS = {
   // Auth endpoints
   WALLET_AUTH: `${API_BASE_URL}/auth/wallet`,
   
-  // Discord endpoints
-  DISCORD_TOKEN: '/api/discord/token',
-  DISCORD_USER: `${DISCORD_API_BASE}/users/@me`,
-  DISCORD_GUILD_MEMBER: (serverId: string) => `${DISCORD_API_BASE}/users/@me/guilds/${serverId}/member`,
-  DISCORD_OAUTH_TOKEN: `${DISCORD_API_BASE}/oauth2/token`
+
 }
 
 // ============================================================================
@@ -40,10 +35,8 @@ export const API_ENDPOINTS = {
 // Quest verification
 export interface QuestVerificationRequest {
   questId: string
-  platform: 'twitter' | 'discord' | 'telegram'
+  platform: 'twitter' | 'telegram'
   walletAddress: string
-  discordUserId?: string
-  discordUsername?: string
   signature?: string
 }
 
@@ -103,10 +96,8 @@ export interface UserProfileResponse {
   data: {
     walletAddress: string
     xJoined: boolean
-    discordJoined: boolean
     telegramJoined: boolean
     xId: string
-    discordId: string
     telegramId: string
     gamePoints: number
     referralPoints: number
@@ -144,28 +135,7 @@ export interface LeaderboardResponse {
   error?: string
 }
 
-// Discord
-export interface DiscordTokenRequest {
-  code: string
-  redirect_uri: string
-}
 
-export interface DiscordTokenResponse {
-  access_token: string
-  token_type: string
-  expires_in: number
-  refresh_token: string
-  scope: string
-}
-
-export interface DiscordUser {
-  id: string
-  username: string
-  discriminator: string
-  avatar: string
-  verified: boolean
-  email: string
-}
 
 // ============================================================================
 // UTILITY FUNCTIONS
@@ -204,19 +174,14 @@ const createApiRequest = async <T>(
 
 export const verifyQuestWithBackend = async (
   questId: string,
-  platform: string,
-  walletAddress: string,
-  discordData?: { userId: string; username: string }
+  platform: 'twitter' | 'telegram',
+  walletAddress: string
 ): Promise<QuestVerificationResponse> => {
   try {
     const requestData: QuestVerificationRequest = {
       questId,
-      platform: platform as 'twitter' | 'discord' | 'telegram',
-      walletAddress,
-      ...(discordData && {
-        discordUserId: discordData.userId,
-        discordUsername: discordData.username
-      })
+      platform,
+      walletAddress
     }
 
     return await createApiRequest<QuestVerificationResponse>(
@@ -368,67 +333,160 @@ export const authenticateWallet = async (
   }
 }
 
-// ============================================================================
-// DISCORD API FUNCTIONS
-// ============================================================================
+// Quest verification API functions
+export const verifyXConnection = async (walletAddress: string, xData: any) => {
+  const response = await fetch(`${API_BASE_URL}/quests/x/connect`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      walletAddress,
+      xId: xData.id,
+      xUsername: xData.username,
+      xDisplayName: xData.name,
+      xProfileImageUrl: xData.profile_image_url,
+      xVerified: xData.verified
+    }),
+  })
 
-export const getDiscordToken = async (
-  code: string, 
-  redirectUri: string
-): Promise<DiscordTokenResponse> => {
-  try {
-    const requestData: DiscordTokenRequest = { code, redirect_uri: redirectUri }
-    
-    return await createApiRequest<DiscordTokenResponse>(
-      API_ENDPOINTS.DISCORD_TOKEN,
-      {
-        method: 'POST',
-        body: JSON.stringify(requestData)
-      }
-    )
-  } catch (error) {
-    console.error('Error getting Discord token:', error)
-    throw error
+  if (!response.ok) {
+    throw new Error('Failed to verify X connection')
   }
+
+  return response.json()
 }
 
-export const getDiscordUser = async (accessToken: string): Promise<DiscordUser> => {
-  try {
-    return await createApiRequest<DiscordUser>(
-      API_ENDPOINTS.DISCORD_USER,
-      {
-        headers: {
-          'Authorization': `Bearer ${accessToken}`
-        }
-      }
-    )
-  } catch (error) {
-    console.error('Error fetching Discord user:', error)
-    throw error
+export const verifyXFollow = async (walletAddress: string, targetUsername: string) => {
+  const response = await fetch(`${API_BASE_URL}/quests/x/follow`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      walletAddress,
+      targetUsername
+    }),
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to verify X follow')
   }
+
+  return response.json()
 }
 
-export const verifyDiscordMembership = async (
-  accessToken: string, 
-  serverId: string
-): Promise<boolean> => {
-  try {
-    if (!serverId) {
-      console.error('Discord server ID not configured')
-      return false
-    }
+export const verifyXReply = async (walletAddress: string, tweetId: string) => {
+  const response = await fetch(`${API_BASE_URL}/quests/x/reply`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      walletAddress,
+      tweetId
+    }),
+  })
 
-    await createApiRequest(
-      API_ENDPOINTS.DISCORD_GUILD_MEMBER(serverId),
-      {
-        headers: {
-          'Authorization': `Bearer ${accessToken}`
-        }
-      }
-    )
-    return true
-  } catch (error) {
-    console.error('Error verifying Discord membership:', error)
-    return false
+  if (!response.ok) {
+    throw new Error('Failed to verify X reply')
   }
-} 
+
+  return response.json()
+}
+
+export const verifyXRepost = async (walletAddress: string, tweetId: string) => {
+  const response = await fetch(`${API_BASE_URL}/quests/x/repost`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      walletAddress,
+      tweetId
+    }),
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to verify X repost')
+  }
+
+  return response.json()
+}
+
+export const verifyXPost = async (walletAddress: string) => {
+  const response = await fetch(`${API_BASE_URL}/quests/x/post`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      walletAddress
+    }),
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to verify X post')
+  }
+
+  return response.json()
+}
+
+export const verifyTelegramConnection = async (walletAddress: string, telegramData: any) => {
+  const response = await fetch(`${API_BASE_URL}/quests/telegram/connect`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      walletAddress,
+      telegramId: telegramData.id,
+      telegramUsername: telegramData.username,
+      telegramFirstName: telegramData.first_name,
+      telegramLastName: telegramData.last_name,
+      telegramPhotoUrl: telegramData.photo_url
+    }),
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to verify Telegram connection')
+  }
+
+  return response.json()
+}
+
+export const verifyEmailConnection = async (walletAddress: string, email: string) => {
+  const response = await fetch(`${API_BASE_URL}/quests/email/connect`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      walletAddress,
+      email
+    }),
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to verify email connection')
+  }
+
+  return response.json()
+}
+
+export const getUserQuestProgress = async (walletAddress: string) => {
+  const response = await fetch(`${API_BASE_URL}/quests/progress/${walletAddress}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to get user quest progress')
+  }
+
+  return response.json()
+}
+
+ 

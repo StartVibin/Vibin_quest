@@ -1,6 +1,6 @@
 export interface Quest {
   id: string
-  platform: 'twitter' | 'discord' | 'telegram'
+  platform: 'twitter' | 'telegram'
   title: string
   points: number
   bonus: number
@@ -32,7 +32,7 @@ export interface User {
   socialPoints: number
   totalPoints: number
   xId?: string
-  discordId?: string
+
   telegramId?: string
   createdAt: Date
   updatedAt: Date
@@ -54,8 +54,7 @@ export type WalletAuthUser = {
   xJoined: boolean;
   telegramId: string;
   telegramJoined: boolean;
-  discordId: string;
-  discordJoined: boolean;
+
   isWhitelist: boolean;
   referralCode: string;
   referralPoints: number;

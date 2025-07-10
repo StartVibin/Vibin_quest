@@ -14,8 +14,6 @@ export const getPlatformGradient = (platform: string) => {
   switch (platform) {
     case 'twitter':
       return 'from-gray-100 to-gray-200'
-    case 'discord':
-      return 'from-purple-100 to-purple-200'
     case 'telegram':
       return 'from-blue-100 to-blue-200'
     default:
@@ -37,52 +35,27 @@ export const combineClasses = (...classes: (string | undefined | false)[]): stri
   return classes.filter(Boolean).join(' ')
 }
 
+// Show wallet connection warning
+export const showWalletWarning = (toast: any) => {
+  toast.warning('Please connect your wallet first to complete this task!', {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+  })
+}
+
 export const handleTwitterFollow = (username: string = 'beatwisedata') => {
   const twitterUrl = `https://twitter.com/intent/follow?screen_name=${username}`
   window.open(twitterUrl, '_blank', 'noopener,noreferrer')
-}
-
-export const handleDiscordJoin = () => {
-  // Redirect to Discord OAuth flow
-  const clientId = process.env.NEXT_PUBLIC_DISCORD_CLIENT_ID
-  const redirectUri = process.env.NEXT_PUBLIC_DISCORD_REDIRECT_URI
-  
-  if (!clientId || !redirectUri) {
-    console.error('Discord OAuth configuration missing')
-    return
-  }
-  
-  const discordAuthUrl = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=identify%20guilds.join`
-  window.open(discordAuthUrl, '_blank', 'noopener,noreferrer')
-}
-
-export const checkDiscordVerification = (): boolean => {
-  if (typeof window === 'undefined') return false;
-  // Check if Discord verification is stored in localStorage
-  const isVerified = localStorage.getItem('discord_verified') === 'true'
-  const verifiedAt = localStorage.getItem('discord_verified_at')
-  
-  if (!isVerified || !verifiedAt) {
-    return false
-  }
-  
-  // Check if verification is still valid (e.g., within 24 hours)
-  const verificationTime = new Date(verifiedAt).getTime()
-  const currentTime = new Date().getTime()
-  const hoursSinceVerification = (currentTime - verificationTime) / (1000 * 60 * 60)
-  
-  // Consider verification valid for 24 hours
-  return hoursSinceVerification < 24
 }
 
 export const handleQuestAction = (questId: string, platform: string) => {
   switch (platform) {
     case 'twitter':
       handleTwitterFollow()
-      break
-    case 'discord':
-      // Handle Discord join logic
-      console.log('Discord quest clicked:', questId)
       break
     case 'telegram':
       // Handle Telegram join logic
@@ -104,8 +77,9 @@ export async function generateCodeChallenge(codeVerifier: string): Promise<strin
         .replace(/=+$/, '');
 }
 
-export const handleXConnect = async () => {
+export const handleXConnect = async (toast: any) => {
   if (typeof window === 'undefined') return;
+  
   // X OAuth 2.0 configuration
   const clientId = process.env.NEXT_PUBLIC_X_CLIENT_ID
   const redirectUri = `${window.location.origin}/x-callback`
@@ -113,7 +87,7 @@ export const handleXConnect = async () => {
   
   if (!clientId) {
     console.error('X OAuth not configured - missing NEXT_PUBLIC_X_CLIENT_ID')
-    alert('X OAuth not configured. Please set up your X Developer App.')
+    toast.error('X OAuth not configured. Please set up your X Developer App.')
     return
   }
   
@@ -146,13 +120,20 @@ const getAccessToken = () => {
   return localStorage.getItem('x_access_token');
 }
 
-export const handleXFollow = async (username: string = 'StartVibin') => {
+export const handleXFollow = async (username: string = 'StartVibin', toast: any, walletAddress?: string) => {
   const accessToken = getAccessToken();
   if (!accessToken) {
-    alert('Please connect your X account first')
+    toast.error('Please connect your X account first')
     return
   }
+  
+  if (!walletAddress) {
+    toast.error('Wallet address is required')
+    return
+  }
+  
   try {
+    // First perform the X action
     const response = await fetch('/api/x/follow', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -160,24 +141,35 @@ export const handleXFollow = async (username: string = 'StartVibin') => {
     });
     const data = await response.json();
     if (response.ok) {
-      alert(`Successfully followed @${username}!`)
+      // Then verify with backend
+      const { verifyXFollow } = await import('./api');
+      const verificationResult = await verifyXFollow(walletAddress, username);
+      
+      toast.success(`Successfully followed @${username}! Awarded ${verificationResult.data.pointsAwarded} points!`)
       localStorage.setItem('x_followed_vibin', 'true')
     } else {
       throw new Error(data.error || 'Failed to follow user')
     }
   } catch (error) {
     console.error('Follow action failed:', error)
-    alert('Failed to follow user. Please try again.')
+    toast.error('Failed to follow user. Please try again.')
   }
 }
 
-export const handleXRepost = async (tweetId: string = '1940467598610911339') => {
+export const handleXRepost = async (tweetId: string = '1940467598610911339', toast: any, walletAddress?: string) => {
   const accessToken = getAccessToken();
   if (!accessToken) {
-    alert('Please connect your X account first')
+    toast.error('Please connect your X account first')
     return
   }
+  
+  if (!walletAddress) {
+    toast.error('Wallet address is required')
+    return
+  }
+  
   try {
+    // First perform the X action
     const response = await fetch('/api/x/repost', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -185,24 +177,35 @@ export const handleXRepost = async (tweetId: string = '1940467598610911339') => 
     });
     const data = await response.json();
     if (response.ok) {
-      alert('Successfully reposted!')
+      // Then verify with backend
+      const { verifyXRepost } = await import('./api');
+      const verificationResult = await verifyXRepost(walletAddress, tweetId);
+      
+      toast.success(`Successfully reposted! Awarded ${verificationResult.data.pointsAwarded} points!`)
       localStorage.setItem('x_reposted', 'true')
     } else {
       throw new Error(data.error || 'Failed to repost')
     }
   } catch (error) {
     console.error('Repost action failed:', error)
-    alert('Failed to repost. Please try again.')
+    toast.error('Failed to repost. Please try again.')
   }
 }
 
-export const handleXReply = async (tweetId: string = '1940467598610911339') => {
+export const handleXReply = async (tweetId: string = '1940467598610911339', toast: any, walletAddress?: string) => {
   const accessToken = getAccessToken();
   if (!accessToken) {
-    alert('Please connect your X account first')
+    toast.error('Please connect your X account first')
     return
   }
+  
+  if (!walletAddress) {
+    toast.error('Wallet address is required')
+    return
+  }
+  
   try {
+    // First perform the X action
     const response = await fetch('/api/x/reply', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -210,23 +213,33 @@ export const handleXReply = async (tweetId: string = '1940467598610911339') => {
     });
     const data = await response.json();
     if (response.ok) {
-      alert('Successfully replied!')
+      // Then verify with backend
+      const { verifyXReply } = await import('./api');
+      const verificationResult = await verifyXReply(walletAddress, tweetId);
+      
+      toast.success(`Successfully replied! Awarded ${verificationResult.data.pointsAwarded} points!`)
       localStorage.setItem('x_replied', 'true')
     } else {
       throw new Error(data.error || 'Failed to reply')
     }
   } catch (error) {
     console.error('Reply action failed:', error)
-    alert('Failed to reply. Please try again.')
+    toast.error('Failed to reply. Please try again.')
   }
 }
 
-export const handleXPost = async () => {
+export const handleXPost = async (toast: any, walletAddress?: string) => {
   const accessToken = getAccessToken();
   if (!accessToken) {
-    alert('Please connect your X account first')
+    toast.error('Please connect your X account first')
     return
   }
+  
+  if (!walletAddress) {
+    toast.error('Wallet address is required')
+    return
+  }
+  
   try {
     const response = await fetch('/api/x/post', {
       method: 'POST',
@@ -235,14 +248,18 @@ export const handleXPost = async () => {
     });
     const data = await response.json();
     if (response.ok) {
-      alert('Successfully posted about Vibin!')
+      // Then verify with backend
+      const { verifyXPost } = await import('./api');
+      const verificationResult = await verifyXPost(walletAddress);
+      
+      toast.success(`Successfully posted about Vibin! Awarded ${verificationResult.data.pointsAwarded} points!`)
       localStorage.setItem('x_posted_vibin', 'true')
     } else {
       throw new Error(data.error || 'Failed to post')
     }
   } catch (error) {
     console.error('Post action failed:', error)
-    alert('Failed to post. Please try again.')
+    toast.error('Failed to post. Please try again.')
   }
 }
 
@@ -290,7 +307,7 @@ export const updateUserStatsWithGamePoints = (
 ): { gamePoints: number; highScore: number; socialPoints: number; totalPoints: number } => {
   const updatedGameStats = updateGamePoints(currentStats, newGamePoints);
   
-  return {
+    return {
     ...updatedGameStats,
     socialPoints: currentStats.socialPoints,
     totalPoints: updateTotalPoints({

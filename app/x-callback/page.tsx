@@ -3,10 +3,12 @@
 import { Suspense } from "react";
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useAccount } from 'wagmi';
 
 function XCallback() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { address, isConnected } = useAccount();
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [message, setMessage] = useState('Processing X connection...');
 
@@ -71,7 +73,7 @@ function XCallback() {
           localStorage.setItem('x_verified_at', new Date().toISOString());
         }
 
-        // Fetch X user profile and log to console (via backend to avoid CORS)
+        // Fetch X user profile and send to backend for verification
         try {
           const profileRes = await fetch('/api/x/user-profile', {
             method: 'POST',
@@ -80,6 +82,36 @@ function XCallback() {
           });
           const profileData = await profileRes.json();
           console.log('X user profile:', profileData);
+          
+          if ( profileData.data) {
+            // Send X user data to backend for verification and points
+            if (isConnected && address) {
+            console.log("🚀 ~ processCallback ~ address:", address);
+              const verifyRes = await fetch('http://localhost:5000/api/v1/quests/x/connect', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  walletAddress: address,
+                  xId: profileData.data.id,
+                  xUsername: profileData.data.username,
+                  xDisplayName: profileData.data.name,
+                  xProfileImageUrl: profileData.data.profile_image_url,
+                  xVerified: profileData.data.verified
+                }),
+              });
+              console.log("🚀 ~ processCallback ~ verifyRes:", verifyRes)
+              
+              if (verifyRes.ok) {
+                const verifyData = await verifyRes.json();
+                console.log('X connection verified:', verifyData);
+                setMessage(`X account connected successfully! Awarded ${verifyData.data.pointsAwarded} points!`);
+              } else {
+                console.error('Failed to verify X connection:', verifyRes.status);
+              }
+            } else {
+              console.log('Wallet not connected, skipping backend verification');
+            }
+          }
         } catch (profileErr) {
           console.error('Failed to fetch X user profile:', profileErr);
         }
@@ -91,7 +123,7 @@ function XCallback() {
         }
 
         setStatus('success');
-        setMessage('X account connected successfully!');
+        // Message will be updated by the verification process above
 
         // Redirect back to main page after a short delay
         setTimeout(() => {
@@ -105,7 +137,7 @@ function XCallback() {
     };
 
     processCallback();
-  }, [searchParams, router]);
+  }, [searchParams, router, isConnected, address]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">

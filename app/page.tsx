@@ -3,6 +3,8 @@
 import Image from "next/image";
 import cn from "classnames";
 import { useEffect, useCallback } from 'react';
+import { toast } from 'react-toastify';
+import { useAccount } from 'wagmi';
 
 import styles from "./page.module.css";
 import base from "@/shared/styles/base.module.css";
@@ -17,24 +19,58 @@ import {
 } from "@/shared/icons";
 import { TaskItem } from "@/shared/ui/TaskItem";
 import { GameTouch } from "@/widgets/GameTouch";
-import { handleXConnect, handleXFollow, handleXRepost, handleXReply, handleXPost, checkXActionStatus } from "@/lib/utils";
+import { handleXConnect, handleXFollow, handleXRepost, handleXReply, handleXPost, checkXActionStatus, showWalletWarning } from "@/lib/utils";
 import { Mailbox } from "@/shared/icons/Mailbox";
+import TelegramLoginButton from "@/components/TelegramLoginButton";
 
 export default function Home() {
+    const { address, isConnected } = useAccount();
+
     useEffect(() => {
         if (typeof window !== 'undefined') {
             // setIsXConnected(localStorage.getItem('x_verified') === 'true'); // REMOVE THIS LINE
         }
     }, []);
 
-    const handleTelegramOAuth = useCallback(() => {
-        const url = "https://oauth.telegram.org/auth?bot_id=7822342729&origin=https%3A%2F%2Fvibin-quest.vercel.app&embed=1&request_access=write&return_to=https%3A%2F%2Fvibin-quest.vercel.app%2Flogin";
-        window.open(
-            url,
-            "telegram_oauth",
-            "width=500,height=600,scrollbars=yes,resizable=yes"
-        );
+    const handleTelegramSuccess = useCallback(() => {
+        // Handle successful Telegram connection
+        console.log("Telegram connected successfully");
+        console.log("You can now check the browser console and server logs for the full authentication data");
+        toast.success("Telegram connected successfully!");
     }, []);
+
+    // Wallet connection check for X tasks
+    const handleXConnectWithWallet = () => {
+        if (!isConnected) {
+            showWalletWarning(toast);
+            return;
+        }
+        handleXConnect(toast);
+    };
+
+    const handleXFollowWithWallet = (username: string) => {
+        if (!isConnected) {
+            showWalletWarning(toast);
+            return;
+        }
+        handleXFollow(username, toast, address);
+    };
+
+    const handleXReplyWithWallet = (tweetId: string) => {
+        if (!isConnected) {
+            showWalletWarning(toast);
+            return;
+        }
+        handleXReply(tweetId, toast, address);
+    };
+
+    const handleXRepostWithWallet = (tweetId: string) => {
+        if (!isConnected) {
+            showWalletWarning(toast);
+            return;
+        }
+        handleXRepost(tweetId, toast, address);
+    };
 
     return (
         <div className={styles.main}>
@@ -51,11 +87,11 @@ export default function Home() {
 
                             <div className={styles.mainBannerTextInner}>
                                 <p className={styles.mainBannerTitle}>
-                                    Quest $ Get rewarded
+                                    Participate in Vibin' Quests
                                 </p>
 
                                 <p className={styles.mainBannerText}>
-                                    Engage, Share & Earn - Complete Social!
+                                    Engage, Share & Earn Points
                                 </p>
                             </div>
                         </div>
@@ -68,7 +104,7 @@ export default function Home() {
                             button={
                                 <button
                                     className={styles.mainTaskButton}
-                                    onClick={handleXConnect}
+                                    onClick={handleXConnectWithWallet}
                                 >
                                     Connect
                                 </button>
@@ -81,9 +117,10 @@ export default function Home() {
                             points={100}
                             logo={<Telegram />}
                             button={
-                                <button className={styles.mainTaskButton} onClick={handleTelegramOAuth}>
-                                    Connect
-                                </button>
+                                <TelegramLoginButton
+                                    className={styles.mainTaskButton}
+                                    onSuccess={handleTelegramSuccess}
+                                />
                             }
                             description="Connect your Telegram to Vibin app to get points."
                         />
@@ -100,12 +137,12 @@ export default function Home() {
                         />
 
                         <TaskItem
-                            points={100}
+                            points={200}
                             logo={<Twitter />}
                             button={
                                 <button
                                     className={styles.mainTaskButton}
-                                    onClick={() => handleXFollow('StartVibin')}
+                                    onClick={() => handleXFollowWithWallet('StartVibin')}
                                 >
                                     {checkXActionStatus('follow') ? 'Followed' : 'Follow'}
                                 </button>
@@ -115,7 +152,7 @@ export default function Home() {
                         />
 
                         <TaskItem
-                            points={100}
+                            points={200}
                             logo={<Telegram />}
                             button={
                                 <button className={styles.mainTaskButton}>
@@ -126,12 +163,12 @@ export default function Home() {
                         />
 
                         <TaskItem
-                            points={100}
+                            points={300}
                             logo={<Twitter />}
                             button={
                                 <button
                                     className={styles.mainTaskButton}
-                                    onClick={() => handleXReply('1940467598610911339')}
+                                    onClick={() => handleXReplyWithWallet('1940467598610911339')}
                                 >
                                     {checkXActionStatus('reply') ? 'Replied' : 'Reply'}
                                 </button>
@@ -141,12 +178,12 @@ export default function Home() {
                         />
 
                         <TaskItem
-                            points={100}
+                            points={300}
                             logo={<Twitter />}
                             button={
                                 <button
                                     className={styles.mainTaskButton}
-                                    onClick={() => handleXRepost('1940467598610911339')}
+                                    onClick={() => handleXRepostWithWallet('1940467598610911339')}
                                 >
                                     {checkXActionStatus('repost') ? 'Reposted' : 'Repost'}
                                 </button>
@@ -155,7 +192,7 @@ export default function Home() {
                             done={checkXActionStatus('repost')}
                         />
 
-                        <TaskItem
+                        {/* <TaskItem
                             points={100}
                             logo={<Twitter />}
                             button={
@@ -168,7 +205,7 @@ export default function Home() {
                             }
                             description="Make a post on X about Vibin (daily)"
                             done={checkXActionStatus('post')}
-                        />
+                        /> */}
                     </div>
 
                     <div className={styles.mainStatsInner}>
@@ -182,12 +219,11 @@ export default function Home() {
 
                             <div className={styles.inviteTextInner}>
                                 <p className={styles.inviteTitle}>
-                                    Invite & Earn 200 Rewards!
+                                    Invite & Earn 500 Points!
                                 </p>
 
                                 <p className={styles.inviteText}>
-                                    Invite your friends into ... and earn extra
-                                    points!
+                                    Invite your friends to join Vibin' and get 500 extra bonus points.
                                 </p>
 
                                 <button className={styles.inviteButton}>
