@@ -1,73 +1,88 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { getLeaderboard } from '@/lib/api'
-import { LeaderboardEntry } from '@/lib/types'
 
-// interface LeaderboardData {
-//   users: LeaderboardEntry[]
-//   pagination: {
-//     page: number
-//     limit: number
-//     total: number
-//     totalPages: number
-//   }
-// }
+interface LeaderboardUser {
+  walletAddress: string
+  totalPoints: number
+  gamePoints: number
+  referralPoints: number
+  socialPoints: number
+  rank: number
+}
 
-interface UseLeaderboardReturn {
-  leaderboard: LeaderboardEntry[]
-  loading: boolean
-  error: string | null
-  refetch: () => void
+interface LeaderboardData {
+  users: LeaderboardUser[]
   pagination: {
     page: number
     limit: number
     total: number
     totalPages: number
-  } | null
+  }
+}
+
+interface UseLeaderboardReturn {
+  leaderboardData: LeaderboardData | null
+  loading: boolean
+  error: string | null
+  currentPage: number
+  limit: number
+  refetch: () => void
+  setCurrentPage: (page: number) => void
+  setLimit: (limit: number) => void
 }
 
 export const useLeaderboard = (): UseLeaderboardReturn => {
-  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([])
+  const [leaderboardData, setLeaderboardData] = useState<LeaderboardData | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [pagination, setPagination] = useState<{
-    page: number
-    limit: number
-    total: number
-    totalPages: number
-  } | null>(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [limit, setLimit] = useState(10)
 
-  const fetchLeaderboard = useCallback(async () => {
+  const fetchLeaderboard = async () => {
     try {
       setLoading(true)
       setError(null)
       
-      const data = await getLeaderboard()
+      console.log('🔄 Fetching leaderboard data...')
+      const response = await getLeaderboard()
       
-      if (data.success && data.data) {
-        setLeaderboard(data.data.users || [])
-        setPagination(data.data.pagination || null)
+      if (response.success && response.data) {
+        console.log('✅ Leaderboard data received:', response.data)
+        setLeaderboardData(response.data)
       } else {
+        console.error('❌ Failed to fetch leaderboard data')
         setError('Failed to fetch leaderboard data')
-        setLeaderboard([])
       }
     } catch (err) {
-      console.error('Error fetching leaderboard:', err)
+      console.error('❌ Error fetching leaderboard:', err)
       setError(err instanceof Error ? err.message : 'Failed to fetch leaderboard')
-      setLeaderboard([])
     } finally {
       setLoading(false)
     }
-  }, [])
+  }
 
   useEffect(() => {
+    // Initial fetch
     fetchLeaderboard()
-  }, [fetchLeaderboard])
+
+    // Set up interval for periodic updates (every 5 seconds)
+    const interval = setInterval(() => {
+      console.log('⏰ Periodic leaderboard fetch triggered (5s interval)')
+      fetchLeaderboard()
+    }, 5000)
+
+    // Cleanup interval on unmount
+    return () => clearInterval(interval)
+  }, [currentPage, limit])
 
   return {
-    leaderboard,
+    leaderboardData,
     loading,
     error,
+    currentPage,
+    limit,
     refetch: fetchLeaderboard,
-    pagination
+    setCurrentPage,
+    setLimit
   }
 } 

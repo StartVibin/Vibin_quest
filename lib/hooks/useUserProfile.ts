@@ -2,22 +2,45 @@ import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useAccount } from 'wagmi'
 import { getUserProfile } from '@/lib/api'
 
-interface UserProfile {
+export interface UserProfile {
   walletAddress: string
-  xJoined: boolean
+  telegramVerified: boolean
   telegramJoined: boolean
+  xConnected: boolean
+  xFollowed: boolean
+  xReplied: boolean
+  xReposted: boolean
+  xPosted: boolean
+  telegramConnected: boolean
+  telegramJoinedGroup: boolean
+  emailConnected: boolean
   xId: string
   telegramId: string
+  xUsername: string
+  xDisplayName: string
+  xProfileImageUrl: string
+  xVerified: boolean
+  telegramUsername: string
+  telegramFirstName: string
+  telegramLastName: string
+  telegramPhotoUrl: string
+  email: string
+  googleId: string
+  googleName: string
+  googlePicture: string
+  googleVerifiedEmail: boolean
+  inviteCode: string
+  invitedBy: string
+  invitedUsers: string[]
   gamePoints: number
   referralPoints: number
   socialPoints: number
   referralCode: string
   isWhitelist: boolean
   highScore: number
+  createdAt: Date
+  updatedAt: Date
   totalPoints: number
-  totalSocialJoined: number
-  createdAt: string
-  updatedAt: string
 }
 
 interface UseUserProfileReturn {
@@ -51,7 +74,7 @@ export const useUserProfile = (): UseUserProfileReturn => {
       const data = await getUserProfile(address)
       console.log('✅ API response:', data)
       
-      setProfile(data.data)
+      setProfile(data)
     } catch (err) {
       console.error('❌ Error fetching user profile:', err)
       setError(err instanceof Error ? err.message : 'Failed to fetch profile')
@@ -75,7 +98,7 @@ export const useUserProfile = (): UseUserProfileReturn => {
     // Initial fetch
     fetchProfile()
 
-    // Set up interval for periodic updates
+    // Set up interval for periodic updates (every 3 seconds)
     const interval = setInterval(() => {
       console.log('⏰ Periodic profile fetch triggered')
       fetchProfile()

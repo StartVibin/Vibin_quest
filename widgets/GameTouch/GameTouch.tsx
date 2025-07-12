@@ -2,22 +2,84 @@
 
 import React from "react";
 import cn from "classnames";
+import { useAccount } from 'wagmi';
+import { toast } from 'react-toastify';
+import { checkCanPlayGame, recordGamePlay, sendGamePoints } from "@/lib/api";
 
 import styles from "./index.module.css";
 
 import { Reload, Target } from "@/shared/icons";
 
 const GameTouch = () => {
+    const { address, isConnected } = useAccount();
     const [readyToGame, setReadyToGame] = React.useState(true);
     const [started, setStarted] = React.useState(false);
     const [tries, setTries] = React.useState(5);
     const [timeLeft, setTimeLeft] = React.useState(0);
     const [clicks, setClicks] = React.useState(0);
+    const [canPlayToday, setCanPlayToday] = React.useState(true);
+    const [dailyGamesPlayed, setDailyGamesPlayed] = React.useState(0);
+    const [gamesRemaining, setGamesRemaining] = React.useState(5);
 
-    const circleClick = () => {
+    // Check if user can play when component mounts or wallet connects
+    React.useEffect(() => {
+        if (isConnected && address) {
+            checkUserCanPlay();
+        }
+    }, [isConnected, address]);
+
+    const checkUserCanPlay = async () => {
+        if (!address) return;
+        
+        try {
+            const response = await checkCanPlayGame(address);
+            if (response.success) {
+                setCanPlayToday(response.data.canPlay);
+                setDailyGamesPlayed(response.data.dailyGamesPlayed);
+                setGamesRemaining(response.data.gamesRemaining);
+            }
+        } catch (error) {
+            console.error('Error checking if user can play:', error);
+        }
+    };
+
+    const recordGameStart = async () => {
+        if (!address) return;
+        
+        try {
+            const response = await recordGamePlay(address);
+            if (response.success) {
+                setDailyGamesPlayed(response.data.dailyGamesPlayed);
+                setGamesRemaining(response.data.gamesRemaining);
+                return true;
+            }
+        } catch (error) {
+            console.error('Error recording game play:', error);
+            if (error instanceof Error && error.message.includes('Daily game limit reached')) {
+                toast.error('Daily game limit reached. You can play 5 games per day.');
+                setCanPlayToday(false);
+            }
+            return false;
+        }
+        return false;
+    };
+
+    const circleClick = async () => {
         if (tries < 1) return;
 
         if (!started) {
+            // Check if user can play today
+            if (!canPlayToday) {
+                toast.error('Daily game limit reached. You can play 5 games per day.');
+                return;
+            }
+
+            // Record the game play
+            const recorded = await recordGameStart();
+            if (!recorded) {
+                return;
+            }
+
             setStarted(true);
             setTimeLeft(10);
             setClicks(0);
@@ -30,7 +92,6 @@ const GameTouch = () => {
         if (tries < 1) return;
 
         setClicks(0);
-        setTries((prev) => prev - 1);
         setStarted(false);
         setReadyToGame(true);
     };
@@ -46,8 +107,48 @@ const GameTouch = () => {
             setStarted(false);
             setTries((prev) => prev - 1);
             setReadyToGame(false);
+            
+            // Send game points to backend when game finishes
+            if (address && clicks > 0) {
+                sendGamePointsToBackend(clicks);
+            }
         }
-    }, [timeLeft, started]);
+    }, [timeLeft, started, address]);
+
+    const sendGamePointsToBackend = async (finalClicks: number) => {
+        if (!address) return;
+        
+        try {
+            const response = await sendGamePoints(address, finalClicks);
+            if (response.success) {
+                toast.success(`Game finished! You earned ${finalClicks} points!`);
+            } else {
+                toast.error('Failed to save game points');
+            }
+        } catch (error) {
+            console.error('Error sending game points:', error);
+            toast.error('Failed to save game points');
+        }
+    };
+
+    // Show daily limit info
+    const renderDailyLimitInfo = () => {
+        if (!isConnected) return null;
+        
+        return (
+            <div style={{ 
+                textAlign: 'center', 
+                marginBottom: '10px',
+                fontSize: '12px',
+                color: canPlayToday ? '#10B981' : '#EF4444'
+            }}>
+                {canPlayToday 
+                    ? `${gamesRemaining} games remaining today`
+                    : 'Daily limit reached - come back tomorrow!'
+                }
+            </div>
+        );
+    };
 
     return (
         <div className={styles.game}>
@@ -57,9 +158,11 @@ const GameTouch = () => {
                 </p>
 
                 <p className={styles.gameTries}>
-                    <span>{tries}</span> tries left
+                    <span>{gamesRemaining}</span> tries left
                 </p>
             </div>
+
+            {/* {renderDailyLimitInfo()} */}
 
             <div className={styles.gameCircleInner}>
                 <div className={styles.gameClicks}>
@@ -77,7 +180,7 @@ const GameTouch = () => {
 
                 <div
                     className={cn(styles.gameCircle, {
-                        [styles.disabled]: !readyToGame || tries < 1,
+                        [styles.disabled]: !readyToGame || tries < 1 || !canPlayToday,
                     })}
                 >
                     <div
@@ -95,9 +198,10 @@ const GameTouch = () => {
 
             <button
                 className={cn(styles.gameRestart, {
-                    [styles.disabled]: tries < 1,
+                    [styles.disabled]: tries < 1 || started || !canPlayToday,
                 })}
                 onClick={restartHandler}
+                disabled={tries < 1 || started || !canPlayToday}
             >
                 <Reload />
                 Restart

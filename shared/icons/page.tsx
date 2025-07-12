@@ -37,14 +37,14 @@ export default function Home() {
     const { profile } = useUserProfile()
     const { leaderboardData, loading: leaderboardLoading, error: leaderboardError, refetch: refetchLeaderboard } = useLeaderboard()
     const [showInviteModal, setShowInviteModal] = useState(false)
-    const [accessModal, setAccessModal] = useState(true);
+    const [accessModal, setAccessModal] = useState(false);
 
     useEffect(() => {
         if (window && !window.localStorage.getItem("accessModal")) {
             setAccessModal(true);
         }
     }, []);
-    
+    console.log(profile)
     useEffect(() => {
         if (typeof window !== 'undefined') {
             // setIsXConnected(localStorage.getItem('x_verified') === 'true'); // REMOVE THIS LINE

@@ -9,4 +9,8 @@ export { Telegram } from "./Telegram";
 export { ArrowRightTop } from "./ArrowRightTop";
 export { Twitter } from "./Twitter";
 export { Reload } from "./Reload";
+export { Close } from "./Close";
+export { Blank } from "./Blank";
+export { Peoples } from "./Peoples";
 export { Check } from "./Check";
+export { Ticket } from "./Ticket";

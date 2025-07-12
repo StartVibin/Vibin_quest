@@ -9,23 +9,30 @@ const API_BASE_URL = 'http://localhost:5000/api/v1'
 // API endpoints
 export const API_ENDPOINTS = {
   // Quest endpoints
-  VERIFY_QUEST: '/api/quests/verify',
-  X_TASK: `${API_BASE_URL}/quests/x-task`,
+  VERIFY_X_CONNECT: `${API_BASE_URL}/quests/x/connect`,
+  VERIFY_X_FOLLOW: `${API_BASE_URL}/quests/x/follow`,
+  VERIFY_X_REPLY: `${API_BASE_URL}/quests/x/reply`,
+  VERIFY_X_REPOST: `${API_BASE_URL}/quests/x/repost`,
+  VERIFY_X_POST: `${API_BASE_URL}/quests/x/post`,
+  VERIFY_TELEGRAM_CONNECT: `${API_BASE_URL}/quests/telegram/connect`,
+  VERIFY_TELEGRAM_GROUP_JOIN: `${API_BASE_URL}/quests/telegram/join-group`,
+  VERIFY_TELEGRAM_GROUP_VERIFY: `${API_BASE_URL}/quests/telegram/verify-group-join`,
+  VERIFY_EMAIL_CONNECT: `${API_BASE_URL}/quests/email/connect`,
+  GET_QUEST_PROGRESS: `${API_BASE_URL}/quests/progress`,
   
-  // User endpoints
-  GET_USER_POINTS: '/api/user/points',
+  // Auth endpoints
+  GET_AUTH_MESSAGE: `${API_BASE_URL}/auth/message`,
+  WALLET_AUTH: `${API_BASE_URL}/auth/wallet`,
   USER_PROFILE: `${API_BASE_URL}/auth/profile`,
+  TELEGRAM_USER_DATA: `${API_BASE_URL}/auth/telegram`,
   
   // Game endpoints
   GAME_POINTS: `${API_BASE_URL}/game/points`,
+  GAME_CAN_PLAY: `${API_BASE_URL}/game/can-play`,
+  GAME_RECORD_PLAY: `${API_BASE_URL}/game/record-play`,
   
   // Leaderboard endpoints
   LEADERBOARD: `${API_BASE_URL}/leaderboard`,
-  
-  // Auth endpoints
-  WALLET_AUTH: `${API_BASE_URL}/auth/wallet`,
-  
-
 }
 
 // ============================================================================
@@ -91,26 +98,45 @@ export interface WalletAuthResponse {
 }
 
 // User profile
-export interface UserProfileResponse {
-  success: boolean
-  data: {
-    walletAddress: string
-    xJoined: boolean
-    telegramJoined: boolean
-    xId: string
-    telegramId: string
-    gamePoints: number
-    referralPoints: number
-    socialPoints: number
-    referralCode: string
-    isWhitelist: boolean
-    highScore: number
-    totalPoints: number
-    totalSocialJoined: number
-    createdAt: string
-    updatedAt: string
-  }
-  error?: string
+export interface UserProfile {
+  walletAddress: string
+  telegramVerified: boolean
+  telegramJoined: boolean
+  xConnected: boolean
+  xFollowed: boolean
+  xReplied: boolean
+  xReposted: boolean
+  xPosted: boolean
+  telegramConnected: boolean
+  telegramJoinedGroup: boolean
+  emailConnected: boolean
+  xId: string
+  telegramId: string
+  xUsername: string
+  xDisplayName: string
+  xProfileImageUrl: string
+  xVerified: boolean
+  telegramUsername: string
+  telegramFirstName: string
+  telegramLastName: string
+  telegramPhotoUrl: string
+  email: string
+  googleId: string
+  googleName: string
+  googlePicture: string
+  googleVerifiedEmail: boolean
+  inviteCode: string
+  invitedBy: string
+  invitedUsers: string[]
+  gamePoints: number
+  referralPoints: number
+  socialPoints: number
+  referralCode: string
+  isWhitelist: boolean
+  highScore: number
+  createdAt: Date
+  updatedAt: Date
+  totalPoints: number
 }
 
 // Leaderboard
@@ -184,8 +210,13 @@ export const verifyQuestWithBackend = async (
       walletAddress
     }
 
+    // Use the appropriate endpoint based on platform
+    const endpoint = platform === 'twitter' 
+      ? API_ENDPOINTS.VERIFY_X_CONNECT 
+      : API_ENDPOINTS.VERIFY_TELEGRAM_CONNECT
+
     return await createApiRequest<QuestVerificationResponse>(
-      API_ENDPOINTS.VERIFY_QUEST,
+      endpoint,
       {
         method: 'POST',
         body: JSON.stringify(requestData)
@@ -208,7 +239,7 @@ export const verifyXTask = async (walletAddress: string): Promise<XTaskResponse>
     const requestData: XTaskRequest = { walletAddress }
     
     return await createApiRequest<XTaskResponse>(
-      API_ENDPOINTS.X_TASK,
+      API_ENDPOINTS.VERIFY_X_CONNECT,
       {
         method: 'POST',
         body: JSON.stringify(requestData)
@@ -257,24 +288,24 @@ export const sendGamePoints = async (
 
 export const getUserPoints = async (walletAddress: string): Promise<number> => {
   try {
-    const response = await createApiRequest<{ totalPoints: number }>(
-      `${API_ENDPOINTS.GET_USER_POINTS}?wallet=${walletAddress}`
+    const response = await createApiRequest<{ success: boolean; data: { totalPoints: number } }>(
+      `${API_ENDPOINTS.USER_PROFILE}/${walletAddress}`
     )
-    return response.totalPoints || 0
+    return response.data.totalPoints || 0
   } catch (error) {
     console.error('Error fetching user points:', error)
     return 0
   }
 }
 
-export const getUserProfile = async (walletAddress: string): Promise<UserProfileResponse> => {
+export const getUserProfile = async (walletAddress: string): Promise<UserProfile> => {
   const url = `${API_ENDPOINTS.USER_PROFILE}/${walletAddress}`
   console.log('🌐 Making API call to:', url)
   
   try {
-    const response = await createApiRequest<UserProfileResponse>(url)
+    const response = await createApiRequest<{ success: boolean; data: UserProfile }>(url)
     console.log('✅ API Response data:', response)
-    return response
+    return response.data
   } catch (error) {
     console.error('❌ Error fetching user profile:', error)
     throw error
@@ -335,7 +366,7 @@ export const authenticateWallet = async (
 
 // Quest verification API functions
 export const verifyXConnection = async (walletAddress: string, xData: any) => {
-  const response = await fetch(`${API_BASE_URL}/quests/x/connect`, {
+  const response = await fetch(API_ENDPOINTS.VERIFY_X_CONNECT, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -358,7 +389,7 @@ export const verifyXConnection = async (walletAddress: string, xData: any) => {
 }
 
 export const verifyXFollow = async (walletAddress: string, targetUsername: string) => {
-  const response = await fetch(`${API_BASE_URL}/quests/x/follow`, {
+  const response = await fetch(API_ENDPOINTS.VERIFY_X_FOLLOW, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -377,7 +408,7 @@ export const verifyXFollow = async (walletAddress: string, targetUsername: strin
 }
 
 export const verifyXReply = async (walletAddress: string, tweetId: string) => {
-  const response = await fetch(`${API_BASE_URL}/quests/x/reply`, {
+  const response = await fetch(API_ENDPOINTS.VERIFY_X_REPLY, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -396,7 +427,7 @@ export const verifyXReply = async (walletAddress: string, tweetId: string) => {
 }
 
 export const verifyXRepost = async (walletAddress: string, tweetId: string) => {
-  const response = await fetch(`${API_BASE_URL}/quests/x/repost`, {
+  const response = await fetch(API_ENDPOINTS.VERIFY_X_REPOST, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -415,7 +446,7 @@ export const verifyXRepost = async (walletAddress: string, tweetId: string) => {
 }
 
 export const verifyXPost = async (walletAddress: string) => {
-  const response = await fetch(`${API_BASE_URL}/quests/x/post`, {
+  const response = await fetch(API_ENDPOINTS.VERIFY_X_POST, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -433,7 +464,7 @@ export const verifyXPost = async (walletAddress: string) => {
 }
 
 export const verifyTelegramConnection = async (walletAddress: string, telegramData: any) => {
-  const response = await fetch(`${API_BASE_URL}/quests/telegram/connect`, {
+  const response = await fetch(API_ENDPOINTS.VERIFY_TELEGRAM_CONNECT, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -455,15 +486,35 @@ export const verifyTelegramConnection = async (walletAddress: string, telegramDa
   return response.json()
 }
 
-export const verifyEmailConnection = async (walletAddress: string, email: string) => {
-  const response = await fetch(`${API_BASE_URL}/quests/email/connect`, {
+export const verifyTelegramGroupJoin = async (walletAddress: string, groupUsername: string) => {
+  const response = await fetch(API_ENDPOINTS.VERIFY_TELEGRAM_GROUP_VERIFY, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       walletAddress,
-      email
+      groupUsername
+    }),
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to verify Telegram group join')
+  }
+
+  return response.json()
+}
+
+export const verifyEmailConnection = async (walletAddress: string, email: string, googleUserData?: any) => {
+  const response = await fetch(API_ENDPOINTS.VERIFY_EMAIL_CONNECT, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      walletAddress,
+      email,
+      googleUserData
     }),
   })
 
@@ -475,18 +526,57 @@ export const verifyEmailConnection = async (walletAddress: string, email: string
 }
 
 export const getUserQuestProgress = async (walletAddress: string) => {
-  const response = await fetch(`${API_BASE_URL}/quests/progress/${walletAddress}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-
-  if (!response.ok) {
-    throw new Error('Failed to get user quest progress')
+  try {
+    const response = await createApiRequest<{ success: boolean; data: any }>(
+      `${API_ENDPOINTS.GET_QUEST_PROGRESS}/${walletAddress}`
+    )
+    return response
+  } catch (error) {
+    console.error('Error getting quest progress:', error)
+    throw error
   }
+}
 
-  return response.json()
+// Game limit functions
+export interface GameLimitResponse {
+  success: boolean
+  data: {
+    walletAddress: string
+    canPlay: boolean
+    dailyGamesPlayed: number
+    gamesRemaining: number
+    maxGamesPerDay: number
+    lastGameDate: string
+  }
+  error?: string
+}
+
+export const checkCanPlayGame = async (walletAddress: string): Promise<GameLimitResponse> => {
+  try {
+    const response = await createApiRequest<GameLimitResponse>(
+      `${API_ENDPOINTS.GAME_CAN_PLAY}/${walletAddress}`
+    )
+    return response
+  } catch (error) {
+    console.error('Error checking if user can play game:', error)
+    throw error
+  }
+}
+
+export const recordGamePlay = async (walletAddress: string): Promise<GameLimitResponse> => {
+  try {
+    const response = await createApiRequest<GameLimitResponse>(
+      API_ENDPOINTS.GAME_RECORD_PLAY,
+      {
+        method: 'POST',
+        body: JSON.stringify({ walletAddress })
+      }
+    )
+    return response
+  } catch (error) {
+    console.error('Error recording game play:', error)
+    throw error
+  }
 }
 
  

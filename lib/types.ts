@@ -51,7 +51,7 @@ export type WalletAuthUser = {
   updatedAt: string;
   walletAddress: string;
   xId: string;
-  xJoined: boolean;
+  xConnected: boolean;
   telegramId: string;
   telegramJoined: boolean;
 
@@ -62,3 +62,44 @@ export type WalletAuthUser = {
   socialPoints: number;
   totalPoints: number;
 };
+
+export interface UserProfile {
+  walletAddress: string
+  telegramVerified: boolean
+  telegramJoined: boolean
+  xConnected: boolean
+  xFollowed: boolean
+  xReplied: boolean
+  xReposted: boolean
+  xPosted: boolean
+  telegramConnected: boolean
+  telegramJoinedGroup: boolean
+  emailConnected: boolean
+  xId: string
+  telegramId: string
+  xUsername: string
+  xDisplayName: string
+  xProfileImageUrl: string
+  xVerified: boolean
+  telegramUsername: string
+  telegramFirstName: string
+  telegramLastName: string
+  telegramPhotoUrl: string
+  email: string
+  googleId: string
+  googleName: string
+  googlePicture: string
+  googleVerifiedEmail: boolean
+  inviteCode: string
+  invitedBy: string
+  invitedUsers: string[]
+  gamePoints: number
+  referralPoints: number
+  socialPoints: number
+  referralCode: string
+  isWhitelist: boolean
+  highScore: number
+  createdAt: Date
+  updatedAt: Date
+  totalPoints: number
+}

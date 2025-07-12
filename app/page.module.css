@@ -547,3 +547,118 @@
     height: 13px;
     flex-shrink: 0;
 }
+
+/* Access Modal Styles */
+.accessModalContent {
+    width: 100%;
+    max-width: 500px;
+    background: #fff;
+    border-radius: 16px;
+    padding: 2rem;
+    position: relative;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.accessModalClose {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.accessModalClose:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.accessModalWrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.accessModalLinkIcon {
+    width: 60px;
+    height: 60px;
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.accessModalTitle {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 0.5rem 0;
+}
+
+.accessModalText {
+    font-size: 1rem;
+    color: #6B7280;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.accessModalPoints {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.accessModalPoint {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: #F9FAFB;
+    border-radius: 8px;
+    border: 1px solid #E5E7EB;
+}
+
+.accessModalPointIcon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8052C9;
+}
+
+.accessModalPointText {
+    font-size: 0.9rem;
+    color: #374151;
+    line-height: 1.4;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .accessModalContent {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+    
+    .accessModalTitle {
+        font-size: 1.5rem;
+    }
+    
+    .accessModalText {
+        font-size: 0.9rem;
+    }
+    
+    .accessModalPoint {
+        padding: 0.75rem;
+    }
+    
+    .accessModalPointText {
+        font-size: 0.85rem;
+    }
+}
