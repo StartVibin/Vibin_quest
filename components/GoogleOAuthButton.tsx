@@ -5,6 +5,7 @@ import { useAccount } from "wagmi";
 import { toast } from 'react-toastify';
 import { showWalletWarning } from "@/lib/utils";
 import styles from "@/app/page.module.css";
+import { ToastInstance } from '@/lib/types';
 
 interface GoogleUserData {
   id: string;
@@ -35,7 +36,7 @@ export default function GoogleOAuthButton({
       console.log("Sending Google OAuth data to backend:", userData);
       
       if (!isConnected) {
-        showWalletWarning(toast);
+        showWalletWarning(toast as ToastInstance);
         return;
       }
       
@@ -54,7 +55,7 @@ export default function GoogleOAuthButton({
 
   const handleConnectClick = () => {
     if (!isConnected) {
-      showWalletWarning(toast);
+      showWalletWarning(toast as ToastInstance);
       return;
     }
     setShowModal(true);

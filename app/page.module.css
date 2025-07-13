@@ -1,4 +1,4 @@
-.main{
+.main {
     width: 100%;
     background: #E7E4FF;
     border-radius: 36px 36px 0 0;
@@ -7,12 +7,12 @@
 }
 
 @media (max-width: 768px) {
-    .main{
+    .main {
         border-radius: 20px 20px 0 0;
     }
 }
 
-.mainInner{
+.mainInner {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -20,7 +20,7 @@
     gap: 15px;
 }
 
-.ratingTable{
+.ratingTable {
     width: 100%;
     padding: 2rem 18rem;
     border-radius: 24px;
@@ -31,17 +31,18 @@
 }
 
 @media (max-width: 1400px) {
-    .ratingTable{
+    .ratingTable {
         padding: 2rem 10rem;
     }
 }
+
 @media (max-width: 998px) {
-    .ratingTable{
+    .ratingTable {
         padding: 2rem;
     }
 }
 
-.ratingTableHeader{
+.ratingTableHeader {
     width: 100%;
     display: flex;
     align-items: center;
@@ -50,63 +51,63 @@
 }
 
 @media (max-width: 768px) {
-    .ratingTableHeader{
+    .ratingTableHeader {
         padding: 0rem 0.8rem 1.1rem 0.8rem;
     }
 }
 
-.ratingTableItem{
+.ratingTableItem {
     width: 100%;
     display: flex;
     align-items: center;
     padding: 1.3rem 4.6rem;
 }
 
-.ratingTableTitle{
+.ratingTableTitle {
     font-size: 1.8rem;
     font-weight: 500;
 }
 
 @media (max-width: 768px) {
-    .ratingTableItem{
+    .ratingTableItem {
         padding: 0.8rem;
     }
 
-    .ratingTableTitle{
+    .ratingTableTitle {
         font-size: 1.4rem;
     }
 }
 
-.ratingTableRank{
+.ratingTableRank {
     width: 25%;
     text-align: left;
 }
 
 @media (max-width: 480px) {
-    .ratingTableRank{
+    .ratingTableRank {
         width: 15%;
     }
 }
 
-.ratingTableWallet{
+.ratingTableWallet {
     width: 50%;
     text-align: center;
     justify-content: center;
 }
 
-.ratingTablePoints{
+.ratingTablePoints {
     width: 25%;
     text-align: right;
     justify-content: flex-end;
 }
 
 @media (max-width: 480px) {
-    .ratingTablePoints{
+    .ratingTablePoints {
         width: 35%;
     }
 }
 
-.ratingTableText{
+.ratingTableText {
     font-size: 1.8rem;
     font-family: 'Inter', sans-serif;
     display: flex;
@@ -115,31 +116,31 @@
 }
 
 @media (max-width: 768px) {
-    .ratingTableText{
+    .ratingTableText {
         font-size: 1.4rem;
     }
 }
 
-.ratingTableText svg{
+.ratingTableText svg {
     width: 16px;
     height: 13px;
     flex-shrink: 0;
 }
 
-.mainStatsInner{
+.mainStatsInner {
     width: 100%;
     display: flex;
     gap: 16px;
 }
 
 @media (max-width: 998px) {
-    .mainStatsInner{
+    .mainStatsInner {
         flex-direction: column;
         align-items: flex-start;
     }
 }
 
-.inviteBlock{
+.inviteBlock {
     width: 100%;
     max-width: 606px;
     flex-shrink: 0;
@@ -154,32 +155,34 @@
 }
 
 @media (max-width: 1400px) {
-    .inviteBlock{
+    .inviteBlock {
         max-width: 465px;
         align-items: center;
         padding: 3rem 2.5rem 2rem 2.5rem;
     }
 }
+
 @media (max-width: 998px) {
-    .inviteBlock{
+    .inviteBlock {
         max-width: 100%;
         justify-content: space-between;
     }
 }
+
 @media (max-width: 768px) {
-    .inviteBlock{
+    .inviteBlock {
         padding: 2rem 2rem 1.5rem 2rem;
         border-radius: 16px;
     }
 }
 
-.inviteBlockBg{
-    bottom: 0!important;
-    right: 0!important;
+.inviteBlockBg {
+    bottom: 0 !important;
+    right: 0 !important;
     pointer-events: none;
 }
 
-.inviteTextInner{
+.inviteTextInner {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -190,41 +193,42 @@
 }
 
 @media (max-width: 1400px) {
-    .inviteTextInner{
+    .inviteTextInner {
         padding-bottom: 0;
     }
 }
 
-.inviteTitle{
+.inviteTitle {
     font-size: 2.6rem;
     font-weight: 500;
     color: #fff;
 }
 
 @media (max-width: 1400px) {
-    .inviteTitle{
+    .inviteTitle {
         font-size: 2.1rem;
     }
 }
+
 @media (max-width: 768px) {
-    .inviteTitle{
+    .inviteTitle {
         font-size: 1.9rem;
     }
 }
 
-.inviteText{
+.inviteText {
     font-family: 'Inter', sans-serif;
     line-height: 1.08;
     color: #fff;
 }
 
 @media (max-width: 768px) {
-    .inviteText{
+    .inviteText {
         font-size: 1.4rem;
     }
 }
 
-.inviteButton{
+.inviteButton {
     margin-top: 2rem;
     display: flex;
     align-items: center;
@@ -240,19 +244,19 @@
 }
 
 @media (max-width: 768px) {
-    .inviteButton{
+    .inviteButton {
         font-size: 1.4rem;
         padding: 0.7rem 1.4rem;
     }
 }
 
-.inviteButton > svg{
+.inviteButton>svg {
     width: 13px;
     height: 13px;
     color: #fff;
 }
 
-.inviteButton span{
+.inviteButton span {
     width: 24px;
     height: 24px;
     border-radius: 50%;
@@ -262,14 +266,14 @@
     background: #EFEBFB;
 }
 
-.inviteButton span svg{
+.inviteButton span svg {
     color: #8052C9;
     width: 12px;
     height: 12px;
     flex-shrink: 0;
 }
 
-.inviteCircle{
+.inviteCircle {
     width: 155px;
     height: 155px;
     border-radius: 50%;
@@ -282,34 +286,36 @@
 }
 
 @media (max-width: 1400px) {
-    .inviteCircle{
+    .inviteCircle {
         width: 130px;
         height: 130px;
     }
 }
+
 @media (max-width: 768px) {
-    .inviteCircle{
+    .inviteCircle {
         width: 110px;
         height: 110px;
     }
 }
+
 @media (max-width: 480px) {
-    .inviteCircle{
+    .inviteCircle {
         width: 80px;
         height: 80px;
     }
 }
 
-.inviteCircle img{
+.inviteCircle img {
     object-fit: contain;
     max-width: 60%;
     max-height: 60%;
-    top: 50%!important;
-    left: 50%!important;
+    top: 50% !important;
+    left: 50% !important;
     transform: translate(-50%, -50%);
 }
 
-.statsBlock{
+.statsBlock {
     width: 100%;
     padding: 3.2rem 1.5rem 2.6rem 2rem;
     border: 1px solid #B4B0C9;
@@ -321,32 +327,32 @@
 }
 
 @media (max-width: 768px) {
-    .statsBlock{
+    .statsBlock {
         border: none;
         border-radius: 0;
         padding: 0;
     }
 }
 
-.statsBlockTitle{
+.statsBlockTitle {
     font-size: 2.6rem;
     font-weight: 500;
 }
 
 @media (max-width: 1400px) {
-    .statsBlockTitle{
+    .statsBlockTitle {
         font-size: 2.1rem;
     }
 }
 
-.statsBlockContent{
+.statsBlockContent {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
 }
 
-.statsBlockItem{
+.statsBlockItem {
     width: calc(100% / 4 - 30px / 4);
     padding: 2.5rem 0.8rem 2rem 0.8rem;
     background: rgba(255, 255, 255, .7);
@@ -358,16 +364,16 @@
 }
 
 @media (max-width: 1200px) {
-    .statsBlockItem{
+    .statsBlockItem {
         width: calc(100% / 2 - 10px / 2);
     }
 }
 
-.statsBlockItem.dark{
+.statsBlockItem.dark {
     background: #3E3949;
 }
 
-.statsBlockItemTitle{
+.statsBlockItemTitle {
     display: flex;
     align-items: center;
     gap: 4px;
@@ -376,23 +382,23 @@
 }
 
 @media (max-width: 1400px) {
-    .statsBlockItemTitle{
+    .statsBlockItemTitle {
         font-size: 1.6rem;
     }
 }
 
-.statsBlockItem.dark .statsBlockItemTitle{
+.statsBlockItem.dark .statsBlockItemTitle {
     color: #fff;
 }
 
-.statsBlockItemTitle svg{
+.statsBlockItemTitle svg {
     width: 12px;
     height: 12px;
     flex-shrink: 0;
     color: #18222E;
 }
 
-.statsBlockItemPoints{
+.statsBlockItemPoints {
     display: flex;
     align-items: center;
     gap: 4px;
@@ -403,7 +409,7 @@
 }
 
 @media (max-width: 768px) {
-    .statsBlockItemPoints{
+    .statsBlockItemPoints {
         font-size: 1.4rem;
         padding: .6rem 1rem;
     }
@@ -415,12 +421,12 @@
     flex-shrink: 0;
 }
 
-.statsBlockItem.dark .statsBlockItemPoints{
+.statsBlockItem.dark .statsBlockItemPoints {
     background: #fff;
     border: 1px solid #fff;
 }
 
-.mainContent{
+.mainContent {
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 450px;
@@ -428,27 +434,30 @@
 }
 
 @media (max-width: 1400px) {
-    .mainContent{
+    .mainContent {
         grid-template-columns: 1fr 1fr 1fr 400px;
     }
 }
+
 @media (max-width: 1200px) {
-    .mainContent{
+    .mainContent {
         grid-template-columns: 1fr 1fr 400px;
     }
 }
+
 @media (max-width: 998px) {
-    .mainContent{
+    .mainContent {
         grid-template-columns: 1fr 400px;
     }
 }
+
 @media (max-width: 768px) {
-    .mainContent{
+    .mainContent {
         grid-template-columns: 1fr;
     }
 }
 
-.mainBanner{
+.mainBanner {
     grid-column: span 3;
     position: relative;
     overflow: hidden;
@@ -463,23 +472,24 @@
 }
 
 @media (max-width: 1200px) {
-    .mainBanner{
+    .mainBanner {
         grid-column: span 2;
     }
 }
+
 @media (max-width: 998px) {
-    .mainBanner{
+    .mainBanner {
         grid-column: span 1;
         padding: 2rem;
     }
 }
 
-.mainBannerImg{
+.mainBannerImg {
     pointer-events: none;
     object-fit: cover;
 }
 
-.mainBannerTextInner{
+.mainBannerTextInner {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -488,40 +498,42 @@
     z-index: 2;
 }
 
-.mainBannerTitle{
+.mainBannerTitle {
     font-size: 3.6rem;
     font-weight: 500;
 }
 
 @media (max-width: 1200px) {
-    .mainBannerTitle{
+    .mainBannerTitle {
         font-size: 2.8rem;
     }
 }
+
 @media (max-width: 998px) {
-    .mainBannerTitle{
+    .mainBannerTitle {
         font-size: 2.4rem;
     }
 }
 
-.mainBannerText{
+.mainBannerText {
     font-family: 'Inter', sans-serif;
     font-size: 2.4rem;
     font-weight: 300;
 }
 
 @media (max-width: 1200px) {
-    .mainBannerText{
+    .mainBannerText {
         font-size: 2rem;
     }
 }
+
 @media (max-width: 998px) {
-    .mainBannerText{
+    .mainBannerText {
         font-size: 1.8rem;
     }
 }
 
-.mainTaskButton{
+.mainTaskButton {
     padding: 0.5rem 1.4rem;
     border-radius: 8px;
     background: #E7E5FB;
@@ -532,12 +544,12 @@
 }
 
 @media (max-width: 1400px) {
-    .mainTaskButton{
+    .mainTaskButton {
         font-size: 1.6rem;
     }
 }
 
-.mainTaskButton:hover{
+.mainTaskButton:hover {
     border: 1px solid #7323B8;
     color: #7323B8;
 }
@@ -551,114 +563,263 @@
 /* Access Modal Styles */
 .accessModalContent {
     width: 100%;
-    max-width: 500px;
-    background: #fff;
-    border-radius: 16px;
-    padding: 2rem;
+    border-radius: 40px;
+    padding: 4.5rem 2.5rem 4rem 2.5rem;
     position: relative;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    background: #111;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+}
+
+@media (max-width: 480px) {
+    .accessModalContent {
+        border-radius: 20px;
+    }
+}
+
+.accessModalContent:before,
+.accessModalContent:after {
+    content: "";
+    display: block;
+    width: 75%;
+    height: 300px;
+    border-radius: 50%;
+    background: #A237FF;
+    filter: blur(250px);
+    position: absolute;
+    pointer-events: none;
+    left: -150px;
+    top: -50px;
+}
+
+.accessModalContent:after {
+    background: #DB27FF;
+    width: 65%;
+    height: 300px;
+    left: auto;
+    right: -150px;
+    top: -100px;
 }
 
 .accessModalClose {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 4px;
-    transition: background-color 0.2s;
+    width: 40px;
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: absolute;
+    top: 14px;
+    right: 24px;
+    z-index: 3;
+    background: rgba(114, 44, 166, 0.51);
+    border-radius: 50%;
 }
 
-.accessModalClose:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+.accessModalClose svg {
+    width: 24px;
+    height: 224px;
+    flex-shrink: 0;
+    color: #fff;
 }
 
-.accessModalWrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.accessModalLink {
+    width: 100%;
     text-align: center;
-    margin-bottom: 2rem;
-}
-
-.accessModalLinkIcon {
-    width: 60px;
-    height: 60px;
-    position: relative;
-    margin-bottom: 1rem;
-}
-
-.accessModalTitle {
-    font-size: 1.8rem;
+    padding: 1.5rem;
+    border-radius: 50px;
+    color: #fff;
     font-weight: 600;
-    color: #111827;
-    margin: 0 0 0.5rem 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 2.4rem;
+    border: 1px solid #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset 0px 11px 28px -5px rgba(255, 255, 255, .4);
+    margin-top: 4rem;
+    position: relative;
+    z-index: 2;
 }
 
-.accessModalText {
-    font-size: 1rem;
-    color: #6B7280;
-    line-height: 1.5;
-    margin: 0;
+@media (max-width: 998px) {
+    .accessModalLink {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .accessModalLink {
+        font-size: 1.6rem;
+    }
+}
+
+.accessModalSubtext {
+    margin-top: 2.4rem;
+    text-align: center;
+    color: #fff;
+    font-weight: 300;
+    font-family: 'Inter', sans-serif;
+    font-size: 2.4rem;
+    max-width: 530px;
+    position: relative;
+    z-index: 2;
+}
+
+@media (max-width: 998px) {
+    .accessModalSubtext {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .accessModalSubtext {
+        font-size: 1.6rem;
+    }
 }
 
 .accessModalPoints {
+    width: 100%;
+    max-width: 645px;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 3.4rem 3rem 3.4rem 0;
+    border-top: 1px solid #303030;
+    border-bottom: 1px solid #303030;
+    margin-top: 4rem;
+    position: relative;
+    z-index: 2;
 }
 
 .accessModalPoint {
     display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    padding: 1rem;
-    background: #F9FAFB;
-    border-radius: 8px;
-    border: 1px solid #E5E7EB;
-}
-
-.accessModalPointIcon {
-    width: 24px;
-    height: 24px;
-    flex-shrink: 0;
-    display: flex;
     align-items: center;
-    justify-content: center;
-    color: #8052C9;
+    gap: 15px;
 }
 
 .accessModalPointText {
-    font-size: 0.9rem;
-    color: #374151;
-    line-height: 1.4;
-    margin: 0;
+    color: #fff;
+    font-size: 2.4rem;
+    font-family: 'Inter', sans-serif;
+    text-align: left;
+}
+
+@media (max-width: 998px) {
+    .accessModalPointText {
+        font-size: 2rem;
+    }
 }
 
 @media (max-width: 768px) {
-    .accessModalContent {
-        margin: 1rem;
-        padding: 1.5rem;
-    }
-    
-    .accessModalTitle {
-        font-size: 1.5rem;
-    }
-    
-    .accessModalText {
-        font-size: 0.9rem;
-    }
-    
-    .accessModalPoint {
-        padding: 0.75rem;
-    }
-    
     .accessModalPointText {
-        font-size: 0.85rem;
+        font-size: 1.6rem;
+    }
+}
+
+.accessModalPointIcon {
+    width: 57px;
+    height: 57px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(79, 32, 114, 0.51);
+    border-radius: 10px;
+    flex-shrink: 0;
+    color: #E15EFB;
+}
+
+@media (max-width: 480px) {
+    .accessModalPointIcon {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+.accessModalPointIcon svg {
+    min-width: 20px;
+    min-height: 20px;
+    max-width: 65%;
+    max-height: 65%;
+    flex-shrink: 0;
+}
+
+.accessModalWrap {
+    width: 100%;
+    max-width: 475px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+.accessModalLinkIcon {
+    position: relative;
+    width: 100px;
+    height: 100px;
+}
+
+@media (max-width: 998px) {
+    .accessModalLinkIcon {
+        width: 75px;
+        height: 75px;
+    }
+}
+
+@media (max-width: 768px) {
+    .accessModalLinkIcon {
+        width: 65px;
+        height: 65px;
+    }
+}
+
+.accessModalLinkIcon img {
+    object-fit: contain;
+}
+
+.accessModalTitle {
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    font-size: 3.6rem;
+    font-weight: 500;
+    margin-top: 3.5rem;
+}
+
+@media (max-width: 998px) {
+    .accessModalTitle {
+        font-size: 2.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .accessModalTitle {
+        font-size: 2.4rem;
+        margin-top: 1.6rem;
+    }
+}
+
+.accessModalText {
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    margin-top: 1.6rem;
+    font-weight: 300;
+    font-size: 2.4rem;
+    font-family: 'Inter', sans-serif;
+}
+
+@media (max-width: 998px) {
+    .accessModalText {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .accessModalText {
+        font-size: 1.6rem;
     }
 }

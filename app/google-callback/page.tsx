@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
 interface GoogleUserData {
   id: string;
@@ -11,7 +12,7 @@ interface GoogleUserData {
   verified_email: boolean;
 }
 
-export default function GoogleCallback() {
+function GoogleCallbackContent() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -116,5 +117,26 @@ export default function GoogleCallback() {
         <p>Please wait while we complete your authentication.</p>
       </div>
     </div>
+  );
+}
+
+export default function GoogleCallback() {
+  return (
+    <Suspense fallback={
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        fontFamily: 'Arial, sans-serif'
+      }}>
+        <div style={{ textAlign: 'center' }}>
+          <h2>Loading...</h2>
+          <p>Please wait while we process your authentication.</p>
+        </div>
+      </div>
+    }>
+      <GoogleCallbackContent />
+    </Suspense>
   );
 } 

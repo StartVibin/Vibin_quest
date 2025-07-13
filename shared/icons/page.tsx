@@ -31,6 +31,7 @@ import GoogleOAuthButton from "@/components/GoogleOAuthButton";
 import { useUserProfile } from "@/lib/hooks/useUserProfile";
 import { useLeaderboard } from "@/lib/hooks/useLeaderboard";
 import { Modal } from "@/shared/ui/Modal";
+import { ToastInstance } from "@/lib/types";
 
 export default function Home() {
     const { address, isConnected } = useAccount();
@@ -68,42 +69,42 @@ export default function Home() {
     // Wallet connection check for X tasks
     const handleXConnectWithWallet = () => {
         if (!isConnected) {
-            showWalletWarning(toast);
+            showWalletWarning(toast as ToastInstance);
             return;
         }
-        handleXConnect(toast);
+        handleXConnect(toast as ToastInstance);
     };
 
     const handleXFollowWithWallet = (username: string) => {
         if (!isConnected) {
-            showWalletWarning(toast);
+            showWalletWarning(toast as ToastInstance);
             return;
         }
-        handleXFollow(username, toast, address);
+        handleXFollow(username, toast as ToastInstance, address);
     };
 
     const handleXReplyWithWallet = (tweetId: string) => {
         if (!isConnected) {
-            showWalletWarning(toast);
+            showWalletWarning(toast as ToastInstance);
             return;
         }
-        handleXReply(tweetId, toast, address);
+        handleXReply(tweetId, toast as ToastInstance, address);
     };
 
     const handleXRepostWithWallet = (tweetId: string) => {
         if (!isConnected) {
-            showWalletWarning(toast);
+            showWalletWarning(toast as ToastInstance);
             return;
         }
-        handleXRepost(tweetId, toast, address);
+        handleXRepost(tweetId, toast as ToastInstance, address);
     };
 
     const handleXPostWithWallet = () => {
         if (!isConnected) {
-            showWalletWarning(toast);
+            showWalletWarning(toast as ToastInstance);
             return;
         }
-        handleXPost(toast, address);
+        handleXPost(toast as ToastInstance, address);
     };
 
     const generateInviteLink = () => {
@@ -127,7 +128,7 @@ export default function Home() {
         console.log('Invite button clicked');
         console.log('isConnected:', isConnected);
         if (!isConnected) {
-            showWalletWarning(toast);
+            showWalletWarning(toast as ToastInstance);
             return;
         }
         console.log('Setting modal to true');

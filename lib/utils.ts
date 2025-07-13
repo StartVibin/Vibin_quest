@@ -1,3 +1,5 @@
+import { ToastInstance } from './types';
+
 export const formatAddress = (address: string): string => {
   if (address.length <= 8) return address
   return `${address.slice(0, 6)}...${address.slice(-4)}`
@@ -36,7 +38,7 @@ export const combineClasses = (...classes: (string | undefined | false)[]): stri
 }
 
 // Show wallet connection warning
-export const showWalletWarning = (toast: any) => {
+export const showWalletWarning = (toast: ToastInstance) => {
   toast.warning('Please connect your wallet first to complete this task!', {
     position: "top-right",
     autoClose: 5000,
@@ -77,7 +79,7 @@ export async function generateCodeChallenge(codeVerifier: string): Promise<strin
         .replace(/=+$/, '');
 }
 
-export const handleXConnect = async (toast: any) => {
+export const handleXConnect = async (toast: ToastInstance) => {
   if (typeof window === 'undefined') return;
   
   // X OAuth 2.0 configuration
@@ -120,7 +122,7 @@ const getAccessToken = () => {
   return localStorage.getItem('x_access_token');
 }
 
-export const handleXFollow = async (username: string = 'StartVibin', toast: any, walletAddress?: string) => {
+export const handleXFollow = async (username: string = 'StartVibin', toast: ToastInstance, walletAddress?: string) => {
   const accessToken = getAccessToken();
   if (!accessToken) {
     toast.error('Please connect your X account first')
@@ -156,7 +158,7 @@ export const handleXFollow = async (username: string = 'StartVibin', toast: any,
   }
 }
 
-export const handleXRepost = async (tweetId: string = '1940467598610911339', toast: any, walletAddress?: string) => {
+export const handleXRepost = async (tweetId: string = '1940467598610911339', toast: ToastInstance, walletAddress?: string) => {
   const accessToken = getAccessToken();
   if (!accessToken) {
     toast.error('Please connect your X account first')
@@ -192,7 +194,7 @@ export const handleXRepost = async (tweetId: string = '1940467598610911339', toa
   }
 }
 
-export const handleXReply = async (tweetId: string = '1940467598610911339', toast: any, walletAddress?: string) => {
+export const handleXReply = async (tweetId: string = '1940467598610911339', toast: ToastInstance, walletAddress?: string) => {
   const accessToken = getAccessToken();
   if (!accessToken) {
     toast.error('Please connect your X account first')
@@ -228,7 +230,7 @@ export const handleXReply = async (tweetId: string = '1940467598610911339', toas
   }
 }
 
-export const handleXPost = async (toast: any, walletAddress?: string) => {
+export const handleXPost = async (toast: ToastInstance, walletAddress?: string) => {
   const accessToken = getAccessToken();
   if (!accessToken) {
     toast.error('Please connect your X account first')
@@ -241,6 +243,7 @@ export const handleXPost = async (toast: any, walletAddress?: string) => {
   }
   
   try {
+    // First perform the X action
     const response = await fetch('/api/x/post', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -252,8 +255,8 @@ export const handleXPost = async (toast: any, walletAddress?: string) => {
       const { verifyXPost } = await import('./api');
       const verificationResult = await verifyXPost(walletAddress);
       
-      toast.success(`Successfully posted about Vibin! Awarded ${verificationResult.data.pointsAwarded} points!`)
-      localStorage.setItem('x_posted_vibin', 'true')
+      toast.success(`Successfully posted! Awarded ${verificationResult.data.pointsAwarded} points!`)
+      localStorage.setItem('x_posted', 'true')
     } else {
       throw new Error(data.error || 'Failed to post')
     }
@@ -273,7 +276,7 @@ export const checkXActionStatus = (action: string): boolean => {
     case 'reply':
       return localStorage.getItem('x_replied') === 'true'
     case 'post':
-      return localStorage.getItem('x_posted_vibin') === 'true'
+      return localStorage.getItem('x_posted') === 'true'
     default:
       return false
   }

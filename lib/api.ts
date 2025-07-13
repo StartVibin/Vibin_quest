@@ -3,6 +3,7 @@
 // ============================================================================
 
 import { WalletAuthUser } from "./types"
+import { XUserData, TelegramAuthData, GoogleUserData, QuestProgressData } from './types';
 
 const API_BASE_URL = 'http://localhost:5000/api/v1'
 
@@ -365,7 +366,7 @@ export const authenticateWallet = async (
 }
 
 // Quest verification API functions
-export const verifyXConnection = async (walletAddress: string, xData: any) => {
+export const verifyXConnection = async (walletAddress: string, xData: XUserData) => {
   const response = await fetch(API_ENDPOINTS.VERIFY_X_CONNECT, {
     method: 'POST',
     headers: {
@@ -463,7 +464,7 @@ export const verifyXPost = async (walletAddress: string) => {
   return response.json()
 }
 
-export const verifyTelegramConnection = async (walletAddress: string, telegramData: any) => {
+export const verifyTelegramConnection = async (walletAddress: string, telegramData: TelegramAuthData) => {
   const response = await fetch(API_ENDPOINTS.VERIFY_TELEGRAM_CONNECT, {
     method: 'POST',
     headers: {
@@ -505,7 +506,7 @@ export const verifyTelegramGroupJoin = async (walletAddress: string, groupUserna
   return response.json()
 }
 
-export const verifyEmailConnection = async (walletAddress: string, email: string, googleUserData?: any) => {
+export const verifyEmailConnection = async (walletAddress: string, email: string, googleUserData?: GoogleUserData) => {
   const response = await fetch(API_ENDPOINTS.VERIFY_EMAIL_CONNECT, {
     method: 'POST',
     headers: {
@@ -527,7 +528,7 @@ export const verifyEmailConnection = async (walletAddress: string, email: string
 
 export const getUserQuestProgress = async (walletAddress: string) => {
   try {
-    const response = await createApiRequest<{ success: boolean; data: any }>(
+    const response = await createApiRequest<{ success: boolean; data: QuestProgressData }>(
       `${API_ENDPOINTS.GET_QUEST_PROGRESS}/${walletAddress}`
     )
     return response

@@ -6,6 +6,7 @@ import { useAccount } from "wagmi";
 import { toast } from 'react-toastify';
 import { showWalletWarning } from "@/lib/utils";
 import styles from "@/app/page.module.css";
+import { ToastInstance } from '@/lib/types';
 
 interface TelegramAuthData {
   id: number;
@@ -38,7 +39,7 @@ export default function CustomTelegramButton({
       console.log("Sending Telegram data to backend:", telegramData);
       
       if (!isConnected) {
-        showWalletWarning(toast);
+        showWalletWarning(toast as ToastInstance);
         return;
       }
       
@@ -79,7 +80,7 @@ export default function CustomTelegramButton({
 
   const handleConnectClick = () => {
     if (!isConnected) {
-      showWalletWarning(toast);
+      showWalletWarning(toast as ToastInstance);
       return;
     }
     setShowModal(true);

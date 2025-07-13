@@ -27,7 +27,7 @@ export const Leaderboard: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [limit, setLimit] = useState(10)
 
-  const fetchLeaderboard = async (page: number = 1, limit: number = 10) => {
+  const fetchLeaderboard = async () => {
     try {
       setLoading(true)
       setError(null)
@@ -48,8 +48,8 @@ export const Leaderboard: React.FC = () => {
   }
 
   useEffect(() => {
-    fetchLeaderboard(currentPage, limit)
-  }, [currentPage, limit])
+    fetchLeaderboard()
+  }, [])
 
   const formatWalletAddress = (address: string) => {
     if (!address) return 'Unknown'
@@ -91,7 +91,7 @@ export const Leaderboard: React.FC = () => {
         <h3 className="text-red-800 font-semibold mb-2">Error Loading Leaderboard</h3>
         <p className="text-red-600 text-sm mb-4">{error}</p>
         <button 
-          onClick={() => fetchLeaderboard(currentPage, limit)}
+          onClick={() => fetchLeaderboard()}
           className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
         >
           Retry
@@ -115,7 +115,7 @@ export const Leaderboard: React.FC = () => {
             <option value={50}>50 per page</option>
           </select>
           <button 
-            onClick={() => fetchLeaderboard(currentPage, limit)}
+            onClick={() => fetchLeaderboard()}
             className="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 transition-colors"
           >
             Refresh
@@ -138,7 +138,7 @@ export const Leaderboard: React.FC = () => {
                 </tr>
               </thead>
               <tbody>
-                {leaderboardData.users.map((user, index) => (
+                {leaderboardData.users.map((user) => (
                   <tr 
                     key={user.walletAddress} 
                     className={`border-b border-gray-100 hover:bg-gray-50 transition-colors ${getRankColor(user.rank)}`}

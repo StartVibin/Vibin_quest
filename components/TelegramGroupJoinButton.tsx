@@ -5,6 +5,7 @@ import { useAccount } from "wagmi";
 import { toast } from 'react-toastify';
 import { showWalletWarning } from "@/lib/utils";
 import styles from "@/app/page.module.css";
+import { ToastInstance } from '@/lib/types';
 
 interface TelegramGroupJoinButtonProps {
   onSuccess?: () => void;
@@ -29,7 +30,7 @@ export default function TelegramGroupJoinButton({
       console.log("Sending Telegram group join verification to backend");
       
       if (!isConnected) {
-        showWalletWarning(toast);
+        showWalletWarning(toast as ToastInstance);
         return;
       }
       
@@ -48,7 +49,7 @@ export default function TelegramGroupJoinButton({
 
   const handleJoinClick = () => {
     if (!isConnected) {
-      showWalletWarning(toast);
+      showWalletWarning(toast as ToastInstance);
       return;
     }
     setShowModal(true);

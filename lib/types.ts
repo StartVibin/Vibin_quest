@@ -103,3 +103,80 @@ export interface UserProfile {
   updatedAt: Date
   totalPoints: number
 }
+
+// Telegram Auth Data Types
+export interface TelegramAuthData {
+  id: number;
+  first_name: string;
+  last_name?: string;
+  username?: string;
+  photo_url?: string;
+  auth_date: number;
+  hash: string;
+}
+
+// X (Twitter) User Data Types
+export interface XUserData {
+  id: string;
+  username: string;
+  name: string;
+  profile_image_url: string;
+  verified: boolean;
+  protected?: boolean;
+  created_at?: string;
+  description?: string;
+  location?: string;
+  url?: string;
+  followers_count?: number;
+  following_count?: number;
+  tweet_count?: number;
+}
+
+// Google User Data Types
+export interface GoogleUserData {
+  id: string;
+  email: string;
+  verified_email: boolean;
+  name: string;
+  given_name?: string;
+  family_name?: string;
+  picture: string;
+  locale?: string;
+  hd?: string;
+}
+
+// Quest Progress Data Types
+export interface QuestProgressData {
+  walletAddress: string;
+  telegramVerified: boolean;
+  telegramJoined: boolean;
+  xConnected: boolean;
+  xFollowed: boolean;
+  xReplied: boolean;
+  xReposted: boolean;
+  xPosted: boolean;
+  telegramConnected: boolean;
+  telegramJoinedGroup: boolean;
+  emailConnected: boolean;
+  totalPoints: number;
+  gamePoints: number;
+  referralPoints: number;
+  socialPoints: number;
+}
+
+// Toast Types
+export interface ToastInstance {
+  success: (message: string, options?: ToastOptions) => void;
+  error: (message: string, options?: ToastOptions) => void;
+  warning: (message: string, options?: ToastOptions) => void;
+  info: (message: string, options?: ToastOptions) => void;
+}
+
+export interface ToastOptions {
+  position?: string;
+  autoClose?: number;
+  hideProgressBar?: boolean;
+  closeOnClick?: boolean;
+  pauseOnHover?: boolean;
+  draggable?: boolean;
+}

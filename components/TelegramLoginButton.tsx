@@ -4,26 +4,23 @@ import { LoginButton } from "@telegram-auth/react";
 import { useAccount } from "wagmi";
 import { toast } from 'react-toastify';
 import { showWalletWarning } from "@/lib/utils";
+import { TelegramAuthData, ToastInstance } from "@/lib/types";
 
 interface TelegramLoginButtonProps {
   onSuccess?: () => void;
-  className?: string;
-  children?: React.ReactNode;
 }
 
 export default function TelegramLoginButton({ 
-  onSuccess, 
-  className = "", 
-  children 
+  onSuccess
 }: TelegramLoginButtonProps) {
   const { address, isConnected } = useAccount();
 
-  const sendToBackend = async (telegramData: any) => {
+  const sendToBackend = async (telegramData: TelegramAuthData) => {
     try {
       console.log("Sending Telegram data to backend:", telegramData);
       
       if (!isConnected) {
-        showWalletWarning(toast);
+        showWalletWarning(toast as ToastInstance);
         return;
       }
       

@@ -23,7 +23,7 @@ import {
 } from "@/shared/icons";
 import { TaskItem } from "@/shared/ui/TaskItem";
 import { GameTouch } from "@/widgets/GameTouch";
-import { handleXConnect, handleXFollow, handleXRepost, handleXReply, handleXPost, checkXActionStatus, showWalletWarning } from "@/lib/utils";
+import { handleXConnect, handleXFollow, handleXRepost, handleXReply, checkXActionStatus, showWalletWarning } from "@/lib/utils";
 import { Mailbox } from "@/shared/icons/Mailbox";
 import CustomTelegramButton from "@/components/CustomTelegramButton";
 import TelegramGroupJoinButton from "@/components/TelegramGroupJoinButton";
@@ -31,6 +31,7 @@ import GoogleOAuthButton from "@/components/GoogleOAuthButton";
 import { useUserProfile } from "@/lib/hooks/useUserProfile";
 import { useLeaderboard } from "@/lib/hooks/useLeaderboard";
 import { Modal } from "@/shared/ui/Modal";
+import { ToastInstance } from "@/lib/types";
 
 export default function Home() {
     const { address, isConnected } = useAccount();
@@ -44,7 +45,7 @@ export default function Home() {
             setAccessModal(true);
         }
     }, []);
-    
+
     useEffect(() => {
         if (typeof window !== 'undefined') {
             // setIsXConnected(localStorage.getItem('x_verified') === 'true'); // REMOVE THIS LINE
@@ -68,43 +69,43 @@ export default function Home() {
     // Wallet connection check for X tasks
     const handleXConnectWithWallet = () => {
         if (!isConnected) {
-            showWalletWarning(toast);
+            showWalletWarning(toast as ToastInstance);
             return;
         }
-        handleXConnect(toast);
+        handleXConnect(toast as ToastInstance);
     };
 
     const handleXFollowWithWallet = (username: string) => {
         if (!isConnected) {
-            showWalletWarning(toast);
+            showWalletWarning(toast as ToastInstance);
             return;
         }
-        handleXFollow(username, toast, address);
+        handleXFollow(username, toast as ToastInstance, address);
     };
 
     const handleXReplyWithWallet = (tweetId: string) => {
         if (!isConnected) {
-            showWalletWarning(toast);
+            showWalletWarning(toast as ToastInstance);
             return;
         }
-        handleXReply(tweetId, toast, address);
+        handleXReply(tweetId, toast as ToastInstance, address);
     };
 
     const handleXRepostWithWallet = (tweetId: string) => {
         if (!isConnected) {
-            showWalletWarning(toast);
+            showWalletWarning(toast as ToastInstance);
             return;
         }
-        handleXRepost(tweetId, toast, address);
+        handleXRepost(tweetId, toast as ToastInstance, address);
     };
 
-    const handleXPostWithWallet = () => {
-        if (!isConnected) {
-            showWalletWarning(toast);
-            return;
-        }
-        handleXPost(toast, address);
-    };
+    // const handleXPostWithWallet = () => {
+    //     if (!isConnected) {
+    //         showWalletWarning(toast);
+    //         return;
+    //     }
+    //     handleXPost(toast, address);
+    // };
 
     const generateInviteLink = () => {
         const originUrl = window.location.origin;
@@ -123,16 +124,16 @@ export default function Home() {
         }
     };
 
-    const handleInviteClick = () => {
-        console.log('Invite button clicked');
-        console.log('isConnected:', isConnected);
-        if (!isConnected) {
-            showWalletWarning(toast);
-            return;
-        }
-        console.log('Setting modal to true');
-        setShowInviteModal(true);
-    };
+    // const handleInviteClick = () => {
+    //     console.log('Invite button clicked');
+    //     console.log('isConnected:', isConnected);
+    //     if (!isConnected) {
+    //         showWalletWarning(toast);
+    //         return;
+    //     }
+    //     console.log('Setting modal to true');
+    //     setShowInviteModal(true);
+    // };
 
     return (
         <div className={styles.main}>
@@ -149,7 +150,7 @@ export default function Home() {
 
                             <div className={styles.mainBannerTextInner}>
                                 <p className={styles.mainBannerTitle}>
-                                    Participate in Vibin' Quests
+                                    Participate in Vibin&apos; Quests
                                 </p>
 
                                 <p className={styles.mainBannerText}>
@@ -292,7 +293,7 @@ export default function Home() {
                                 </p>
 
                                 <p className={styles.inviteText}>
-                                    Invite your friends to join Vibin' and get 500 extra bonus points.
+                                    Invite your friends to join Vibin&apos; and get 500 extra bonus points.
                                 </p>
 
                                 <button
