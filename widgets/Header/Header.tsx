@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import cn from "classnames";
 
 import styles from "./index.module.css";
@@ -20,6 +21,8 @@ import {
 import WalletButton from "@/widgets/WalletButton";
 
 const Header = () => {
+    const pathname = usePathname();
+
     return (
         <header className={styles.header}>
             <Image
@@ -38,10 +41,10 @@ const Header = () => {
 
                     <nav className={styles.headerNav}>
                         <Link
-                            href="/"
+                            href="/join"
                             className={cn(
                                 styles.headerNavLink,
-                                styles.disabled
+                                (pathname === "/join" || pathname === "/join/spotify" || pathname === "/join/wallet" || pathname === "/dashboard") && styles.active
                             )}
                         >
                             <Dashboard />
@@ -49,7 +52,10 @@ const Header = () => {
 
                         <Link
                             href="/"
-                            className={cn(styles.headerNavLink, styles.active)}
+                            className={cn(
+                                styles.headerNavLink,
+                                pathname === "/" && styles.active
+                            )}
                         >
                             <LinkIcon />
                         </Link>
