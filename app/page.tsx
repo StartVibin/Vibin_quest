@@ -453,7 +453,7 @@ export default function Home() {
                   styles.ratingTableAirdropped
                 )}
               >
-                Airdropped
+                Rewards
               </p>
             </div>
 
