@@ -6,7 +6,7 @@ export async function POST(request: NextRequest) {
     console.log("🚀 ~ POST request is calling now")
     const { code, code_verifier, redirect_uri } = await request.json();
     const client_id = process.env.NEXT_PUBLIC_X_CLIENT_ID;
-    const client_secret = process.env.NEXT_PUBLIC_X_CLIENT_SECRET;
+    const client_secret = process.env.X_CLIENT_SECRET;
 
     if (!code || !code_verifier || !redirect_uri || !client_id || !client_secret) {
       return NextResponse.json({ error: 'Missing required parameters' }, { status: 400 });

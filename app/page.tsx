@@ -41,6 +41,8 @@ import { useLeaderboard } from "@/lib/hooks/useLeaderboard";
 import { Modal } from "@/shared/ui/Modal";
 import { getXPostId } from "@/lib/api";
 import { ToastInstance } from "@/lib/types";
+import RegistrationDebug from "@/components/RegistrationDebug";
+import ErrorLogger from "@/components/ErrorLogger";
 
 export default function Home() {
   const { address, isConnected } = useAccount();
@@ -837,6 +839,9 @@ export default function Home() {
           </div>
         </Modal>
       )}
+      
+      <RegistrationDebug />
+      <ErrorLogger />
     </div>
   );
 }

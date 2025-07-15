@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAccount, useConnect } from 'wagmi';
 import { toast } from 'react-toastify';
@@ -10,8 +10,18 @@ import LeftHalfModal from '@/components/LeftHalfModal';
 
 export default function JoinPage() {
   const router = useRouter();
+  const { address, isConnected } = useAccount();
   const [invitationCode, setInvitationCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    // Check if wallet is connected
+    if (!isConnected) {
+      toast.error('Please connect your wallet first');
+      // Since we removed the wallet page, redirect to main page or show wallet connection
+      return;
+    }
+  }, [isConnected, router]);
 
   const handleInvitationCodeSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,14 +31,20 @@ export default function JoinPage() {
       return;
     }
 
+    if (!isConnected || !address) {
+      toast.error('Please connect your wallet first');
+      return;
+    }
+
     setIsLoading(true);
     try {
       // Here you would typically validate the invitation code with your backend
       // For now, we'll simulate a successful validation
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Store the invitation code in session storage for the next step
+      // Store the invitation code and wallet address in session storage for the next step
       sessionStorage.setItem('invitationCode', invitationCode);
+      sessionStorage.setItem('walletAddress', address);
       
       // Navigate to the next step (Spotify email entry)
       router.push('/join/spotify');
