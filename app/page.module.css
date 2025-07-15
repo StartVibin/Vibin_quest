@@ -83,14 +83,8 @@
     text-align: left;
 }
 
-@media (max-width: 480px) {
-    .ratingTableRank {
-        width: 15%;
-    }
-}
-
 .ratingTableWallet {
-    width: 50%;
+    width: 25%;
     text-align: center;
     justify-content: center;
 }
@@ -101,9 +95,27 @@
     justify-content: flex-end;
 }
 
+.ratingTableAirdropped {
+    width: 25%;
+    text-align: right;
+    justify-content: flex-end;
+}
+
 @media (max-width: 480px) {
+    .ratingTableRank {
+        width: 25%;
+    }
+    
+    .ratingTableWallet {
+        width: 25%;
+    }
+    
     .ratingTablePoints {
-        width: 35%;
+        width: 25%;
+    }
+    
+    .ratingTableAirdropped {
+        width: 25%;
     }
 }
 

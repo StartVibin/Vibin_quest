@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useCallback, memo } from 'react';
 import { useAccount } from "wagmi";
 import { toast } from 'react-toastify';
 import { showWalletWarning } from "@/lib/utils";
@@ -22,7 +22,7 @@ interface GoogleOAuthButtonProps {
   clientId?: string;
 }
 
-export default function GoogleOAuthButton({ 
+const GoogleOAuthButton = memo(function GoogleOAuthButton({ 
   onSuccess, 
   className = "", 
   children,
@@ -31,7 +31,7 @@ export default function GoogleOAuthButton({
   const { address, isConnected } = useAccount();
   const [showModal, setShowModal] = useState(false);
 
-  const sendToBackend = async (userData: GoogleUserData) => {
+  const sendToBackend = useCallback(async (userData: GoogleUserData) => {
     try {
       console.log("Sending Google OAuth data to backend:", userData);
       
@@ -51,21 +51,21 @@ export default function GoogleOAuthButton({
       console.error("Error sending to backend:", error);
       toast.error("Failed to connect email. Please try again.");
     }
-  };
+  }, [isConnected, address, onSuccess]);
 
-  const handleConnectClick = () => {
+  const handleConnectClick = useCallback(() => {
     if (!isConnected) {
       showWalletWarning(toast as ToastInstance);
       return;
     }
     setShowModal(true);
-  };
+  }, [isConnected]);
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setShowModal(false);
-  };
+  }, []);
 
-  const handleGoogleLogin = () => {
+  const handleGoogleLogin = useCallback(() => {
     if (!clientId) {
       toast.error("Google OAuth not configured. Please set up your Google Client ID.");
       return;
@@ -110,7 +110,7 @@ export default function GoogleOAuthButton({
     };
 
     window.addEventListener('message', handleMessage);
-  };
+  }, [clientId, sendToBackend]);
 
   return (
     <>
@@ -219,4 +219,6 @@ export default function GoogleOAuthButton({
       )}
     </>
   );
-} 
+});
+
+export default GoogleOAuthButton; 

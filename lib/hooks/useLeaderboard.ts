@@ -7,6 +7,7 @@ interface LeaderboardUser {
   gamePoints: number
   referralPoints: number
   socialPoints: number
+  airdroped?: number
   rank: number
 }
 
@@ -48,6 +49,7 @@ export const useLeaderboard = (): UseLeaderboardReturn => {
       
       if (response.success && response.data) {
         console.log('✅ Leaderboard data received:', response.data)
+        console.log('🔍 Sample user data:', response.data.users[0])
         setLeaderboardData(response.data)
       } else {
         console.error('❌ Failed to fetch leaderboard data')

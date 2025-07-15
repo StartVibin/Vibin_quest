@@ -34,6 +34,9 @@ export const API_ENDPOINTS = {
   
   // Leaderboard endpoints
   LEADERBOARD: `${API_BASE_URL}/leaderboard`,
+  
+  // Config endpoints
+  GET_X_POST_ID: `${API_BASE_URL}/config/x-post-id`,
 }
 
 // ============================================================================
@@ -150,6 +153,7 @@ export interface LeaderboardResponse {
       gamePoints: number
       referralPoints: number
       socialPoints: number
+      airdroped?: number
       rank: number
     }>
     pagination: {
@@ -158,6 +162,15 @@ export interface LeaderboardResponse {
       total: number
       totalPages: number
     }
+  }
+  error?: string
+}
+
+// X Post ID Config
+export interface XPostIdResponse {
+  success: boolean
+  data: {
+    xPostId: string
   }
   error?: string
 }
@@ -580,4 +593,15 @@ export const recordGamePlay = async (walletAddress: string): Promise<GameLimitRe
   }
 }
 
- 
+// X Post ID Config function
+export const getXPostId = async (): Promise<XPostIdResponse> => {
+  try {
+    const response = await createApiRequest<XPostIdResponse>(
+      API_ENDPOINTS.GET_X_POST_ID
+    )
+    return response
+  } catch (error) {
+    console.error('Error getting X post ID:', error)
+    throw error
+  }
+}

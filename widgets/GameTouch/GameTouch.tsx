@@ -166,10 +166,10 @@ const GameTouch = () => {
 
             <div className={styles.gameCircleInner}>
                 <div className={styles.gameClicks}>
-                    {!!clicks && <p>{clicks}</p>}
-                    {clicks > 1 && <p>{clicks - 1}</p>}
-                    {clicks > 2 && <p>{clicks - 2}</p>}
-                    {clicks > 3 && <p>{clicks - 3}</p>}
+                    {!!clicks && <span>{clicks}</span>}
+                    {clicks > 1 && <span>{clicks - 1}</span>}
+                    {clicks > 2 && <span>{clicks - 2}</span>}
+                    {clicks > 3 && <span>{clicks - 3}</span>}
                 </div>
 
                 {started && (

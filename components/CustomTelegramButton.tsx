@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useCallback, memo } from 'react';
 import { LoginButton } from "@telegram-auth/react";
 import { useAccount } from "wagmi";
 import { toast } from 'react-toastify';
@@ -25,7 +25,7 @@ interface CustomTelegramButtonProps {
   botUsername?: string;
 }
 
-export default function CustomTelegramButton({ 
+const CustomTelegramButton = memo(function CustomTelegramButton({ 
   onSuccess, 
   className = "", 
   children,
@@ -34,7 +34,7 @@ export default function CustomTelegramButton({
   const { address, isConnected } = useAccount();
   const [showModal, setShowModal] = useState(false);
 
-  const sendToBackend = async (telegramData: TelegramAuthData) => {
+  const sendToBackend = useCallback(async (telegramData: TelegramAuthData) => {
     try {
       console.log("Sending Telegram data to backend:", telegramData);
       
@@ -76,19 +76,19 @@ export default function CustomTelegramButton({
       console.error("Error sending to backend:", error);
       toast.error("Failed to connect Telegram. Please try again.");
     }
-  };
+  }, [isConnected, address, onSuccess]);
 
-  const handleConnectClick = () => {
+  const handleConnectClick = useCallback(() => {
     if (!isConnected) {
       showWalletWarning(toast as ToastInstance);
       return;
     }
     setShowModal(true);
-  };
+  }, [isConnected]);
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setShowModal(false);
-  };
+  }, []);
 
   return (
     <>
@@ -178,4 +178,6 @@ export default function CustomTelegramButton({
       )}
     </>
   );
-} 
+});
+
+export default CustomTelegramButton; 

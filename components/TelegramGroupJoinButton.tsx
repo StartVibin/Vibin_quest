@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useCallback, memo } from 'react';
 import { useAccount } from "wagmi";
 import { toast } from 'react-toastify';
 import { showWalletWarning } from "@/lib/utils";
@@ -15,7 +15,7 @@ interface TelegramGroupJoinButtonProps {
   groupInviteLink?: string;
 }
 
-export default function TelegramGroupJoinButton({ 
+const TelegramGroupJoinButton = memo(function TelegramGroupJoinButton({ 
   onSuccess, 
   className = "", 
   children,
@@ -25,7 +25,7 @@ export default function TelegramGroupJoinButton({
   const { address, isConnected } = useAccount();
   const [showModal, setShowModal] = useState(false);
 
-  const sendToBackend = async () => {
+  const sendToBackend = useCallback(async () => {
     try {
       console.log("Sending Telegram group join verification to backend");
       
@@ -45,21 +45,21 @@ export default function TelegramGroupJoinButton({
       console.error("Error verifying group join:", error);
       toast.error("Failed to verify group membership. Please try again.");
     }
-  };
+  }, [isConnected, address, groupUsername, onSuccess]);
 
-  const handleJoinClick = () => {
+  const handleJoinClick = useCallback(() => {
     if (!isConnected) {
       showWalletWarning(toast as ToastInstance);
       return;
     }
     setShowModal(true);
-  };
+  }, [isConnected]);
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setShowModal(false);
-  };
+  }, []);
 
-  const handleJoinGroup = () => {
+  const handleJoinGroup = useCallback(() => {
     // Open Telegram group in new tab
     window.open(groupInviteLink, '_blank', 'noopener,noreferrer');
     
@@ -72,7 +72,7 @@ export default function TelegramGroupJoinButton({
     setTimeout(() => {
       sendToBackend();
     }, 3000);
-  };
+  }, [groupInviteLink, sendToBackend]);
 
   return (
     <>
@@ -201,4 +201,6 @@ export default function TelegramGroupJoinButton({
       )}
     </>
   );
-} 
+});
+
+export default TelegramGroupJoinButton; 

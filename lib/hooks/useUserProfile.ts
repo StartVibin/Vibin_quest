@@ -98,11 +98,11 @@ export const useUserProfile = (): UseUserProfileReturn => {
     // Initial fetch
     fetchProfile()
 
-    // Set up interval for periodic updates (every 3 seconds)
+    // Set up interval for periodic updates (every 30 seconds instead of 3)
     const interval = setInterval(() => {
       console.log('⏰ Periodic profile fetch triggered')
       fetchProfile()
-    }, 3000)
+    }, 30000)
 
     return () => clearInterval(interval)
   }, [address, isConnected, fetchProfile])

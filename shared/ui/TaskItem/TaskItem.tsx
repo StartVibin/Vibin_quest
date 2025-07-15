@@ -24,10 +24,10 @@ const TaskItem: React.FC<Props> = ({ points, button, logo, description, done = f
             </div>}
 
             <div className={styles.mainTaskWrap}>
-                <p className={styles.mainTaskPoints}>
+                <div className={styles.mainTaskPoints}>
                     <Logo />
                     {points} Points
-                </p>
+                </div>
 
                 <div className={styles.mainTaskType}>{logo}</div>
             </div>
