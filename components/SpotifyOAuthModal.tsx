@@ -4,11 +4,10 @@ import styles from './SpotifyOAuthModal.module.css';
 interface SpotifyOAuthModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSuccess: () => void;
   email: string;
 }
 
-export default function SpotifyOAuthModal({ isOpen, onClose, onSuccess, email }: SpotifyOAuthModalProps) {
+export default function SpotifyOAuthModal({ isOpen, onClose, email }: SpotifyOAuthModalProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSpotifyAuth = async () => {

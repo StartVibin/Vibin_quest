@@ -6,7 +6,7 @@ const SPOTIFY_REDIRECT_URI = process.env.SPOTIFY_REDIRECT_URI || 'http://127.0.0
 
 export async function POST(request: NextRequest) {
   try {
-    const { code, state } = await request.json();
+    const { code } = await request.json();
 
     if (!code) {
       return NextResponse.json(

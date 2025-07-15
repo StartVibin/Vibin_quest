@@ -2,10 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAccount, useConnect } from 'wagmi';
+import { useAccount } from 'wagmi';
 import { toast } from 'react-toastify';
 import styles from './page.module.css';
-import { Logo } from '@/shared/icons';
+
 import LeftHalfModal from '@/components/LeftHalfModal';
 
 export default function JoinPage() {
@@ -66,9 +66,9 @@ export default function JoinPage() {
         <div className={styles.loginCard}>
           <div className={styles.logoSection}>
             
-            <h1 className={styles.title}>Welcome to <br/>the Vibin' app.</h1>
+            <h1 className={styles.title}>Welcome to <br/>the Vibin&apos; app.</h1>
             <p className={styles.subtitle}>
-              Spotify doesn't pay you for your data. We do.
+              Spotify doesn&apos;t pay you for your data. We do.
             </p>
             <p className={styles.subtitle}>
               Invitation code access only - Privacy protected

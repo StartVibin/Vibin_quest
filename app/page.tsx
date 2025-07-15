@@ -442,18 +442,18 @@ export default function Home() {
               <p
                 className={cn(
                   styles.ratingTableTitle,
-                  styles.ratingTableAirdropped
-                )}
-              >
-                Airdropped
-              </p>
-              <p
-                className={cn(
-                  styles.ratingTableTitle,
                   styles.ratingTablePoints
                 )}
               >
                 Total points
+              </p>
+              <p
+                className={cn(
+                  styles.ratingTableTitle,
+                  styles.ratingTableAirdropped
+                )}
+              >
+                Airdropped
               </p>
             </div>
 
@@ -480,7 +480,7 @@ export default function Home() {
                   <div
                     className={cn(
                       styles.ratingTableText,
-                      styles.ratingTableAirdropped
+                      styles.ratingTablePoints
                     )}
                   >
                     <div className="animate-pulse bg-gray-200 h-4 w-16 rounded"></div>
@@ -488,7 +488,7 @@ export default function Home() {
                   <div
                     className={cn(
                       styles.ratingTableText,
-                      styles.ratingTablePoints
+                      styles.ratingTableAirdropped
                     )}
                   >
                     <div className="animate-pulse bg-gray-200 h-4 w-16 rounded"></div>
@@ -533,6 +533,15 @@ export default function Home() {
                   <div
                     className={cn(
                       styles.ratingTableText,
+                      styles.ratingTablePoints
+                    )}
+                  >
+                    <Logo />
+                    {user.totalPoints.toLocaleString()} Points
+                  </div>
+                  <div
+                    className={cn(
+                      styles.ratingTableText,
                       styles.ratingTableAirdropped
                     )}
                   >
@@ -544,15 +553,6 @@ export default function Home() {
                     ) : (
                       <span style={{ color: "#9CA3AF" }}>Not airdropped</span>
                     )}
-                  </div>
-                  <div
-                    className={cn(
-                      styles.ratingTableText,
-                      styles.ratingTablePoints
-                    )}
-                  >
-                    <Logo />
-                    {user.totalPoints.toLocaleString()} Points
                   </div>
                 </div>
               ))

@@ -4,17 +4,17 @@ import React, { useState, useEffect } from 'react';
 import { useAccount } from 'wagmi';
 import { toast } from 'react-toastify';
 import styles from './page.module.css';
-import { Logo } from '@/shared/icons';
+
 import { useSpotifyData } from '@/lib/hooks/useSpotifyData';
 
 export default function DashboardPage() {
-  const { address, isConnected } = useAccount();
-  const [timeLeft, setTimeLeft] = useState('23:02:13');
-  const [userLevel, setUserLevel] = useState(23);
-  const [contributeReward, setContributeReward] = useState(123.02);
+  const { isConnected } = useAccount();
+  const [timeLeft] = useState('23:02:13');
+  const [userLevel] = useState(23);
+  const [contributeReward] = useState(123.02);
   
   // Use the Spotify data hook (refreshes every minute)
-  const { data: spotifyData, isLoading, error, refresh, lastUpdated } = useSpotifyData(60000);
+  const { data: spotifyData, isLoading, error, lastUpdated } = useSpotifyData(60000);
 
   // Extract data from the hook
   const topTracks = spotifyData?.topTracks || [];

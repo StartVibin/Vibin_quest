@@ -1,12 +1,60 @@
 import { useState, useEffect, useCallback } from 'react';
 import { createSpotifyService } from '@/lib/spotifyService';
 
+interface SpotifyTrack {
+  id: string;
+  name: string;
+  artist: string;
+  album: string;
+  image: string | null;
+  spotifyUrl: string | null;
+}
+
+interface SpotifyArtist {
+  id: string;
+  name: string;
+  image: string | null;
+  spotifyUrl: string | null;
+}
+
+interface SpotifyRecentlyPlayed {
+  id: string;
+  name: string;
+  artist: string;
+  playedAt: string;
+  image: string | null;
+}
+
+interface SpotifySavedTrack {
+  id: string;
+  name: string;
+  artist: string;
+  addedAt: string;
+  image: string | null;
+}
+
+interface SpotifyProfile {
+  id: string;
+  display_name: string;
+  email: string;
+  images: Array<{
+    url: string;
+    width: number;
+    height: number;
+  }>;
+  followers: {
+    total: number;
+  };
+  country: string;
+  product: string;
+}
+
 interface SpotifyData {
-  profile: any;
-  topTracks: any[];
-  topArtists: any[];
-  recentlyPlayed: any[];
-  savedTracks: any[];
+  profile: SpotifyProfile;
+  topTracks: SpotifyTrack[];
+  topArtists: SpotifyArtist[];
+  recentlyPlayed: SpotifyRecentlyPlayed[];
+  savedTracks: SpotifySavedTrack[];
   stats: {
     totalSavedTracks: number;
     uniqueArtists: number;
@@ -91,7 +139,7 @@ export function useSpotifyData(refreshInterval: number = 60000): UseSpotifyDataR
       // Transform the data for the dashboard
       const transformedData: SpotifyData = {
         profile: userStats.profile,
-        topTracks: userStats.topTracks.slice(0, 5).map((track: any) => ({
+        topTracks: userStats.topTracks.slice(0, 5).map((track: { id: string; name: string; artists: Array<{ name: string }>; album: { name: string; images?: Array<{ url: string }> }; external_urls?: { spotify: string } }) => ({
           id: track.id,
           name: track.name,
           artist: track.artists[0]?.name || 'Unknown Artist',
@@ -99,20 +147,20 @@ export function useSpotifyData(refreshInterval: number = 60000): UseSpotifyDataR
           image: track.album?.images?.[0]?.url || null,
           spotifyUrl: track.external_urls?.spotify || null,
         })),
-        topArtists: userStats.topArtists.slice(0, 5).map((artist: any) => ({
+        topArtists: userStats.topArtists.slice(0, 5).map((artist: { id: string; name: string; images?: Array<{ url: string }>; external_urls?: { spotify: string } }) => ({
           id: artist.id,
           name: artist.name,
           image: artist.images?.[0]?.url || null,
           spotifyUrl: artist.external_urls?.spotify || null,
         })),
-        recentlyPlayed: userStats.recentlyPlayed.slice(0, 10).map((item: any) => ({
+        recentlyPlayed: userStats.recentlyPlayed.slice(0, 10).map((item: { track: { id: string; name: string; artists: Array<{ name: string }>; album?: { images?: Array<{ url: string }> } }; played_at: string }) => ({
           id: item.track.id,
           name: item.track.name,
           artist: item.track.artists[0]?.name || 'Unknown Artist',
           playedAt: item.played_at,
           image: item.track.album?.images?.[0]?.url || null,
         })),
-        savedTracks: userStats.savedTracks.slice(0, 10).map((item: any) => ({
+        savedTracks: userStats.savedTracks.slice(0, 10).map((item: { track: { id: string; name: string; artists: Array<{ name: string }>; album?: { images?: Array<{ url: string }> } }; added_at: string }) => ({
           id: item.track.id,
           name: item.track.name,
           artist: item.track.artists[0]?.name || 'Unknown Artist',

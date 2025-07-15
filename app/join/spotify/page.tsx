@@ -1,22 +1,68 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAccount, useConnect } from 'wagmi';
+
 import { toast } from 'react-toastify';
 import styles from '../page.module.css';
-import { Logo } from '@/shared/icons';
+
 import LeftHalfModal from '@/components/LeftHalfModal';
 import SpotifyOAuthModal from '@/components/SpotifyOAuthModal';
 
 export default function SpotifyLoginPage() {
   const router = useRouter();
-  const { address, isConnected } = useAccount();
-  const { connect, connectors, isPending } = useConnect();
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [invitationCode, setInvitationCode] = useState('');
+  const [, setInvitationCode] = useState('');
   const [showSpotifyModal, setShowSpotifyModal] = useState(false);
+
+  const handleSpotifyOAuthSuccess = useCallback(async () => {
+    try {
+      // Get stored data from session storage and localStorage
+      const storedCode = sessionStorage.getItem('invitationCode');
+      const storedAddress = sessionStorage.getItem('walletAddress');
+      const spotifyId = localStorage.getItem('spotify_id');
+      const spotifyEmail = localStorage.getItem('spotify_email');
+      const spotifyName = localStorage.getItem('spotify_name');
+      const spotifyAccessToken = localStorage.getItem('spotify_access_token');
+      
+      if (!storedCode || !storedAddress || !spotifyId) {
+        toast.error('Missing registration data. Please start over.');
+        router.push('/join');
+        return;
+      }
+      
+      // Here you would typically send all the data to your backend
+      const registrationData = {
+        invitationCode: storedCode,
+        walletAddress: storedAddress,
+        spotifyId: spotifyId,
+        spotifyEmail: spotifyEmail,
+        spotifyName: spotifyName,
+        spotifyAccessToken: spotifyAccessToken,
+        userEmail: email, // The email entered in the form
+      };
+      
+      console.log('Registration data:', registrationData);
+      
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Clear session storage (keep localStorage for Spotify data persistence)
+      sessionStorage.removeItem('invitationCode');
+      sessionStorage.removeItem('walletAddress');
+      sessionStorage.removeItem('spotifyEmail');
+      sessionStorage.removeItem('spotify_oauth_state');
+      
+      toast.success('Registration completed successfully!');
+      
+      // Redirect to dashboard
+      router.push('/dashboard');
+    } catch (error) {
+      console.error('Registration error:', error);
+      toast.error('Failed to complete registration. Please try again.');
+    }
+  }, [router, email]);
 
   useEffect(() => {
     // Get invitation code from session storage
@@ -64,7 +110,7 @@ export default function SpotifyLoginPage() {
       // Clean up URL
       window.history.replaceState({}, document.title, window.location.pathname);
     }
-  }, [router]);
+  }, [router, handleSpotifyOAuthSuccess]);
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -98,54 +144,6 @@ export default function SpotifyLoginPage() {
     }
   };
 
-  const handleSpotifyOAuthSuccess = async () => {
-    try {
-      // Get stored data from session storage and localStorage
-      const storedCode = sessionStorage.getItem('invitationCode');
-      const storedAddress = sessionStorage.getItem('walletAddress');
-      const spotifyId = localStorage.getItem('spotify_id');
-      const spotifyEmail = localStorage.getItem('spotify_email');
-      const spotifyName = localStorage.getItem('spotify_name');
-      const spotifyAccessToken = localStorage.getItem('spotify_access_token');
-      
-      if (!storedCode || !storedAddress || !spotifyId) {
-        toast.error('Missing registration data. Please start over.');
-        router.push('/join');
-        return;
-      }
-      
-      // Here you would typically send all the data to your backend
-      const registrationData = {
-        invitationCode: storedCode,
-        walletAddress: storedAddress,
-        spotifyId: spotifyId,
-        spotifyEmail: spotifyEmail,
-        spotifyName: spotifyName,
-        spotifyAccessToken: spotifyAccessToken,
-        userEmail: email, // The email entered in the form
-      };
-      
-      console.log('Registration data:', registrationData);
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Clear session storage (keep localStorage for Spotify data persistence)
-      sessionStorage.removeItem('invitationCode');
-      sessionStorage.removeItem('walletAddress');
-      sessionStorage.removeItem('spotifyEmail');
-      sessionStorage.removeItem('spotify_oauth_state');
-      
-      toast.success('Registration completed successfully!');
-      
-      // Redirect to dashboard
-      router.push('/dashboard');
-    } catch (error) {
-      console.error('Registration error:', error);
-      toast.error('Failed to complete registration. Please try again.');
-    }
-  };
-
   const handleBack = () => {
     router.push('/join');
   };
@@ -159,9 +157,9 @@ export default function SpotifyLoginPage() {
       <LeftHalfModal>
         <div className={styles.loginCard}>
           <div className={styles.logoSection}>
-            <h1 className={styles.title}>Welcome to <br/>the Vibin' app.</h1>
+            <h1 className={styles.title}>Welcome to <br/>the Vibin&apos; app.</h1>
             <p className={styles.subtitle}>
-              Spotify doesn't pay you for your data. We do.
+              Spotify doesn&apos;t pay you for your data. We do.
             </p>
             <p className={styles.subtitle}>
               Enter your Spotify account email
@@ -208,7 +206,6 @@ export default function SpotifyLoginPage() {
       <SpotifyOAuthModal
         isOpen={showSpotifyModal}
         onClose={() => setShowSpotifyModal(false)}
-        onSuccess={handleSpotifyOAuthSuccess}
         email={email}
       />
     </div>

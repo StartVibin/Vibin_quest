@@ -55,7 +55,7 @@ export class SpotifyService {
     this.accessToken = accessToken;
   }
 
-  private async makeRequest(endpoint: string): Promise<any> {
+  private async makeRequest<T>(endpoint: string): Promise<T> {
     const response = await fetch(`https://api.spotify.com/v1${endpoint}`, {
       headers: {
         'Authorization': `Bearer ${this.accessToken}`,
@@ -105,7 +105,7 @@ export class SpotifyService {
   }
 
   // Get user's playlists
-  async getUserPlaylists(limit: number = 50): Promise<{ items: any[] }> {
+  async getUserPlaylists(limit: number = 50): Promise<{ items: Array<{ id: string; name: string; images?: Array<{ url: string }> }> }> {
     return this.makeRequest(`/me/playlists?limit=${limit}`);
   }
 
@@ -115,7 +115,7 @@ export class SpotifyService {
   }
 
   // Get current playback
-  async getCurrentPlayback(): Promise<any> {
+  async getCurrentPlayback(): Promise<{ is_playing: boolean; item?: SpotifyTrack }> {
     return this.makeRequest('/me/player');
   }
 
@@ -125,18 +125,18 @@ export class SpotifyService {
   }
 
   // Get audio features for tracks
-  async getAudioFeatures(trackIds: string[]): Promise<{ audio_features: any[] }> {
+  async getAudioFeatures(trackIds: string[]): Promise<{ audio_features: Array<{ id: string; danceability: number; energy: number; valence: number }> }> {
     const ids = trackIds.join(',');
     return this.makeRequest(`/audio-features?ids=${ids}`);
   }
 
   // Get detailed track analysis
-  async getTrackAnalysis(trackId: string): Promise<any> {
+  async getTrackAnalysis(trackId: string): Promise<{ segments: Array<{ start: number; duration: number; confidence: number }> }> {
     return this.makeRequest(`/audio-analysis/${trackId}`);
   }
 
   // Get user's listening history (recently played with more details)
-  async getListeningHistory(limit: number = 50): Promise<any> {
+  async getListeningHistory(limit: number = 50): Promise<{ recentlyPlayed: Array<{ track: SpotifyTrack; played_at: string }>; audioFeatures: Array<{ id: string; danceability: number; energy: number; valence: number }> }> {
     const recentlyPlayed = await this.getRecentlyPlayed(limit);
     
     // Get unique track IDs
@@ -153,7 +153,19 @@ export class SpotifyService {
   }
 
   // Get comprehensive user stats
-  async getUserStats(): Promise<any> {
+  async getUserStats(): Promise<{
+    profile: SpotifyProfile;
+    topTracks: SpotifyTrack[];
+    topArtists: SpotifyArtist[];
+    recentlyPlayed: Array<{ track: SpotifyTrack; played_at: string }>;
+    savedTracks: Array<{ track: SpotifyTrack; added_at: string }>;
+    stats: {
+      totalSavedTracks: number;
+      uniqueArtists: number;
+      uniqueTracks: number;
+      listeningSessions: number;
+    };
+  }> {
     try {
       const [profile, topTracks, topArtists, recentlyPlayed, savedTracks] = await Promise.all([
         this.getUserProfile(),
@@ -204,7 +216,8 @@ export function createSpotifyService(): SpotifyService | null {
   return new SpotifyService(accessToken);
 }
 
-// Function to refresh the Spotify token
+// Function to refresh the Spotify token (unused but kept for future use)
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function refreshSpotifyToken(): Promise<SpotifyService | null> {
   const refreshToken = localStorage.getItem('spotify_refresh_token');
   
