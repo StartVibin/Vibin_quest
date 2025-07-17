@@ -37,10 +37,20 @@ const WalletButton: React.FC<WalletButtonProps> = ({
                 try {
                     const welcomeMessage = "Welcome to Social Quest!";
                     const signature = await signMessageAsync({ message: welcomeMessage });
-                    const authData = await authenticateWallet(address, welcomeMessage, signature);
+                    
+                    // Check for pending referral code
+                    const pendingReferralCode = sessionStorage.getItem('pendingReferralCode');
+                    
+                    const authData = await authenticateWallet(address, welcomeMessage, signature, pendingReferralCode || undefined);
                     console.log('Authentication response:', authData);
                     if (authData.success) {
                         console.log('Wallet authenticated successfully');
+                        
+                        // Clear the pending referral code after successful authentication
+                        if (pendingReferralCode) {
+                            sessionStorage.removeItem('pendingReferralCode');
+                            console.log('Referral code applied during registration');
+                        }
                     } else {
                         console.error('Wallet authentication failed:', authData.message);
                     }

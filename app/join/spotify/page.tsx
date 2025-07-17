@@ -65,6 +65,11 @@ export default function SpotifyLoginPage() {
   }, [router, email]);
 
   useEffect(() => {
+    // Temporarily disable join functionality - redirect to home page
+    toast.info('Join functionality is temporarily disabled. Please check back later.');
+    router.push('/');
+    return;
+    
     // Get invitation code from session storage
     const storedCode = sessionStorage.getItem('invitationCode');
     if (!storedCode) {
@@ -72,7 +77,7 @@ export default function SpotifyLoginPage() {
       router.push('/join');
       return;
     }
-    setInvitationCode(storedCode);
+    setInvitationCode(storedCode || '');
 
     // Check for OAuth callback parameters
     const urlParams = new URLSearchParams(window.location.search);

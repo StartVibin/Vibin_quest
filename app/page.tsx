@@ -62,6 +62,27 @@ export default function Home() {
     }
   }, []);
 
+  // Handle referral code from URL
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      const referralCode = urlParams.get('ref');
+      
+      if (referralCode && isConnected && address) {
+        // Store the referral code for later use during registration
+        sessionStorage.setItem('pendingReferralCode', referralCode);
+        console.log('Referral code detected:', referralCode);
+        
+        // Clean up the URL without the ref parameter
+        const newUrl = new URL(window.location.href);
+        newUrl.searchParams.delete('ref');
+        window.history.replaceState({}, document.title, newUrl.toString());
+        
+        toast.info(`Referral code ${referralCode} detected! You'll get bonus points when you complete registration.`);
+      }
+    }
+  }, [isConnected, address]);
+
   // Fetch X post ID from API
   useEffect(() => {
     const fetchXPostId = async () => {
