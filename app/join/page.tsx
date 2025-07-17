@@ -15,6 +15,11 @@ export default function JoinPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    // Temporarily disable join functionality - redirect to home page
+    toast.info('Join functionality is temporarily disabled. Please check back later.');
+    router.push('/');
+    return;
+    
     // Check if wallet is connected
     if (!isConnected) {
       toast.error('Please connect your wallet first');

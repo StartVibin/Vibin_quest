@@ -18,6 +18,11 @@ function CallbackContent() {
       const spotifyName = localStorage.getItem('spotify_name');
       const spotifyAccessToken = localStorage.getItem('spotify_access_token');
 
+      // Temporarily disable join functionality
+      toast.info('Join functionality is temporarily disabled. Please check back later.');
+      router.push('/');
+      return;
+      
       if (!invitationCode || !walletAddress || !spotifyId) {
         toast.error('Missing registration data. Please start over.');
         router.push('/join');
@@ -53,7 +58,7 @@ function CallbackContent() {
     } catch (error) {
       console.error('Registration completion error:', error);
       toast.error('Failed to complete registration');
-      router.push('/join/spotify');
+      router.push('/');
     }
   }, [router]);
 
@@ -67,13 +72,13 @@ function CallbackContent() {
         if (error) {
           console.error('Spotify OAuth error:', error);
           toast.error('Spotify authorization failed');
-          router.push('/join/spotify');
+          router.push('/');
           return;
         }
 
         if (!code) {
           toast.error('No authorization code received');
-          router.push('/join/spotify');
+          router.push('/');
           return;
         }
 
@@ -123,7 +128,7 @@ function CallbackContent() {
       } catch (error) {
         console.error('Callback error:', error);
         toast.error('Failed to complete Spotify connection');
-        router.push('/join/spotify');
+        router.push('/');
       }
     };
 
