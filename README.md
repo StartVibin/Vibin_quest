@@ -2,7 +2,7 @@ Title:  Exclusive Access Only
 
 To join the Vibin' Network, you'll need an invitation code; no code, no entry.
 
-🎟️ Only 100 invite codes will be released at launch.
+Only 100 invite codes will be released at launch.
 
 After that, new members can join only through referrals from the initial 100 users.
 
