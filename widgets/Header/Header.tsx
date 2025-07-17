@@ -41,11 +41,13 @@ const Header = () => {
 
                     <nav className={styles.headerNav}>
                         <Link
-                            href="/join"
+                            href="/"
                             className={cn(
                                 styles.headerNavLink,
-                                (pathname === "/join" || pathname === "/join/spotify" || pathname === "/join/wallet" || pathname === "/dashboard") && styles.active
+                                styles.disabled
                             )}
+                            onClick={(e) => e.preventDefault()}
+                            title="Dashboard temporarily disabled"
                         >
                             <Dashboard />
                         </Link>
@@ -82,11 +84,11 @@ const Header = () => {
                     </nav>
 
                     <div className={styles.headerWrap}>
-                        <button className={styles.headerNotify}>
+                        {/* <button className={styles.headerNotify}>
                             <Notify />
 
                             <span>1</span>
-                        </button>
+                        </button> */}
 
                         <WalletButton />
                     </div>

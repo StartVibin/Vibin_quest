@@ -5,7 +5,7 @@
 import { WalletAuthUser } from "./types"
 import { XUserData, TelegramAuthData, GoogleUserData, QuestProgressData } from './types';
 
-const API_BASE_URL = 'http://localhost:5000/api/v1'
+const API_BASE_URL = 'https://api.startvibin.io/api/v1'
 
 // API endpoints
 export const API_ENDPOINTS = {
@@ -37,6 +37,11 @@ export const API_ENDPOINTS = {
   
   // Config endpoints
   GET_X_POST_ID: `${API_BASE_URL}/config/x-post-id`,
+  
+  // Referral endpoints
+  APPLY_REFERRAL_CODE: `${API_BASE_URL}/referrals/apply`,
+  GET_REFERRAL_INFO: `${API_BASE_URL}/referrals/info`,
+  GET_TOP_REFERRERS: `${API_BASE_URL}/referrals/top`,
 }
 
 // ============================================================================
@@ -352,13 +357,15 @@ export const getLeaderboard = async (): Promise<LeaderboardResponse> => {
 export const authenticateWallet = async (
   walletAddress: string,
   originalMessage: string,
-  signedMessage: string
+  signedMessage: string,
+  referralCode?: string
 ): Promise<WalletAuthResponse> => {
   try {
-    const requestData: WalletAuthRequest = {
+    const requestData: WalletAuthRequest & { referralCode?: string } = {
       walletAddress,
       originalMessage,
-      signedMessage
+      signedMessage,
+      ...(referralCode && { referralCode })
     }
 
     return await createApiRequest<WalletAuthResponse>(
@@ -602,6 +609,93 @@ export const getXPostId = async (): Promise<XPostIdResponse> => {
     return response
   } catch (error) {
     console.error('Error getting X post ID:', error)
+    throw error
+  }
+}
+
+// ============================================================================
+// REFERRAL FUNCTIONS
+// ============================================================================
+
+export interface ApplyReferralCodeRequest {
+  walletAddress: string
+  referralCode: string
+}
+
+export interface ApplyReferralCodeResponse {
+  success: boolean
+  message: string
+  data: {
+    referralCode: string
+    referralPoints: number
+    totalPoints: number
+    referrerReward: number
+    userReward: number
+  }
+  error?: string
+}
+
+export const applyReferralCode = async (
+  walletAddress: string,
+  referralCode: string
+): Promise<ApplyReferralCodeResponse> => {
+  try {
+    const response = await createApiRequest<ApplyReferralCodeResponse>(
+      API_ENDPOINTS.APPLY_REFERRAL_CODE,
+      {
+        method: 'POST',
+        body: JSON.stringify({ walletAddress, referralCode })
+      }
+    )
+    return response
+  } catch (error) {
+    console.error('Error applying referral code:', error)
+    throw error
+  }
+}
+
+export interface ReferralInfoResponse {
+  success: boolean
+  data: {
+    referralCode: string
+    referralPoints: number
+    referredUsers: number
+    totalPoints: number
+  }
+  error?: string
+}
+
+export const getReferralInfo = async (userId: string): Promise<ReferralInfoResponse> => {
+  try {
+    const response = await createApiRequest<ReferralInfoResponse>(
+      `${API_ENDPOINTS.GET_REFERRAL_INFO}/${userId}`
+    )
+    return response
+  } catch (error) {
+    console.error('Error getting referral info:', error)
+    throw error
+  }
+}
+
+export interface TopReferrersResponse {
+  success: boolean
+  data: Array<{
+    walletAddress: string
+    referralPoints: number
+    referralCode: string
+    totalPoints: number
+  }>
+  error?: string
+}
+
+export const getTopReferrers = async (limit: number = 10): Promise<TopReferrersResponse> => {
+  try {
+    const response = await createApiRequest<TopReferrersResponse>(
+      `${API_ENDPOINTS.GET_TOP_REFERRERS}?limit=${limit}`
+    )
+    return response
+  } catch (error) {
+    console.error('Error getting top referrers:', error)
     throw error
   }
 }

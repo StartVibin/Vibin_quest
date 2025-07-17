@@ -10,6 +10,9 @@ import { Header } from "@/widgets/Header";
 export const metadata: Metadata = {
   title: "Vibin' Quest",
   description: "Participate in Vibin' Quests",
+  icons: {
+    icon: '/img/icon.svg',
+  },
 };
 
 export default function RootLayout({
