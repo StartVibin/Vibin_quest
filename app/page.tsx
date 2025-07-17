@@ -41,7 +41,6 @@ import { useLeaderboard } from "@/lib/hooks/useLeaderboard";
 import { Modal } from "@/shared/ui/Modal";
 import { getXPostId } from "@/lib/api";
 import { ToastInstance } from "@/lib/types";
-import RegistrationDebug from "@/components/RegistrationDebug";
 import ErrorLogger from "@/components/ErrorLogger";
 
 export default function Home() {
@@ -545,14 +544,10 @@ export default function Home() {
                       styles.ratingTableAirdropped
                     )}
                   >
-                    {user.airdroped ? (
-                      <>
-                        <Logo />
-                        {user.airdroped.toLocaleString()} Tokens
-                      </>
-                    ) : (
-                      <span style={{ color: "#9CA3AF" }}>Not airdropped</span>
-                    )}
+                    <>
+                      <Logo />
+                      {(user.airdroped || 0).toLocaleString()} Tokens
+                    </>
                   </div>
                 </div>
               ))
@@ -840,7 +835,6 @@ export default function Home() {
         </Modal>
       )}
       
-      <RegistrationDebug />
       <ErrorLogger />
     </div>
   );
