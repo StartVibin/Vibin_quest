@@ -33,6 +33,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: userData.error || 'Failed to get user data', details: userData }, { status: 400 });
   }
   const userId = userData.data.id;
+  console.log('🔍 [X Follow API] User data:', userData);
   console.log('✅ [X Follow API] User ID found:', userId);
 
   // 2. Get authenticated user's ID
