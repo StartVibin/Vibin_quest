@@ -42,21 +42,21 @@ const WalletButton: React.FC<WalletButtonProps> = ({
                     const pendingReferralCode = sessionStorage.getItem('pendingReferralCode');
                     
                     const authData = await authenticateWallet(address, welcomeMessage, signature, pendingReferralCode || undefined);
-                    console.log('Authentication response:', authData);
+                    //console.log('Authentication response:', authData);
                     if (authData.success) {
-                        console.log('Wallet authenticated successfully');
+                        //console.log('Wallet authenticated successfully');
                         
                         // Clear the pending referral code after successful authentication
                         if (pendingReferralCode) {
                             sessionStorage.removeItem('pendingReferralCode');
-                            console.log('Referral code applied during registration');
+                            //console.log('Referral code applied during registration');
                         }
                     } else {
-                        console.error('Wallet authentication failed:', authData.message);
+                        //console.error('Wallet authentication failed:', authData.message);
                     }
-                    console.log('Welcome message signed successfully:', signature);
+                    //console.log('Welcome message signed successfully:', signature);
                 } catch (error) {
-                    console.error('Failed to sign welcome message or authenticate:', error);
+                    //console.error('Failed to sign welcome message or authenticate:', error);
                 }
             }
         };

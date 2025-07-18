@@ -34,7 +34,7 @@ export default function SpotifyReauthButton({
       // Redirect to Spotify authentication
       router.push('/join/spotify');
     } catch (error) {
-      console.error('Error clearing Spotify tokens:', error);
+      //console.error('Error clearing Spotify tokens:', error);
       toast.error('Failed to clear tokens. Please try again.');
     }
   };

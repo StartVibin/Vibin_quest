@@ -80,7 +80,7 @@ export function useSpotifyData(refreshInterval: number = 60000): UseSpotifyDataR
   const fetchData = useCallback(async () => {
     try {
       // Debug: Log what's in localStorage
-      console.log('Spotify localStorage data:', {
+      //console.log('Spotify localStorage data:', {
         accessToken: localStorage.getItem('spotify_access_token') ? 'Present' : 'Missing',
         refreshToken: localStorage.getItem('spotify_refresh_token') ? 'Present' : 'Missing',
         expiresIn: localStorage.getItem('spotify_expires_in'),
@@ -119,7 +119,7 @@ export function useSpotifyData(refreshInterval: number = 60000): UseSpotifyDataR
               spotifyService = new (await import('@/lib/spotifyService')).SpotifyService(tokenData.access_token);
             }
           } catch (refreshError) {
-            console.error('Failed to refresh token:', refreshError);
+            //console.error('Failed to refresh token:', refreshError);
           }
         }
       }
@@ -177,9 +177,9 @@ export function useSpotifyData(refreshInterval: number = 60000): UseSpotifyDataR
 
       setData(transformedData);
       setLastUpdated(new Date());
-      console.log('Spotify data fetched successfully:', transformedData);
+      //console.log('Spotify data fetched successfully:', transformedData);
     } catch (err) {
-      console.error('Error fetching Spotify data:', err);
+      //console.error('Error fetching Spotify data:', err);
       setError(err instanceof Error ? err.message : 'Failed to fetch Spotify data');
     } finally {
       setIsLoading(false);
@@ -199,7 +199,7 @@ export function useSpotifyData(refreshInterval: number = 60000): UseSpotifyDataR
   useEffect(() => {
     if (refreshInterval > 0) {
       const interval = setInterval(() => {
-        console.log('Refreshing Spotify data...');
+        //console.log('Refreshing Spotify data...');
         fetchData();
       }, refreshInterval);
 

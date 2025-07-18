@@ -33,7 +33,7 @@ const GoogleOAuthButton = memo(function GoogleOAuthButton({
 
   const sendToBackend = useCallback(async (userData: GoogleUserData) => {
     try {
-      console.log("Sending Google OAuth data to backend:", userData);
+      //console.log("Sending Google OAuth data to backend:", userData);
       
       if (!isConnected) {
         showWalletWarning(toast as ToastInstance);
@@ -48,7 +48,7 @@ const GoogleOAuthButton = memo(function GoogleOAuthButton({
       setShowModal(false);
       onSuccess?.();
     } catch (error) {
-      console.error("Error sending to backend:", error);
+      //console.error("Error sending to backend:", error);
       toast.error("Failed to connect email. Please try again.");
     }
   }, [isConnected, address, onSuccess]);
@@ -102,7 +102,7 @@ const GoogleOAuthButton = memo(function GoogleOAuthButton({
       if (event.origin !== window.location.origin) return;
       
       if (event.data && event.data.type === 'google_auth_success') {
-        console.log("Received Google auth data:", event.data.user);
+        //console.log("Received Google auth data:", event.data.user);
         sendToBackend(event.data.user);
         popup?.close();
         window.removeEventListener('message', handleMessage);

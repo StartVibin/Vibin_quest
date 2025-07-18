@@ -208,7 +208,7 @@ const createApiRequest = async <T>(
     })
     return handleApiResponse<T>(response)
   } catch (error) {
-    console.error(`API request failed for ${url}:`, error)
+    //console.error(`API request failed for ${url}:`, error)
     throw error
   }
 }
@@ -242,7 +242,7 @@ export const verifyQuestWithBackend = async (
       }
     )
   } catch (error) {
-    console.error('Error verifying quest with backend:', error)
+    //console.error('Error verifying quest with backend:', error)
     return {
       success: false,
       pointsAwarded: 0,
@@ -265,7 +265,7 @@ export const verifyXTask = async (walletAddress: string): Promise<XTaskResponse>
       }
     )
   } catch (error) {
-    console.error('Error verifying X task:', error)
+    //console.error('Error verifying X task:', error)
     return {
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error'
@@ -292,7 +292,7 @@ export const sendGamePoints = async (
       }
     )
   } catch (error) {
-    console.error('Error sending game points:', error)
+    //console.error('Error sending game points:', error)
     return {
       success: false,
       message: 'Failed to send game points',
@@ -312,21 +312,21 @@ export const getUserPoints = async (walletAddress: string): Promise<number> => {
     )
     return response.data.totalPoints || 0
   } catch (error) {
-    console.error('Error fetching user points:', error)
+    //console.error('Error fetching user points:', error)
     return 0
   }
 }
 
 export const getUserProfile = async (walletAddress: string): Promise<UserProfile> => {
   const url = `${API_ENDPOINTS.USER_PROFILE}/${walletAddress}`
-  console.log('🌐 Making API call to:', url)
+  //console.log('🌐 Making API call to:', url)
   
   try {
     const response = await createApiRequest<{ success: boolean; data: UserProfile }>(url)
-    console.log('✅ API Response data:', response)
+    //console.log('✅ API Response data:', response)
     return response.data
   } catch (error) {
-    console.error('❌ Error fetching user profile:', error)
+    //console.error('❌ Error fetching user profile:', error)
     throw error
   }
 }
@@ -339,7 +339,7 @@ export const getLeaderboard = async (): Promise<LeaderboardResponse> => {
   try {
     return await createApiRequest<LeaderboardResponse>(API_ENDPOINTS.LEADERBOARD)
   } catch (error) {
-    console.error('Error fetching leaderboard:', error)
+    //console.error('Error fetching leaderboard:', error)
     return { 
       success: false, 
       data: { 
@@ -376,7 +376,7 @@ export const authenticateWallet = async (
       }
     )
   } catch (error) {
-    console.error('Error authenticating wallet:', error)
+    //console.error('Error authenticating wallet:', error)
     return {
       success: false,
       message: 'Failed to authenticate wallet',
@@ -553,7 +553,7 @@ export const getUserQuestProgress = async (walletAddress: string) => {
     )
     return response
   } catch (error) {
-    console.error('Error getting quest progress:', error)
+    //console.error('Error getting quest progress:', error)
     throw error
   }
 }
@@ -579,7 +579,7 @@ export const checkCanPlayGame = async (walletAddress: string): Promise<GameLimit
     )
     return response
   } catch (error) {
-    console.error('Error checking if user can play game:', error)
+    //console.error('Error checking if user can play game:', error)
     throw error
   }
 }
@@ -595,7 +595,7 @@ export const recordGamePlay = async (walletAddress: string): Promise<GameLimitRe
     )
     return response
   } catch (error) {
-    console.error('Error recording game play:', error)
+    //console.error('Error recording game play:', error)
     throw error
   }
 }
@@ -608,7 +608,7 @@ export const getXPostId = async (): Promise<XPostIdResponse> => {
     )
     return response
   } catch (error) {
-    console.error('Error getting X post ID:', error)
+    //console.error('Error getting X post ID:', error)
     throw error
   }
 }
@@ -649,7 +649,7 @@ export const applyReferralCode = async (
     )
     return response
   } catch (error) {
-    console.error('Error applying referral code:', error)
+    //console.error('Error applying referral code:', error)
     throw error
   }
 }
@@ -672,7 +672,7 @@ export const getReferralInfo = async (userId: string): Promise<ReferralInfoRespo
     )
     return response
   } catch (error) {
-    console.error('Error getting referral info:', error)
+    //console.error('Error getting referral info:', error)
     throw error
   }
 }
@@ -695,7 +695,7 @@ export const getTopReferrers = async (limit: number = 10): Promise<TopReferrersR
     )
     return response
   } catch (error) {
-    console.error('Error getting top referrers:', error)
+    //console.error('Error getting top referrers:', error)
     throw error
   }
 }

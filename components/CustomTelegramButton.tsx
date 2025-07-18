@@ -36,7 +36,7 @@ const CustomTelegramButton = memo(function CustomTelegramButton({
 
   const sendToBackend = useCallback(async (telegramData: TelegramAuthData) => {
     try {
-      console.log("Sending Telegram data to backend:", telegramData);
+      //console.log("Sending Telegram data to backend:", telegramData);
       
       if (!isConnected) {
         showWalletWarning(toast as ToastInstance);
@@ -59,7 +59,7 @@ const CustomTelegramButton = memo(function CustomTelegramButton({
 
       if (authResponse.ok) {
         const authResult = await authResponse.json();
-        console.log("Telegram auth response:", authResult);
+        //console.log("Telegram auth response:", authResult);
         
         // Then verify quest completion
         const { verifyTelegramConnection } = await import('@/lib/api');
@@ -69,11 +69,11 @@ const CustomTelegramButton = memo(function CustomTelegramButton({
         setShowModal(false);
         onSuccess?.();
       } else {
-        console.error("Backend error:", authResponse.status, authResponse.statusText);
+        //console.error("Backend error:", authResponse.status, authResponse.statusText);
         toast.error("Failed to connect Telegram. Please try again.");
       }
     } catch (error) {
-      console.error("Error sending to backend:", error);
+      //console.error("Error sending to backend:", error);
       toast.error("Failed to connect Telegram. Please try again.");
     }
   }, [isConnected, address, onSuccess]);

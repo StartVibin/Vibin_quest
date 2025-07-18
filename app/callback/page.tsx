@@ -39,7 +39,7 @@ function CallbackContent() {
         spotifyAccessToken,
       };
 
-      console.log('Complete registration data:', registrationData);
+      //console.log('Complete registration data:', registrationData);
 
       // Here you would send the data to your backend
       // For now, we'll simulate the API call
@@ -56,7 +56,7 @@ function CallbackContent() {
       // Redirect to dashboard
       router.push('/dashboard');
     } catch (error) {
-      console.error('Registration completion error:', error);
+      //console.error('Registration completion error:', error);
       toast.error('Failed to complete registration');
       router.push('/');
     }
@@ -70,7 +70,7 @@ function CallbackContent() {
         const error = searchParams.get('error');
 
         if (error) {
-          console.error('Spotify OAuth error:', error);
+          //console.error('Spotify OAuth error:', error);
           toast.error('Spotify authorization failed');
           router.push('/');
           return;
@@ -85,7 +85,7 @@ function CallbackContent() {
         // Verify state parameter (you should implement proper state verification)
         const storedState = sessionStorage.getItem('spotify_oauth_state');
         if (state !== storedState) {
-          console.warn('State mismatch - potential CSRF attack');
+          //console.warn('State mismatch - potential CSRF attack');
           // For development, we'll continue anyway
         }
 
@@ -126,7 +126,7 @@ function CallbackContent() {
         await completeRegistration();
         
       } catch (error) {
-        console.error('Callback error:', error);
+        //console.error('Callback error:', error);
         toast.error('Failed to complete Spotify connection');
         router.push('/');
       }

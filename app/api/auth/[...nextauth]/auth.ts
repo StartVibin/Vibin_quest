@@ -20,10 +20,10 @@ export const authOptions: NextAuthOptions = {
       name: "Telegram Login",
       credentials: {},
       async authorize(credentials, req) {
-        console.log("Bot Token:", process.env.BOT_TOKEN ? "Set" : "Not set");
+        //console.log("Bot Token:", process.env.BOT_TOKEN ? "Set" : "Not set");
         
         if (!process.env.BOT_TOKEN) {
-          console.error("BOT_TOKEN environment variable is not set");
+          //console.error("BOT_TOKEN environment variable is not set");
           return null;
         }
 
@@ -32,14 +32,14 @@ export const authOptions: NextAuthOptions = {
         });
 
         const data = objectToAuthDataMap(req.query || {});
-        console.log("Received Telegram Auth Data:", data);
+        //console.log("Received Telegram Auth Data:", data);
         
         let user;
         try {
           user = await validator.validate(data);
-          console.log("Validated Telegram User:", user);
+          //console.log("Validated Telegram User:", user);
         } catch (error) {
-          console.error("Validation error:", error);
+          //console.error("Validation error:", error);
           return null;
         }
 

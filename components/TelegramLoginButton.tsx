@@ -17,7 +17,7 @@ export default function TelegramLoginButton({
 
   const sendToBackend = async (telegramData: TelegramAuthData) => {
     try {
-      console.log("Sending Telegram data to backend:", telegramData);
+      //console.log("Sending Telegram data to backend:", telegramData);
       
       if (!isConnected) {
         showWalletWarning(toast as ToastInstance);
@@ -40,7 +40,7 @@ export default function TelegramLoginButton({
 
       if (authResponse.ok) {
         const authResult = await authResponse.json();
-        console.log("Telegram auth response:", authResult);
+        //console.log("Telegram auth response:", authResult);
         
         // Then verify quest completion
         const { verifyTelegramConnection } = await import('@/lib/api');
@@ -49,11 +49,11 @@ export default function TelegramLoginButton({
         toast.success(`Telegram connected successfully! Awarded ${verificationResult.data.pointsAwarded} points!`);
         onSuccess?.();
       } else {
-        console.error("Backend error:", authResponse.status, authResponse.statusText);
+        //console.error("Backend error:", authResponse.status, authResponse.statusText);
         toast.error("Failed to connect Telegram. Please try again.");
       }
     } catch (error) {
-      console.error("Error sending to backend:", error);
+      //console.error("Error sending to backend:", error);
       toast.error("Failed to connect Telegram. Please try again.");
     }
   };
@@ -62,7 +62,7 @@ export default function TelegramLoginButton({
     <LoginButton
       botUsername="MyVibinBot" // Replace with your actual bot username
       onAuthCallback={(data) => {
-        console.log("Telegram Auth Data:", data);
+        //console.log("Telegram Auth Data:", data);
         sendToBackend(data);
       }}
     />

@@ -45,7 +45,7 @@ export default function Home() {
             setAccessModal(true);
         }
     }, []);
-    console.log(profile)
+    //console.log(profile)
     useEffect(() => {
         if (typeof window !== 'undefined') {
             // setIsXConnected(localStorage.getItem('x_verified') === 'true'); // REMOVE THIS LINE
@@ -54,15 +54,15 @@ export default function Home() {
 
     const handleTelegramSuccess = useCallback(() => {
         // Handle successful Telegram connection
-        console.log("Telegram connected successfully");
-        console.log("You can now check the browser console and server logs for the full authentication data");
+        //console.log("Telegram connected successfully");
+        //console.log("You can now check the browser //console and server logs for the full authentication data");
         toast.success("Telegram connected successfully!");
     }, []);
 
     const handleEmailSuccess = useCallback(() => {
         // Handle successful email connection
-        console.log("Email connected successfully");
-        console.log("You can now check the browser console and server logs for the full authentication data");
+        //console.log("Email connected successfully");
+        //console.log("You can now check the browser //console and server logs for the full authentication data");
         toast.success("Email connected successfully!");
     }, []);
 
@@ -119,19 +119,19 @@ export default function Home() {
             await navigator.clipboard.writeText(inviteLink);
             toast.success('Invite link copied to clipboard!');
         } catch (error) {
-            console.error('Failed to copy invite link:', error);
+            //console.error('Failed to copy invite link:', error);
             toast.error('Failed to copy invite link');
         }
     };
 
     const handleInviteClick = () => {
-        console.log('Invite button clicked');
-        console.log('isConnected:', isConnected);
+        //console.log('Invite button clicked');
+        //console.log('isConnected:', isConnected);
         if (!isConnected) {
             showWalletWarning(toast as ToastInstance);
             return;
         }
-        console.log('Setting modal to true');
+        //console.log('Setting modal to true');
         setShowInviteModal(true);
     };
 
@@ -299,8 +299,8 @@ export default function Home() {
                                 <button
                                     className={styles.inviteButton}
                                     onClick={() => {
-                                        console.log('Invite button clicked');
-                                        console.log('isConnected:', isConnected);
+                                        //console.log('Invite button clicked');
+                                        //console.log('isConnected:', isConnected);
                                         setShowInviteModal(true);
                                     }}
                                 >

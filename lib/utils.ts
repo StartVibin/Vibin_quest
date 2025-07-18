@@ -61,10 +61,10 @@ export const handleQuestAction = (questId: string, platform: string) => {
       break
     case 'telegram':
       // Handle Telegram join logic
-      console.log('Telegram quest clicked:', questId)
+      //console.log('Telegram quest clicked:', questId)
       break
     default:
-      console.log('Unknown platform:', platform)
+      //console.log('Unknown platform:', platform)
   }
 }
 
@@ -88,7 +88,7 @@ export const handleXConnect = async (toast: ToastInstance) => {
   const scope = 'tweet.read users.read offline.access tweet.write follows.write'
   
   if (!clientId) {
-    console.error('X OAuth not configured - missing NEXT_PUBLIC_X_CLIENT_ID')
+    //console.error('X OAuth not configured - missing NEXT_PUBLIC_X_CLIENT_ID')
     toast.error('X OAuth not configured. Please set up your X Developer App.')
     return
   }
@@ -153,7 +153,7 @@ export const handleXFollow = async (username: string = 'StartVibin', toast: Toas
       throw new Error(data.error || 'Failed to follow user')
     }
   } catch (error) {
-    console.error('Follow action failed:', error)
+    //console.error('Follow action failed:', error)
     toast.error('Failed to follow user. Please try again.')
   }
 }
@@ -189,7 +189,7 @@ export const handleXRepost = async (tweetId: string = '1940467598610911339', toa
       throw new Error(data.error || 'Failed to repost')
     }
   } catch (error) {
-    console.error('Repost action failed:', error)
+    //console.error('Repost action failed:', error)
     toast.error('Failed to repost. Please try again.')
   }
 }
@@ -225,7 +225,7 @@ export const handleXReply = async (tweetId: string = '1940467598610911339', toas
       throw new Error(data.error || 'Failed to reply')
     }
   } catch (error) {
-    console.error('Reply action failed:', error)
+    //console.error('Reply action failed:', error)
     toast.error('Failed to reply. Please try again.')
   }
 }
@@ -261,7 +261,7 @@ export const handleXPost = async (toast: ToastInstance, walletAddress?: string) 
       throw new Error(data.error || 'Failed to post')
     }
   } catch (error) {
-    console.error('Post action failed:', error)
+    //console.error('Post action failed:', error)
     toast.error('Failed to post. Please try again.')
   }
 }

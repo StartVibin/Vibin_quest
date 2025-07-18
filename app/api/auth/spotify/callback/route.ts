@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     const error = searchParams.get('error');
 
     if (error) {
-      console.error('Spotify OAuth error:', error);
+      //console.error('Spotify OAuth error:', error);
       return NextResponse.redirect(new URL('/join/spotify?error=oauth_failed', request.url));
     }
 
@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
     });
 
     if (!tokenResponse.ok) {
-      console.error('Token exchange failed:', await tokenResponse.text());
+      //console.error('Token exchange failed:', await tokenResponse.text());
       return NextResponse.redirect(new URL('/join/spotify?error=token_exchange_failed', request.url));
     }
 
@@ -50,7 +50,7 @@ export async function GET(request: NextRequest) {
     });
 
     if (!profileResponse.ok) {
-      console.error('Profile fetch failed:', await profileResponse.text());
+      //console.error('Profile fetch failed:', await profileResponse.text());
       return NextResponse.redirect(new URL('/join/spotify?error=profile_fetch_failed', request.url));
     }
 
@@ -70,7 +70,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.redirect(successUrl);
   } catch (error) {
-    console.error('Spotify callback error:', error);
+    //console.error('Spotify callback error:', error);
     return NextResponse.redirect(new URL('/join/spotify?error=callback_failed', request.url));
   }
 } 

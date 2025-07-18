@@ -13,16 +13,16 @@ export async function POST(request: NextRequest) {
     const redirectUri = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/google-callback`;
 
     // Debug logging
-    console.log('Google OAuth Debug Info:');
-    console.log('Client ID exists:', !!clientId);
-    console.log('Client Secret exists:', !!clientSecret);
-    console.log('Redirect URI:', redirectUri);
-    console.log('Code received:', !!code);
+    //console.log('Google OAuth Debug Info:');
+    //console.log('Client ID exists:', !!clientId);
+    //console.log('Client Secret exists:', !!clientSecret);
+    //console.log('Redirect URI:', redirectUri);
+    //console.log('Code received:', !!code);
 
     if (!clientId || !clientSecret) {
-      console.error('Missing Google OAuth credentials:');
-      console.error('GOOGLE_CLIENT_ID:', !!clientId);
-      console.error('GOOGLE_CLIENT_SECRET:', !!clientSecret);
+      //console.error('Missing Google OAuth credentials:');
+      //console.error('GOOGLE_CLIENT_ID:', !!clientId);
+      //console.error('GOOGLE_CLIENT_SECRET:', !!clientSecret);
       return NextResponse.json({ 
         error: 'Google OAuth not configured. Please check your environment variables.',
         details: {
@@ -50,9 +50,9 @@ export async function POST(request: NextRequest) {
 
     if (!tokenResponse.ok) {
       const errorData = await tokenResponse.text();
-      console.error('Google token exchange error:', errorData);
-      console.error('Response status:', tokenResponse.status);
-      console.error('Response headers:', Object.fromEntries(tokenResponse.headers.entries()));
+      //console.error('Google token exchange error:', errorData);
+      //console.error('Response status:', tokenResponse.status);
+      //console.error('Response headers:', Object.fromEntries(tokenResponse.headers.entries()));
       return NextResponse.json({ 
         error: 'Failed to exchange code for token',
         details: errorData
@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
     }
 
     const tokenData = await tokenResponse.json();
-    console.log('Token exchange successful');
+    //console.log('Token exchange successful');
 
     return NextResponse.json({
       access_token: tokenData.access_token,
@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
       expires_in: tokenData.expires_in,
     });
   } catch (error) {
-    console.error('Error in Google token exchange:', error);
+    //console.error('Error in Google token exchange:', error);
     return NextResponse.json({ 
       error: 'Internal server error',
       details: error instanceof Error ? error.message : 'Unknown error'

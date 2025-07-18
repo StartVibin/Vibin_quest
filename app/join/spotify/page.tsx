@@ -43,7 +43,7 @@ export default function SpotifyLoginPage() {
         userEmail: email, // The email entered in the form
       };
       
-      console.log('Registration data:', registrationData);
+      //console.log('Registration data:', registrationData);
       
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
@@ -59,7 +59,7 @@ export default function SpotifyLoginPage() {
       // Redirect to dashboard
       router.push('/dashboard');
     } catch (error) {
-      console.error('Registration error:', error);
+      //console.error('Registration error:', error);
       toast.error('Failed to complete registration. Please try again.');
     }
   }, [router, email]);
@@ -142,7 +142,7 @@ export default function SpotifyLoginPage() {
       // Show Spotify OAuth modal
       setShowSpotifyModal(true);
     } catch (error) {
-      console.error('Email validation error:', error);
+      //console.error('Email validation error:', error);
       toast.error('Invalid email. Please try again.');
     } finally {
       setIsLoading(false);

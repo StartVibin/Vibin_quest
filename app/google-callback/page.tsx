@@ -21,7 +21,7 @@ function GoogleCallbackContent() {
     const error = searchParams.get('error');
 
     if (error) {
-      console.error('Google OAuth error:', error);
+      //console.error('Google OAuth error:', error);
       window.opener?.postMessage({
         type: 'google_auth_error',
         error: error
@@ -31,7 +31,7 @@ function GoogleCallbackContent() {
     }
 
     if (!code || !state) {
-      console.error('Missing code or state parameter');
+      //console.error('Missing code or state parameter');
       window.opener?.postMessage({
         type: 'google_auth_error',
         error: 'Missing OAuth parameters'
@@ -43,7 +43,7 @@ function GoogleCallbackContent() {
     // Verify state parameter
     const savedState = localStorage.getItem('google_oauth_state');
     if (state !== savedState) {
-      console.error('State parameter mismatch');
+      //console.error('State parameter mismatch');
       window.opener?.postMessage({
         type: 'google_auth_error',
         error: 'State parameter mismatch'
@@ -95,7 +95,7 @@ function GoogleCallbackContent() {
       localStorage.removeItem('google_oauth_state');
       window.close();
     } catch (error) {
-      console.error('Error exchanging code for token:', error);
+      //console.error('Error exchanging code for token:', error);
       window.opener?.postMessage({
         type: 'google_auth_error',
         error: 'Failed to authenticate with Google'

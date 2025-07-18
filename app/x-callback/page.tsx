@@ -16,11 +16,11 @@ function XCallback() {
     const processCallback = async () => {
       try {
         const code = searchParams.get('code');
-        console.log("🚀 ~ processCallback ~ code:", code)
+        //console.log("🚀 ~ processCallback ~ code:", code)
         const state = searchParams.get('state');
-        console.log("🚀 ~ processCallback ~ state:", state)
+        //console.log("🚀 ~ processCallback ~ state:", state)
         const error = searchParams.get('error');
-        console.log("🚀 ~ processCallback ~ error:", error)
+        //console.log("🚀 ~ processCallback ~ error:", error)
 
         if (error) {
           setStatus('error');
@@ -42,8 +42,8 @@ function XCallback() {
           storedState = localStorage.getItem('x_oauth_state');
           codeVerifier = localStorage.getItem('x_code_verifier');
         }
-        console.log("🚀 ~ processCallback ~ storedState:", storedState)
-        console.log("🚀 ~ processCallback ~ codeVerifier:", codeVerifier)
+        //console.log("🚀 ~ processCallback ~ storedState:", storedState)
+        //console.log("🚀 ~ processCallback ~ codeVerifier:", codeVerifier)
         if (storedState !== state || !codeVerifier) {
           setStatus('error');
           setMessage('Invalid state parameter or missing code verifier');
@@ -53,7 +53,7 @@ function XCallback() {
 
         // Exchange code for access token via backend
         const redirectUri = `${window.location.origin}/x-callback`;
-        console.log("🚀 ~ processCallback ~ redirectUri:", redirectUri)
+        //console.log("🚀 ~ processCallback ~ redirectUri:", redirectUri)
         const response = await fetch('/api/x/oauth-callback', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -81,12 +81,12 @@ function XCallback() {
             body: JSON.stringify({ accessToken: data.access_token }),
           });
           const profileData = await profileRes.json();
-          console.log('X user profile:', profileData);
+          //console.log('X user profile:', profileData);
           
           if ( profileData.data) {
             // Send X user data to backend for verification and points
             if (isConnected && address) {
-            console.log("🚀 ~ processCallback ~ address:", address);
+            //console.log("🚀 ~ processCallback ~ address:", address);
               const verifyRes = await fetch('https://api.startvibin.io/api/v1/quests/x/connect', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -99,21 +99,21 @@ function XCallback() {
                   xVerified: profileData.data.verified
                 }),
               });
-              console.log("🚀 ~ processCallback ~ verifyRes:", verifyRes)
+              //console.log("🚀 ~ processCallback ~ verifyRes:", verifyRes)
               
               if (verifyRes.ok) {
                 const verifyData = await verifyRes.json();
-                console.log('X connection verified:', verifyData);
+                //console.log('X connection verified:', verifyData);
                 setMessage(`X account connected successfully! Awarded ${verifyData.data.pointsAwarded} points!`);
               } else {
-                console.error('Failed to verify X connection:', verifyRes.status);
+                //console.error('Failed to verify X connection:', verifyRes.status);
               }
             } else {
-              console.log('Wallet not connected, skipping backend verification');
+              //console.log('Wallet not connected, skipping backend verification');
             }
           }
         } catch (profileErr) {
-          console.error('Failed to fetch X user profile:', profileErr);
+          //console.error('Failed to fetch X user profile:', profileErr);
         }
 
         // Clean up temporary data
@@ -130,7 +130,7 @@ function XCallback() {
           router.push('/');
         }, 2000);
       } catch (error) {
-        console.error('X callback processing failed:', error);
+        //console.error('X callback processing failed:', error);
         setStatus('error');
         setMessage('Failed to process X connection');
       }

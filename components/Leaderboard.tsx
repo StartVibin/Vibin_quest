@@ -40,7 +40,7 @@ export const Leaderboard: React.FC = () => {
         setError('Failed to fetch leaderboard data')
       }
     } catch (err) {
-      console.error('Error fetching leaderboard:', err)
+      //console.error('Error fetching leaderboard:', err)
       setError(err instanceof Error ? err.message : 'Failed to fetch leaderboard')
     } finally {
       setLoading(false)
