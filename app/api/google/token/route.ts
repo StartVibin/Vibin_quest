@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
 
     const clientId = process.env.GOOGLE_CLIENT_ID;
     const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
-    const redirectUri = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/google-callback`;
+    const redirectUri = `${process.env.NEXT_PUBLIC_APP_URL || 'https://app.startvibin.io'}/google-callback`;
 
     console.log('🔧 [Google Token API] Configuration:', {
       hasClientId: !!clientId,

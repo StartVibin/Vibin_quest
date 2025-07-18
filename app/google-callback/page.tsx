@@ -16,6 +16,9 @@ function GoogleCallbackContent() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
+    console.log("🔄 [Google Callback] Component mounted");
+    console.log("🔄 [Google Callback] Window opener exists:", !!window.opener);
+    console.log("🔄 [Google Callback] Window location:", window.location.href);
     console.log("🔄 [Google Callback] Callback page loaded");
     console.log("🔍 [Google Callback] Search params:", Object.fromEntries(searchParams.entries()));
     console.log("🔍 [Google Callback] Raw URL:", window.location.href);
@@ -46,7 +49,9 @@ function GoogleCallbackContent() {
       console.log('🔍 [Google Callback] State:', state);
       window.opener?.postMessage({
         type: 'google_auth_error',
-        error: 'Missing OAuth parameters'
+        error: 'Missing OAuth parameters',
+        source: 'google_oauth_callback',
+        timestamp: new Date().toISOString()
       }, window.location.origin);
       window.close();
       return;
@@ -60,7 +65,9 @@ function GoogleCallbackContent() {
       console.error('❌ [Google Callback] State parameter mismatch');
       window.opener?.postMessage({
         type: 'google_auth_error',
-        error: 'State parameter mismatch'
+        error: 'State parameter mismatch',
+        source: 'google_oauth_callback',
+        timestamp: new Date().toISOString()
       }, window.location.origin);
       window.close();
       return;
@@ -124,7 +131,9 @@ function GoogleCallbackContent() {
       console.log('📤 [Google Callback] Sending success message to parent window');
       window.opener?.postMessage({
         type: 'google_auth_success',
-        user: userData
+        user: userData,
+        source: 'google_oauth_callback',
+        timestamp: new Date().toISOString()
       }, window.location.origin);
 
       // Clean up
@@ -171,7 +180,9 @@ function GoogleCallbackContent() {
       
       window.opener?.postMessage({
         type: 'google_auth_error',
-        error: 'Failed to authenticate with Google'
+        error: 'Failed to authenticate with Google',
+        source: 'google_oauth_callback',
+        timestamp: new Date().toISOString()
       }, window.location.origin);
       
       // Try to close window safely

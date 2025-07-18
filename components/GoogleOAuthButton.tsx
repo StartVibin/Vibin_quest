@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback, memo } from 'react';
+import React, { useState } from 'react';
 import { useAccount } from "wagmi";
 import { toast } from 'react-toastify';
 import { showWalletWarning } from "@/lib/utils";
@@ -22,7 +22,7 @@ interface GoogleOAuthButtonProps {
   clientId?: string;
 }
 
-const GoogleOAuthButton = memo(function GoogleOAuthButton({ 
+export default function GoogleOAuthButton ({ 
   onSuccess, 
   className = "", 
   children,
@@ -31,7 +31,7 @@ const GoogleOAuthButton = memo(function GoogleOAuthButton({
   const { address, isConnected } = useAccount();
   const [showModal, setShowModal] = useState(false);
 
-  const sendToBackend = useCallback(async (userData: GoogleUserData) => {
+  const sendToBackend = async (userData: GoogleUserData) => {
     try {
       console.log("🚀 [Google OAuth] Starting backend verification process");
       console.log("📊 [Google OAuth] User data received:", userData);
@@ -52,9 +52,14 @@ const GoogleOAuthButton = memo(function GoogleOAuthButton({
       const verificationResult = await verifyEmailConnection(address!, userData.email, userData);
       
       console.log("✅ [Google OAuth] Verification successful:", verificationResult);
-      console.log("🎉 [Google OAuth] Points awarded:", verificationResult.data.pointsAwarded);
       
-      toast.success(`Email connected successfully! Awarded ${verificationResult.data.pointsAwarded} points!`);
+      if (verificationResult.data && verificationResult.data.pointsAwarded) {
+        console.log("🎉 [Google OAuth] Points awarded:", verificationResult.data.pointsAwarded);
+        toast.success(`Email connected successfully! Awarded ${verificationResult.data.pointsAwarded} points!`);
+      } else {
+        console.log("✅ [Google OAuth] Email connected successfully");
+        toast.success("Email connected successfully!");
+      }
       setShowModal(false);
       onSuccess?.();
     } catch (error) {
@@ -65,27 +70,28 @@ const GoogleOAuthButton = memo(function GoogleOAuthButton({
       });
       toast.error("Failed to connect email. Please try again.");
     }
-  }, [isConnected, address, onSuccess]);
+  }
 
-  const handleConnectClick = useCallback(() => {
+  const handleConnectClick = () => {
     if (!isConnected) {
       showWalletWarning(toast as ToastInstance);
       return;
     }
     setShowModal(true);
-  }, [isConnected]);
+  }
 
-  const handleCloseModal = useCallback(() => {
+  const handleCloseModal = () => {
     setShowModal(false);
-  }, []);
+   }
 
-  const handleGoogleLogin = useCallback(() => {
+  const handleGoogleLogin = () => {
     console.log("🔑 [Google OAuth] Starting Google login process");
     console.log("🆔 [Google OAuth] Client ID configured:", !!clientId);
+    console.log("🆔 [Google OAuth] Client ID value:", clientId ? `${clientId.substring(0, 10)}...` : 'NOT SET');
     
-    if (!clientId) {
+    if (!clientId || clientId === '') {
       console.error("❌ [Google OAuth] Client ID not configured");
-      toast.error("Google OAuth not configured. Please set up your Google Client ID.");
+      toast.error("Google OAuth not configured. Please set NEXT_PUBLIC_GOOGLE_CLIENT_ID in your .env.local file.");
       return;
     }
 
@@ -123,32 +129,111 @@ const GoogleOAuthButton = memo(function GoogleOAuthButton({
     );
 
     console.log("🪟 [Google OAuth] Popup opened:", !!popup);
+    
+    // Check if popup was blocked
+    if (!popup) {
+      console.error("❌ [Google OAuth] Popup was blocked by browser");
+      toast.error("Popup was blocked. Please allow popups for this site and try again.");
+      return;
+    }
+    
+    // Monitor popup state
+    const checkPopupClosed = setInterval(() => {
+      if (popup.closed) {
+        console.log("🪟 [Google OAuth] Popup was closed");
+        clearInterval(checkPopupClosed);
+        window.removeEventListener('message', handleMessage);
+      }
+    }, 1000);
 
     // Listen for messages from the popup
     const handleMessage = (event: MessageEvent) => {
-      console.log("📨 [Google OAuth] Received message:", event.data);
+      const timestamp = new Date().toISOString();
+      console.log(`📨 [Google OAuth] [${timestamp}] Received message:`, event.data);
+      console.log("📨 [Google OAuth] Message structure:", {
+        hasTarget: !!event.data?.target,
+        target: event.data?.target,
+        hasName: !!event.data?.name,
+        name: event.data?.name,
+        hasData: !!event.data?.data,
+        dataType: typeof event.data?.data,
+        hasType: !!event.data?.type,
+        type: event.data?.type,
+        origin: event.origin
+      });
       
+      // Only handle messages from our Google OAuth popup
       if (event.origin !== window.location.origin) {
         console.warn("⚠️ [Google OAuth] Message from different origin:", event.origin);
         return;
       }
       
-      if (event.data && event.data.type === 'google_auth_success') {
+      // Check if this is a Google OAuth message (not MetaMask or other wallet messages)
+      if (!event.data || typeof event.data !== 'object') {
+        console.log("📨 [Google OAuth] Ignoring non-object message");
+        return;
+      }
+      
+      // Filter out MetaMask and other wallet messages - comprehensive check
+      const isMetaMaskMessage = 
+        event.data.target === 'metamask-inpage' ||
+        event.data.target === 'metamask-provider' ||
+        event.data.name === 'metamask-provider' ||
+        (event.data.data && event.data.data.target === 'metamask-inpage') ||
+        (event.data.data && event.data.data.target === 'metamask-provider') ||
+        (event.data.data && event.data.data.name === 'metamask-provider') ||
+        (event.data.data && event.data.data.data && event.data.data.data.method?.startsWith('metamask_')) ||
+        (event.data.data && event.data.data.data && event.data.data.data.method?.startsWith('wallet_'));
+      
+      if (isMetaMaskMessage) {
+        console.log(`📨 [Google OAuth] [${timestamp}] Ignoring MetaMask/wallet message:`, {
+          target: event.data.target || event.data.data?.target,
+          name: event.data.name || event.data.data?.name,
+          method: event.data.data?.data?.method
+        });
+        return;
+      }
+      
+      // Only process messages with google_auth_success or google_auth_error type
+      if (event.data.type !== 'google_auth_success' && event.data.type !== 'google_auth_error') {
+        console.log(`📨 [Google OAuth] [${timestamp}] Ignoring non-Google OAuth message:`, event.data.type);
+        return;
+      }
+      
+      // Additional verification: Check if this is actually from our Google OAuth popup
+      if (event.data.type === 'google_auth_success' && !event.data.user) {
+        console.log(`📨 [Google OAuth] [${timestamp}] Ignoring Google OAuth message without user data`);
+        return;
+      }
+      
+      // Verify the message source
+      if (event.data.source !== 'google_oauth_callback') {
+        console.log(`📨 [Google OAuth] [${timestamp}] Ignoring message from unknown source:`, event.data.source);
+        return;
+      }
+      
+      console.log(`📨 [Google OAuth] [${timestamp}] Processing legitimate Google OAuth message:`, {
+        type: event.data.type,
+        source: event.data.source,
+        timestamp: event.data.timestamp
+      });
+      
+      if (event.data.type === 'google_auth_success') {
         console.log("✅ [Google OAuth] Auth success message received");
         console.log("👤 [Google OAuth] User data:", event.data.user);
         sendToBackend(event.data.user);
         
         // Try to close popup safely
         try {
-          if (popup && !popup.closed) {
-            popup.close();
-          }
+          // if (popup && !popup.closed) {
+          //   popup.close();
+          // }
         } catch (error) {
           console.warn("⚠️ [Google OAuth] Could not close popup:", error);
         }
         
         window.removeEventListener('message', handleMessage);
-      } else if (event.data && event.data.type === 'google_auth_error') {
+      } else if (event.data.type === 'google_auth_error') {
         console.error("❌ [Google OAuth] Auth error message received:", event.data.error);
         toast.error("Google authentication failed. Please try again.");
         
@@ -167,7 +252,23 @@ const GoogleOAuthButton = memo(function GoogleOAuthButton({
 
     window.addEventListener('message', handleMessage);
     console.log("👂 [Google OAuth] Message listener attached");
-  }, [clientId, sendToBackend]);
+    
+    // Set a timeout to detect if no message is received
+    setTimeout(() => {
+      console.warn("⚠️ [Google OAuth] No message received within 60 seconds - checking popup status");
+      if (popup && !popup.closed) {
+        console.log("🪟 [Google OAuth] Popup is still open");
+        try {
+          // Try to check popup location (might be blocked by CORS)
+          console.log("🔗 [Google OAuth] Popup location:", popup.location.href);
+        } catch (error) {
+          console.warn("⚠️ [Google OAuth] Cannot access popup location due to CORS:", error);
+        }
+      } else {
+        console.log("🪟 [Google OAuth] Popup is closed");
+      }
+    }, 60000);
+   }
 
   return (
     <>
@@ -276,6 +377,4 @@ const GoogleOAuthButton = memo(function GoogleOAuthButton({
       )}
     </>
   );
-});
-
-export default GoogleOAuthButton; 
+}
