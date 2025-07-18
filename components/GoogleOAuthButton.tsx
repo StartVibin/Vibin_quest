@@ -33,22 +33,36 @@ const GoogleOAuthButton = memo(function GoogleOAuthButton({
 
   const sendToBackend = useCallback(async (userData: GoogleUserData) => {
     try {
-      //console.log("Sending Google OAuth data to backend:", userData);
+      console.log("🚀 [Google OAuth] Starting backend verification process");
+      console.log("📊 [Google OAuth] User data received:", userData);
       
       if (!isConnected) {
+        console.warn("⚠️ [Google OAuth] Wallet not connected, showing warning");
         showWalletWarning(toast as ToastInstance);
         return;
       }
       
+      console.log("🔗 [Google OAuth] Wallet connected, address:", address);
+      console.log("📧 [Google OAuth] Verifying email:", userData.email);
+      
       // Verify email connection with backend
       const { verifyEmailConnection } = await import('@/lib/api');
+      console.log("📡 [Google OAuth] Calling verifyEmailConnection API...");
+      
       const verificationResult = await verifyEmailConnection(address!, userData.email, userData);
+      
+      console.log("✅ [Google OAuth] Verification successful:", verificationResult);
+      console.log("🎉 [Google OAuth] Points awarded:", verificationResult.data.pointsAwarded);
       
       toast.success(`Email connected successfully! Awarded ${verificationResult.data.pointsAwarded} points!`);
       setShowModal(false);
       onSuccess?.();
     } catch (error) {
-      console.error("Error sending to backend:", error);
+      console.error("❌ [Google OAuth] Error sending to backend:", error);
+      console.error("🔍 [Google OAuth] Error details:", {
+        message: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined
+      });
       toast.error("Failed to connect email. Please try again.");
     }
   }, [isConnected, address, onSuccess]);
@@ -66,7 +80,11 @@ const GoogleOAuthButton = memo(function GoogleOAuthButton({
   }, []);
 
   const handleGoogleLogin = useCallback(() => {
+    console.log("🔑 [Google OAuth] Starting Google login process");
+    console.log("🆔 [Google OAuth] Client ID configured:", !!clientId);
+    
     if (!clientId) {
+      console.error("❌ [Google OAuth] Client ID not configured");
       toast.error("Google OAuth not configured. Please set up your Google Client ID.");
       return;
     }
@@ -76,9 +94,14 @@ const GoogleOAuthButton = memo(function GoogleOAuthButton({
     const scope = 'email profile';
     const responseType = 'code';
     
+    console.log("🔗 [Google OAuth] Redirect URI:", redirectUri);
+    console.log("📋 [Google OAuth] Scope:", scope);
+    console.log("🌐 [Google OAuth] Origin:", window.location.origin);
+    
     // Generate state parameter for security
     const state = Math.random().toString(36).substring(2, 15);
     localStorage.setItem('google_oauth_state', state);
+    console.log("🔐 [Google OAuth] Generated state:", state);
     
     // Build OAuth URL
     const authUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth');
@@ -90,6 +113,8 @@ const GoogleOAuthButton = memo(function GoogleOAuthButton({
     authUrl.searchParams.set('access_type', 'offline');
     authUrl.searchParams.set('prompt', 'consent');
     
+    console.log("🌐 [Google OAuth] Auth URL:", authUrl.toString());
+    
     // Open Google OAuth in popup
     const popup = window.open(
       authUrl.toString(),
@@ -97,19 +122,33 @@ const GoogleOAuthButton = memo(function GoogleOAuthButton({
       'width=500,height=600,scrollbars=yes,resizable=yes'
     );
 
+    console.log("🪟 [Google OAuth] Popup opened:", !!popup);
+
     // Listen for messages from the popup
     const handleMessage = (event: MessageEvent) => {
-      if (event.origin !== window.location.origin) return;
+      console.log("📨 [Google OAuth] Received message:", event.data);
+      
+      if (event.origin !== window.location.origin) {
+        console.warn("⚠️ [Google OAuth] Message from different origin:", event.origin);
+        return;
+      }
       
       if (event.data && event.data.type === 'google_auth_success') {
-        //console.log("Received Google auth data:", event.data.user);
+        console.log("✅ [Google OAuth] Auth success message received");
+        console.log("👤 [Google OAuth] User data:", event.data.user);
         sendToBackend(event.data.user);
+        popup?.close();
+        window.removeEventListener('message', handleMessage);
+      } else if (event.data && event.data.type === 'google_auth_error') {
+        console.error("❌ [Google OAuth] Auth error message received:", event.data.error);
+        toast.error("Google authentication failed. Please try again.");
         popup?.close();
         window.removeEventListener('message', handleMessage);
       }
     };
 
     window.addEventListener('message', handleMessage);
+    console.log("👂 [Google OAuth] Message listener attached");
   }, [clientId, sendToBackend]);
 
   return (

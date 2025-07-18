@@ -16,10 +16,12 @@ declare module "next-auth" {
 
 export const authOptions: NextAuthOptions = {
   providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
+    ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET ? [
+      GoogleProvider({
+        clientId: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      })
+    ] : []),
     CredentialsProvider({
       id: "telegram-login",
       name: "Telegram Login",
@@ -63,9 +65,17 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async session({ session }) {
-      session.user.id = session.user.email;
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = session.user.email || token.sub || '';
+      }
       return session;
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
     },
   },
   pages: {
@@ -73,4 +83,17 @@ export const authOptions: NextAuthOptions = {
     error: "/auth/error",
   },
   debug: process.env.NODE_ENV === "development",
+  logger: {
+    error(code, ...message) {
+      console.error(`[NextAuth Error] ${code}:`, ...message);
+    },
+    warn(code, ...message) {
+      console.warn(`[NextAuth Warning] ${code}:`, ...message);
+    },
+    debug(code, ...message) {
+      if (process.env.NODE_ENV === "development") {
+        console.log(`[NextAuth Debug] ${code}:`, ...message);
+      }
+    },
+  },
 }; 
