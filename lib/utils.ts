@@ -123,37 +123,55 @@ const getAccessToken = () => {
 }
 
 export const handleXFollow = async (username: string = 'StartVibin', toast: ToastInstance, walletAddress?: string) => {
+  console.log('🔄 [X Follow] Starting follow process for:', username);
+  
   const accessToken = getAccessToken();
+  console.log('🔑 [X Follow] Access token status:', !!accessToken);
+  
   if (!accessToken) {
+    console.error('❌ [X Follow] No access token found');
     toast.error('Please connect your X account first')
     return
   }
   
   if (!walletAddress) {
+    console.error('❌ [X Follow] No wallet address provided');
     toast.error('Wallet address is required')
     return
   }
   
   try {
+    console.log('📡 [X Follow] Calling X follow API...');
     // First perform the X action
     const response = await fetch('/api/x/follow', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ accessToken, username }),
     });
+    
+    console.log('📊 [X Follow] API response status:', response.status);
     const data = await response.json();
+    console.log('📊 [X Follow] API response data:', data);
+    
     if (response.ok) {
+      console.log('✅ [X Follow] X follow successful, verifying with backend...');
       // Then verify with backend
       const { verifyXFollow } = await import('./api');
       const verificationResult = await verifyXFollow(walletAddress, username);
       
+      console.log('✅ [X Follow] Backend verification successful:', verificationResult);
       toast.success(`Successfully followed @${username}! Awarded ${verificationResult.data.pointsAwarded} points!`)
       localStorage.setItem('x_followed_vibin', 'true')
     } else {
-      throw new Error(data.error || 'Failed to follow user')
+      console.error('❌ [X Follow] X follow failed:', data);
+      throw new Error(data.error || data.details || 'Failed to follow user')
     }
   } catch (error) {
-    console.error('Follow action failed:', error)
+    console.error('❌ [X Follow] Follow action failed:', error);
+    console.error('🔍 [X Follow] Error details:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined
+    });
     toast.error('Failed to follow user. Please try again.')
   }
 }
