@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useAccount } from "wagmi";
 import { toast } from 'react-toastify';
 import { showWalletWarning } from '@/lib/utils';
+import { ToastInstance } from '@/lib/types';
 
 interface SimpleEmailConnectProps {
   onSuccess?: () => void;
@@ -23,7 +24,7 @@ export default function SimpleEmailConnect({
 
   const handleConnectClick = () => {
     if (!isConnected) {
-      showWalletWarning(toast as any);
+      showWalletWarning(toast as ToastInstance);
       return;
     }
     setShowModal(true);
