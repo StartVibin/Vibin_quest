@@ -95,7 +95,7 @@ export default function Home() {
           ////console.log("X Post ID fetched:", response.data.xPostId);
         }
       } catch (error) {
-        ////console.error("Error fetching X post ID:", error);
+       console.error("Error fetching X post ID:", error);
       }
     };
 
@@ -212,7 +212,7 @@ export default function Home() {
       await navigator.clipboard.writeText(inviteLink);
       toast.success("Invite link copied to clipboard!");
     } catch (error) {
-      //console.error("Failed to copy invite link:", error);
+      console.error("Failed to copy invite link:", error);
       toast.error("Failed to copy invite link");
     }
   };

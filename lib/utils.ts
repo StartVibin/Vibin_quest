@@ -153,7 +153,7 @@ export const handleXFollow = async (username: string = 'StartVibin', toast: Toas
       throw new Error(data.error || 'Failed to follow user')
     }
   } catch (error) {
-    //console.error('Follow action failed:', error)
+    console.error('Follow action failed:', error)
     toast.error('Failed to follow user. Please try again.')
   }
 }
@@ -189,7 +189,7 @@ export const handleXRepost = async (tweetId: string = '1940467598610911339', toa
       throw new Error(data.error || 'Failed to repost')
     }
   } catch (error) {
-    //console.error('Repost action failed:', error)
+    console.error('Repost action failed:', error)
     toast.error('Failed to repost. Please try again.')
   }
 }
@@ -225,7 +225,7 @@ export const handleXReply = async (tweetId: string = '1940467598610911339', toas
       throw new Error(data.error || 'Failed to reply')
     }
   } catch (error) {
-    //console.error('Reply action failed:', error)
+    console.error('Reply action failed:', error)
     toast.error('Failed to reply. Please try again.')
   }
 }
@@ -261,7 +261,7 @@ export const handleXPost = async (toast: ToastInstance, walletAddress?: string) 
       throw new Error(data.error || 'Failed to post')
     }
   } catch (error) {
-    //console.error('Post action failed:', error)
+    console.error('Post action failed:', error)
     toast.error('Failed to post. Please try again.')
   }
 }

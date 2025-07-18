@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
 
     if (!tokenResponse.ok) {
       const errorText = await tokenResponse.text();
-      //console.error('Token exchange failed:', errorText);
+      console.error('Token exchange failed:', errorText);
       return NextResponse.json(
         { error: 'Failed to exchange authorization code for token' },
         { status: 400 }
@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    //console.error('Token exchange error:', error);
+    console.error('Token exchange error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

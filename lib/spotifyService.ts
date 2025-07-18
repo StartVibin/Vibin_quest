@@ -255,7 +255,7 @@ async function refreshSpotifyToken(): Promise<SpotifyService | null> {
 
     return new SpotifyService(tokenData.access_token);
   } catch (error) {
-    //console.error('Error refreshing Spotify token:', error);
+    console.error('Error refreshing Spotify token:', error);
     // Clear invalid tokens
     localStorage.removeItem('spotify_access_token');
     localStorage.removeItem('spotify_refresh_token');

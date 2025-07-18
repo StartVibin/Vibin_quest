@@ -312,7 +312,7 @@ export const getUserPoints = async (walletAddress: string): Promise<number> => {
     )
     return response.data.totalPoints || 0
   } catch (error) {
-    //console.error('Error fetching user points:', error)
+    console.error('Error fetching user points:', error)
     return 0
   }
 }
@@ -339,7 +339,7 @@ export const getLeaderboard = async (): Promise<LeaderboardResponse> => {
   try {
     return await createApiRequest<LeaderboardResponse>(API_ENDPOINTS.LEADERBOARD)
   } catch (error) {
-    //console.error('Error fetching leaderboard:', error)
+    console.error('Error fetching leaderboard:', error)
     return { 
       success: false, 
       data: { 

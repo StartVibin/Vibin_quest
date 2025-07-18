@@ -39,7 +39,7 @@ export const authOptions: NextAuthOptions = {
           user = await validator.validate(data);
           //console.log("Validated Telegram User:", user);
         } catch (error) {
-          //console.error("Validation error:", error);
+          console.error("Validation error:", error);
           return null;
         }
 

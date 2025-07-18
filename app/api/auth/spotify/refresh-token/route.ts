@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
 
     if (!tokenResponse.ok) {
       const errorText = await tokenResponse.text();
-      //console.error('Token refresh failed:', errorText);
+      console.error('Token refresh failed:', errorText);
       return NextResponse.json(
         { error: 'Failed to refresh token' },
         { status: 400 }
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    //console.error('Token refresh error:', error);
+    console.error('Token refresh error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

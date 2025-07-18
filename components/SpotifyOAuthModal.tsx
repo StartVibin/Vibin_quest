@@ -27,7 +27,7 @@ export default function SpotifyOAuthModal({ isOpen, onClose, email }: SpotifyOAu
       // Redirect to Spotify OAuth
       window.location.href = data.authUrl;
     } catch (error) {
-      //console.error('Spotify OAuth error:', error);
+      console.error('Spotify OAuth error:', error);
       setIsLoading(false);
     }
   };

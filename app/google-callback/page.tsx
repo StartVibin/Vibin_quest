@@ -95,7 +95,7 @@ function GoogleCallbackContent() {
       localStorage.removeItem('google_oauth_state');
       window.close();
     } catch (error) {
-      //console.error('Error exchanging code for token:', error);
+      console.error('Error exchanging code for token:', error);
       window.opener?.postMessage({
         type: 'google_auth_error',
         error: 'Failed to authenticate with Google'

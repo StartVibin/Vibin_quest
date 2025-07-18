@@ -70,7 +70,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.redirect(successUrl);
   } catch (error) {
-    //console.error('Spotify callback error:', error);
+    console.error('Spotify callback error:', error);
     return NextResponse.redirect(new URL('/join/spotify?error=callback_failed', request.url));
   }
 } 

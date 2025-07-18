@@ -48,7 +48,7 @@ const GoogleOAuthButton = memo(function GoogleOAuthButton({
       setShowModal(false);
       onSuccess?.();
     } catch (error) {
-      //console.error("Error sending to backend:", error);
+      console.error("Error sending to backend:", error);
       toast.error("Failed to connect email. Please try again.");
     }
   }, [isConnected, address, onSuccess]);

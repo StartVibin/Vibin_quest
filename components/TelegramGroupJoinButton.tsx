@@ -42,7 +42,7 @@ const TelegramGroupJoinButton = memo(function TelegramGroupJoinButton({
       setShowModal(false);
       onSuccess?.();
     } catch (error) {
-      //console.error("Error verifying group join:", error);
+      console.error("Error verifying group join:", error);
       toast.error("Failed to verify group membership. Please try again.");
     }
   }, [isConnected, address, groupUsername, onSuccess]);

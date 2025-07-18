@@ -25,7 +25,7 @@ export async function GET() {
       state 
     });
   } catch (error) {
-    //console.error('Spotify OAuth error:', error);
+    console.error('Spotify OAuth error:', error);
     return NextResponse.json(
       { error: 'Failed to initialize Spotify OAuth' },
       { status: 500 }

@@ -54,7 +54,7 @@ export default function JoinPage() {
       // Navigate to the next step (Spotify email entry)
       router.push('/join/spotify');
     } catch (error) {
-      //console.error('Invitation code error:', error);
+      console.error('Invitation code error:', error);
       toast.error('Invalid invitation code. Please try again.');
     } finally {
       setIsLoading(false);

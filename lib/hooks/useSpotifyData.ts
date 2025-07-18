@@ -80,15 +80,15 @@ export function useSpotifyData(refreshInterval: number = 60000): UseSpotifyDataR
   const fetchData = useCallback(async () => {
     try {
       // Debug: Log what's in localStorage
-      //console.log('Spotify localStorage data:', {
-        accessToken: localStorage.getItem('spotify_access_token') ? 'Present' : 'Missing',
-        refreshToken: localStorage.getItem('spotify_refresh_token') ? 'Present' : 'Missing',
-        expiresIn: localStorage.getItem('spotify_expires_in'),
-        tokenExpiry: localStorage.getItem('spotify_token_expiry'),
-        spotifyId: localStorage.getItem('spotify_id'),
-        spotifyEmail: localStorage.getItem('spotify_email'),
-        spotifyName: localStorage.getItem('spotify_name'),
-      });
+      // console.log('Spotify localStorage data:', {
+      //   accessToken: localStorage.getItem('spotify_access_token') ? 'Present' : 'Missing',
+      //   refreshToken: localStorage.getItem('spotify_refresh_token') ? 'Present' : 'Missing',
+      //   expiresIn: localStorage.getItem('spotify_expires_in'),
+      //   tokenExpiry: localStorage.getItem('spotify_token_expiry'),
+      //   spotifyId: localStorage.getItem('spotify_id'),
+      //   spotifyEmail: localStorage.getItem('spotify_email'),
+      //   spotifyName: localStorage.getItem('spotify_name'),
+      // });
 
       let spotifyService = createSpotifyService();
       
@@ -119,7 +119,7 @@ export function useSpotifyData(refreshInterval: number = 60000): UseSpotifyDataR
               spotifyService = new (await import('@/lib/spotifyService')).SpotifyService(tokenData.access_token);
             }
           } catch (refreshError) {
-            //console.error('Failed to refresh token:', refreshError);
+            console.error('Failed to refresh token:', refreshError);
           }
         }
       }

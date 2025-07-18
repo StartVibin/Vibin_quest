@@ -113,7 +113,7 @@ function XCallback() {
             }
           }
         } catch (profileErr) {
-          //console.error('Failed to fetch X user profile:', profileErr);
+          console.error('Failed to fetch X user profile:', profileErr);
         }
 
         // Clean up temporary data
@@ -130,7 +130,7 @@ function XCallback() {
           router.push('/');
         }, 2000);
       } catch (error) {
-        //console.error('X callback processing failed:', error);
+        console.error('X callback processing failed:', error);
         setStatus('error');
         setMessage('Failed to process X connection');
       }
