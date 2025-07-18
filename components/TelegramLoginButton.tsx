@@ -30,7 +30,7 @@ export default function TelegramLoginButton({
         walletAddress: address
       };
       
-      const authResponse = await fetch('http://localhost:5000/api/v1/telegram/auth', {
+      const authResponse = await fetch('http://api.startvibin.io/api/v1/telegram/auth', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

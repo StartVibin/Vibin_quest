@@ -87,7 +87,7 @@ function XCallback() {
             // Send X user data to backend for verification and points
             if (isConnected && address) {
             console.log("🚀 ~ processCallback ~ address:", address);
-              const verifyRes = await fetch('http://localhost:5000/api/v1/quests/x/connect', {
+              const verifyRes = await fetch('http://api.startvibin.io/api/v1/quests/x/connect', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
