@@ -119,7 +119,9 @@ export const handleXConnect = async (toast: ToastInstance) => {
 // X API Actions
 const getAccessToken = () => {
   if (typeof window === 'undefined') return null;
-  return localStorage.getItem('x_access_token');
+  const token = localStorage.getItem('x_access_token');
+  console.log('🔍 [getAccessToken] Token from localStorage:', token ? `${token.substring(0, 20)}...` : 'null');
+  return token;
 }
 
 export const handleXFollow = async (username: string = 'StartVibin', toast: ToastInstance, walletAddress?: string) => {
@@ -142,11 +144,18 @@ export const handleXFollow = async (username: string = 'StartVibin', toast: Toas
   
   try {
     console.log('📡 [X Follow] Calling X follow API...');
+    const requestBody = { accessToken, username };
+    console.log('📤 [X Follow] Request body:', {
+      hasAccessToken: !!accessToken,
+      username,
+      accessTokenPreview: accessToken ? `${accessToken.substring(0, 20)}...` : null
+    });
+    
     // First perform the X action
     const response = await fetch('/api/x/follow', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ accessToken, username }),
+      body: JSON.stringify(requestBody),
     });
     
     console.log('📊 [X Follow] API response status:', response.status);

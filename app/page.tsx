@@ -291,7 +291,7 @@ export default function Home() {
               button={
                 <button
                   className={styles.mainTaskButton}
-                  onClick={() => handleXFollowWithWallet("StartVibin")}
+                  onClick={() => handleXFollowWithWallet(process.env.NEXT_PUBLIC_X_USERNAME || "StartVibin_")}
                 >
                   {checkXActionStatus("follow") ? "Followed" : "Follow"}
                 </button>

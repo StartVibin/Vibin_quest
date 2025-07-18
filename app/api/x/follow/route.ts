@@ -3,12 +3,33 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: NextRequest) {
   try {
     console.log('🔄 [X Follow API] Request received');
+    console.log('📋 [X Follow API] Request method:', request.method);
+    console.log('📋 [X Follow API] Request headers:', Object.fromEntries(request.headers.entries()));
     
-    const { accessToken, username } = await request.json();
-    console.log('📋 [X Follow API] Request data:', { 
+    // Check if request has body
+    const contentType = request.headers.get('content-type');
+    console.log('📋 [X Follow API] Content-Type:', contentType);
+    
+    if (!contentType || !contentType.includes('application/json')) {
+      console.error('❌ [X Follow API] Invalid content type:', contentType);
+      return NextResponse.json({ error: 'Content-Type must be application/json' }, { status: 400 });
+    }
+    
+    let requestBody;
+    try {
+      requestBody = await request.json();
+      console.log('📋 [X Follow API] Raw request body:', requestBody);
+    } catch (parseError) {
+      console.error('❌ [X Follow API] Failed to parse request body:', parseError);
+      return NextResponse.json({ error: 'Invalid JSON in request body' }, { status: 400 });
+    }
+    
+    const { accessToken, username } = requestBody;
+    console.log('📋 [X Follow API] Extracted data:', { 
       hasAccessToken: !!accessToken, 
       username,
-      accessTokenLength: accessToken?.length 
+      accessTokenLength: accessToken?.length,
+      accessTokenPreview: accessToken ? `${accessToken.substring(0, 20)}...` : null
     });
     
     if (!accessToken || !username) {
