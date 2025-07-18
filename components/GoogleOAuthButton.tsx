@@ -137,12 +137,30 @@ const GoogleOAuthButton = memo(function GoogleOAuthButton({
         console.log("✅ [Google OAuth] Auth success message received");
         console.log("👤 [Google OAuth] User data:", event.data.user);
         sendToBackend(event.data.user);
-        popup?.close();
+        
+        // Try to close popup safely
+        try {
+          if (popup && !popup.closed) {
+            popup.close();
+          }
+        } catch (error) {
+          console.warn("⚠️ [Google OAuth] Could not close popup:", error);
+        }
+        
         window.removeEventListener('message', handleMessage);
       } else if (event.data && event.data.type === 'google_auth_error') {
         console.error("❌ [Google OAuth] Auth error message received:", event.data.error);
         toast.error("Google authentication failed. Please try again.");
-        popup?.close();
+        
+        // Try to close popup safely
+        try {
+          if (popup && !popup.closed) {
+            popup.close();
+          }
+        } catch (error) {
+          console.warn("⚠️ [Google OAuth] Could not close popup:", error);
+        }
+        
         window.removeEventListener('message', handleMessage);
       }
     };

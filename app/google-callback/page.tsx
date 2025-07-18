@@ -129,8 +129,39 @@ function GoogleCallbackContent() {
 
       // Clean up
       localStorage.removeItem('google_oauth_state');
-      console.log('🧹 [Google Callback] Cleanup completed, closing window');
-      window.close();
+      console.log('🧹 [Google Callback] Cleanup completed, attempting to close window');
+      
+      // Try to close window safely
+      try {
+        window.close();
+      } catch (error) {
+        console.warn('⚠️ [Google Callback] Could not close window automatically:', error);
+        // Show a message to the user to close manually
+        document.body.innerHTML = `
+          <div style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            text-align: center;
+          ">
+            <div>
+              <h2 style="color: #4CAF50;">✅ Authentication Successful!</h2>
+              <p>You can now close this window and return to the main application.</p>
+              <button onclick="window.close()" style="
+                padding: 10px 20px;
+                background: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-top: 10px;
+              ">Close Window</button>
+            </div>
+          </div>
+        `;
+      }
     } catch (error) {
       console.error('❌ [Google Callback] Error in token exchange:', error);
       console.error('🔍 [Google Callback] Error details:', {
@@ -142,7 +173,38 @@ function GoogleCallbackContent() {
         type: 'google_auth_error',
         error: 'Failed to authenticate with Google'
       }, window.location.origin);
-      window.close();
+      
+      // Try to close window safely
+      try {
+        window.close();
+      } catch (error) {
+        console.warn('⚠️ [Google Callback] Could not close window automatically:', error);
+        // Show an error message to the user
+        document.body.innerHTML = `
+          <div style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            text-align: center;
+          ">
+            <div>
+              <h2 style="color: #f44336;">❌ Authentication Failed</h2>
+              <p>There was an error during authentication. Please try again.</p>
+              <button onclick="window.close()" style="
+                padding: 10px 20px;
+                background: #f44336;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-top: 10px;
+              ">Close Window</button>
+            </div>
+          </div>
+        `;
+      }
     }
   };
 
