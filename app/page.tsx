@@ -549,8 +549,8 @@ export default function Home() {
                       styles.ratingTableWallet
                     )}
                   >
-                    {user.walletAddress.slice(0, 6)}...
-                    {user.walletAddress.slice(-4)}
+                    {user.walletAddress.slice(0, 4)}...
+                    {user.walletAddress.slice(-2)}
                   </p>
                   <div
                     className={cn(
