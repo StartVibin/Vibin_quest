@@ -54,6 +54,11 @@ export default function Home() {
     error: leaderboardError,
     refetch: refetchLeaderboard,
   } = useLeaderboard();
+  useEffect(() => {
+    if (leaderboardData) {
+      console.log('🏆 [Leaderboard] Data fetched from backend:', leaderboardData);
+    }
+  }, [leaderboardData]);
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [accessModal, setAccessModal] = useState(true);
   const [xPostId, setXPostId] = useState<string>("");
@@ -569,7 +574,10 @@ export default function Home() {
                   >
                     <>
                       {/* <Logo /> */}
-                      {(user.airdroped || 0).toLocaleString()} Tokens
+                      {user.airdroped && user.airdroped >= 1000
+                        ? `${(user.airdroped / 1000).toFixed(1).replace(/\.0$/, '')}k`
+                        : (user.airdroped || 0).toLocaleString()
+                      } Tokens
                     </>
                   </div>
                 </div>

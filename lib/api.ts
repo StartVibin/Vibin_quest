@@ -344,7 +344,7 @@ export const getLeaderboard = async (): Promise<LeaderboardResponse> => {
       success: false, 
       data: { 
         users: [], 
-        pagination: { page: 1, limit: 10, total: 0, totalPages: 0 } 
+        pagination: { page: 1, limit: 100, total: 0, totalPages: 0 } 
       } 
     }
   }
