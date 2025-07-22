@@ -6,7 +6,7 @@ export async function POST(req: NextRequest) {
     if (!accessToken || !tweetId) {
       return NextResponse.json({ error: 'Missing accessToken or tweetId' }, { status: 400 });
     }
-    const replyText = text || 'This is amazing! Loving the Vibin app! 🎉 #VibinApp';
+    const replyText = text || 'LFG!';
     const response = await fetch('https://api.twitter.com/2/tweets', {
       method: 'POST',
       headers: {
