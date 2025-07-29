@@ -282,13 +282,13 @@ export default function Home() {
               done={profile?.telegramConnected || false}
             />
 
-            <TaskItem
+            {/* <TaskItem
               points={100}
               logo={<Mailbox />}
               button={memoizedGoogleButton}
               description="Connect your email to the Vibin app to get points."
               done={profile?.emailConnected || false}
-            />
+            /> */}
 
             <TaskItem
               points={200}
@@ -296,7 +296,7 @@ export default function Home() {
               button={
                 <button
                   className={styles.mainTaskButton}
-                  onClick={() => handleXFollowWithWallet(process.env.NEXT_PUBLIC_X_USERNAME || "StartVibin_")}
+                  onClick={() => handleXFollowWithWallet(process.env.NEXT_PUBLIC_X_USERNAME || "Start_Vibin")}
                 >
                   {checkXActionStatus("follow") ? "Followed" : "Follow"}
                 </button>
@@ -313,7 +313,7 @@ export default function Home() {
               done={profile?.telegramJoinedGroup || false}
             />
 
-            <TaskItem
+            {/* <TaskItem
               points={300}
               logo={<Twitter />}
               button={
@@ -327,9 +327,9 @@ export default function Home() {
               }
               description="Reply to our tweets to get points"
               done={profile?.xReplied || false}
-            />
+            /> */}
 
-            <TaskItem
+            {/* <TaskItem
               points={300}
               logo={<Twitter />}
               button={
@@ -343,7 +343,7 @@ export default function Home() {
               }
               description="Repost our content to get points"
               done={profile?.xReposted || false}
-            />
+            /> */}
 
             {/* <TaskItem
                             points={100}
