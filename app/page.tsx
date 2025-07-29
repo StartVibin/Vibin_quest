@@ -26,20 +26,20 @@ import { GameTouch } from "@/widgets/GameTouch";
 import {
   handleXConnect,
   handleXFollow,
-  handleXRepost,
-  handleXReply,
+  //handleXRepost,
+  //handleXReply,
   checkXActionStatus,
   showWalletWarning,
 } from "@/lib/utils";
-import { Mailbox } from "@/shared/icons/Mailbox";
+//import { Mailbox } from "@/shared/icons/Mailbox";
 import CustomTelegramButton from "@/components/CustomTelegramButton";
 import TelegramGroupJoinButton from "@/components/TelegramGroupJoinButton";
-import GoogleOAuthButton from "@/components/GoogleOAuthButton";
+//import GoogleOAuthButton from "@/components/GoogleOAuthButton";
 import { useUserProfile } from "@/lib/hooks/useUserProfile";
 import { useMemo } from "react";
 import { useLeaderboard } from "@/lib/hooks/useLeaderboard";
 import { Modal } from "@/shared/ui/Modal";
-import { getXPostId } from "@/lib/api";
+// import { getXPostId } from "@/lib/api";
 import { ToastInstance } from "@/lib/types";
 import ErrorLogger from "@/components/ErrorLogger";
 
@@ -61,7 +61,7 @@ export default function Home() {
   }, [leaderboardData]);
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [accessModal, setAccessModal] = useState(true);
-  const [xPostId, setXPostId] = useState<string>("");
+  //const [xPostId, setXPostId] = useState<string>("");
 
   useEffect(() => {
     if (window && !window.localStorage.getItem("accessModal")) {
@@ -91,21 +91,21 @@ export default function Home() {
   }, [isConnected, address]);
 
   // Fetch X post ID from API
-  useEffect(() => {
-    const fetchXPostId = async () => {
-      try {
-        const response = await getXPostId();
-        if (response.success && response.data) {
-          setXPostId(response.data.xPostId);
-          ////console.log("X Post ID fetched:", response.data.xPostId);
-        }
-      } catch (error) {
-       console.error("Error fetching X post ID:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchXPostId = async () => {
+  //     try {
+  //       const response = await getXPostId();
+  //       if (response.success && response.data) {
+  //         setXPostId(response.data.xPostId);
+  //         ////console.log("X Post ID fetched:", response.data.xPostId);
+  //       }
+  //     } catch (error) {
+  //      console.error("Error fetching X post ID:", error);
+  //     }
+  //   };
 
-    fetchXPostId();
-  }, []);
+  //   fetchXPostId();
+  // }, []);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -122,14 +122,14 @@ export default function Home() {
     toast.success("Telegram connected successfully!");
   }, []);
 
-  const handleEmailSuccess = useCallback(() => {
-    // Handle successful email connection
-    //console.log("Email connected successfully");
-    // console.log(
-    //   "You can now check the browser //console and server logs for the full authentication data"
-    // );
-    toast.success("Email connected successfully!");
-  }, []);
+  // const handleEmailSuccess = useCallback(() => {
+  //   // Handle successful email connection
+  //   //console.log("Email connected successfully");
+  //   // console.log(
+  //   //   "You can now check the browser //console and server logs for the full authentication data"
+  //   // );
+  //   toast.success("Email connected successfully!");
+  // }, []);
 
   // Memoize buttons to prevent flashing on profile updates
   const memoizedTelegramButton = useMemo(
@@ -142,15 +142,15 @@ export default function Home() {
     [handleTelegramSuccess]
   );
 
-  const memoizedGoogleButton = useMemo(
-    () => (
-      <GoogleOAuthButton
-        className={styles.mainTaskButton}
-        onSuccess={handleEmailSuccess}
-      />
-    ),
-    [handleEmailSuccess]
-  );
+  // const memoizedGoogleButton = useMemo(
+  //   () => (
+  //     <GoogleOAuthButton
+  //       className={styles.mainTaskButton}
+  //       onSuccess={handleEmailSuccess}
+  //     />
+  //   ),
+  //   [handleEmailSuccess]
+  // );
 
   const memoizedTelegramGroupButton = useMemo(
     () => (
@@ -181,21 +181,21 @@ export default function Home() {
     handleXFollow(username, toast as ToastInstance, address);
   };
 
-  const handleXReplyWithWallet = (tweetId: string) => {
-    if (!isConnected) {
-      showWalletWarning(toast as ToastInstance);
-      return;
-    }
-    handleXReply(tweetId, toast as ToastInstance, address);
-  };
+  // const handleXReplyWithWallet = (tweetId: string) => {
+  //   if (!isConnected) {
+  //     showWalletWarning(toast as ToastInstance);
+  //     return;
+  //   }
+  //   handleXReply(tweetId, toast as ToastInstance, address);
+  // };
 
-  const handleXRepostWithWallet = (tweetId: string) => {
-    if (!isConnected) {
-      showWalletWarning(toast as ToastInstance);
-      return;
-    }
-    handleXRepost(tweetId, toast as ToastInstance, address);
-  };
+  // const handleXRepostWithWallet = (tweetId: string) => {
+  //   if (!isConnected) {
+  //     showWalletWarning(toast as ToastInstance);
+  //     return;
+  //   }
+  //   handleXRepost(tweetId, toast as ToastInstance, address);
+  // };
 
   // const handleXPostWithWallet = () => {
   //     if (!isConnected) {
