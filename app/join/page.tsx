@@ -27,7 +27,7 @@ export default function JoinPage() {
   }, [validReferral])
 
   useEffect(() => {
-    let inviteCode = sessionStorage.getItem('invitationCode') ?? "";
+    const inviteCode = sessionStorage.getItem('invitationCode') ?? "";
 
     setSharedValue({ ...sharedValue, invitationCode: inviteCode, showWallet: false })
 

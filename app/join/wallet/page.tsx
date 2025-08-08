@@ -14,7 +14,7 @@ export default function WalletConnectionPage() {
   const { address, isConnected } = useAccount();
   const { signMessageAsync } = useSignMessage();
   const { connect, connectors } = useConnect();
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const [isAuthenticating, setIsAuthenticating] = useState(false);
 
   useEffect(() => {

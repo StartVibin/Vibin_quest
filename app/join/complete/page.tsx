@@ -14,7 +14,7 @@ export default function CompletionPage() {
   useEffect(() => {
     const storedCode = sessionStorage.getItem('invitationCode');
     const spotifyEmail = localStorage.getItem('spotify_email');
-    const walletAddress = sessionStorage.getItem('walletAddress');
+    // const walletAddress = sessionStorage.getItem('walletAddress');
     
     if (!storedCode || !spotifyEmail) {
       toast.error('Missing registration data. Please start over.');
