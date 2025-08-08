@@ -5,6 +5,8 @@ import { Wallet } from "@/shared/icons";
 import styles from "./index.module.css";
 import { authenticateWallet } from '@/lib/api';
 import { Connector, useAccount, useConnect, useDisconnect, useSignMessage } from 'wagmi';
+import { useRouter } from "next/router";
+import { useSharedContext } from "@/provider/SharedContext";
 
 function truncateAddress(address?: string) {
     if (!address) return '';
@@ -28,6 +30,8 @@ const WalletButton: React.FC<WalletButtonProps> = ({
     const { disconnect } = useDisconnect();
     const { isConnected, address } = useAccount();
     const { signMessageAsync, isPending: isSigning } = useSignMessage();
+    const { sharedValue, setSharedValue } = useSharedContext()
+    const { showWallet } = sharedValue;
 
     React.useEffect(() => setMounted(true), []);
 
@@ -37,26 +41,26 @@ const WalletButton: React.FC<WalletButtonProps> = ({
                 try {
                     const welcomeMessage = "Welcome to Social Quest!";
                     const signature = await signMessageAsync({ message: welcomeMessage });
-                    
+
                     // Check for pending referral code
                     const pendingReferralCode = sessionStorage.getItem('pendingReferralCode');
-                    
+
                     const authData = await authenticateWallet(address, welcomeMessage, signature, pendingReferralCode || undefined);
-                    console.log('Authentication response:', authData);
+                    //console.log('Authentication response:', authData);
                     if (authData.success) {
-                        console.log('Wallet authenticated successfully');
-                        
+                        //console.log('Wallet authenticated successfully');
+
                         // Clear the pending referral code after successful authentication
                         if (pendingReferralCode) {
                             sessionStorage.removeItem('pendingReferralCode');
-                            console.log('Referral code applied during registration');
+                            //console.log('Referral code applied during registration');
                         }
                     } else {
-                        console.error('Wallet authentication failed:', authData.message);
+                        //console.error('Wallet authentication failed:', authData.message);
                     }
-                    console.log('Welcome message signed successfully:', signature);
+                    //console.log('Welcome message signed successfully:', signature);
                 } catch (error) {
-                    console.error('Failed to sign welcome message or authenticate:', error);
+                    //console.error('Failed to sign welcome message or authenticate:', error);
                 }
             }
         };
@@ -68,12 +72,12 @@ const WalletButton: React.FC<WalletButtonProps> = ({
 
     if (isConnected) {
         return (
-            <button 
-                className={`${styles.walletButton}`} 
+            <button
+                className={`${styles.walletButton}`}
                 onClick={() => disconnect()}
                 disabled={isSigning}
             >
-                <Wallet/>{isSigning ? 'Signing...' : truncateAddress(address)}
+                <Wallet />{isSigning ? 'Signing...' : truncateAddress(address)}
             </button>
         );
     }
@@ -81,8 +85,12 @@ const WalletButton: React.FC<WalletButtonProps> = ({
         <WalletOption
             key={connectors[0].uid}
             connector={connectors[0]}
-            onClick={() => connect({ connector: connectors[0] })}
+            onClick={() => {
+                if (status === 'pending') connect({ connector: connectors[0] })
+                else location.href = "/join"
+            }}
             isConnecting={status === 'pending'}
+            isShowWallet={showWallet}
         />
     );
 };
@@ -91,10 +99,12 @@ function WalletOption({
     connector,
     onClick,
     isConnecting,
+    isShowWallet
 }: {
     connector: Connector;
     onClick: () => void;
     isConnecting: boolean;
+    isShowWallet: boolean
 }) {
     const [ready, setReady] = React.useState(false);
 
@@ -106,13 +116,18 @@ function WalletOption({
     }, [connector]);
 
     return (
-        <button
-            className={`${styles.walletButton}`}
-            disabled={!ready || isConnecting}
-            onClick={onClick}
-        >
-            <Wallet /> {isConnecting ? 'Connecting...' : 'Connect Wallet'}
-        </button>
+        <>
+            {isShowWallet ?
+                <button
+                    className={`${styles.walletButton}`}
+                    disabled={!ready || isConnecting}
+                    onClick={onClick}
+                >
+                    <Wallet /> {isConnecting ? 'Connecting...' : 'Connect Wallet'}
+                </button>
+                : <></>
+            }
+        </>
     );
 }
 

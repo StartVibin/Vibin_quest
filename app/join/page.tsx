@@ -7,52 +7,51 @@ import { toast } from 'react-toastify';
 import styles from './page.module.css';
 
 import LeftHalfModal from '@/components/LeftHalfModal';
+import { verifyReferalCode } from '@/lib/api';
+import { useSharedContext } from '@/provider/SharedContext';
 
 export default function JoinPage() {
+  const { sharedValue, setSharedValue } = useSharedContext()
+
+  const { isConnected } = useAccount();
   const router = useRouter();
-  const { address, isConnected } = useAccount();
-  const [invitationCode, setInvitationCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [validReferral, isValidReferral] = useState(false);
+
+  const { invitationCode } = sharedValue;
 
   useEffect(() => {
-    // Temporarily disable join functionality - redirect to home page
-    toast.info('Join functionality is temporarily disabled. Please check back later.');
-    router.push('/');
-    return;
-    
-    // Check if wallet is connected
-    if (!isConnected) {
-      toast.error('Please connect your wallet first');
-      // Since we removed the wallet page, redirect to main page or show wallet connection
-      return;
+    if (validReferral && !isConnected) {
+      router.push('/join/spotify');
     }
-  }, [isConnected, router]);
+  }, [validReferral])
+
+  useEffect(() => {
+    let inviteCode = sessionStorage.getItem('invitationCode') ?? "";
+
+    setSharedValue({ ...sharedValue, invitationCode: inviteCode, showWallet: false })
+
+    verifyReferalCode(inviteCode).then(e => isValidReferral(e.success))
+  }, [])
 
   const handleInvitationCodeSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!invitationCode.trim()) {
       toast.error('Please enter an invitation code');
       return;
     }
 
-    if (!isConnected || !address) {
-      toast.error('Please connect your wallet first');
-      return;
-    }
-
     setIsLoading(true);
     try {
-      // Here you would typically validate the invitation code with your backend
-      // For now, we'll simulate a successful validation
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Store the invitation code and wallet address in session storage for the next step
-      sessionStorage.setItem('invitationCode', invitationCode);
-      sessionStorage.setItem('walletAddress', address);
-      
-      // Navigate to the next step (Spotify email entry)
-      router.push('/join/spotify');
+      verifyReferalCode(invitationCode).then(e => {
+        if (e.success) {
+          toast.success("Valid invitation code.");
+          sessionStorage.setItem('invitationCode', invitationCode);
+        } else toast.error("Invalid invitation code. Please try again.")
+        isValidReferral(e.success)
+      })
+
     } catch (error) {
       console.error('Invitation code error:', error);
       toast.error('Invalid invitation code. Please try again.');
@@ -66,12 +65,12 @@ export default function JoinPage() {
       <div className={styles.background}>
         <div className={styles.backgroundImage} />
       </div>
-      
+
       <LeftHalfModal>
         <div className={styles.loginCard}>
           <div className={styles.logoSection}>
-            
-            <h1 className={styles.title}>Welcome to <br/>the Vibin&apos; app.</h1>
+            <div className={styles.stepIndicator}>Step 1 / 4</div>
+            <h1 className={styles.title}>Welcome to <br />the Vibin&apos; app.</h1>
             <p className={styles.subtitle}>
               Spotify doesn&apos;t pay you for your data. We do.
             </p>
@@ -82,13 +81,13 @@ export default function JoinPage() {
 
           <form onSubmit={handleInvitationCodeSubmit} className={styles.form}>
             <div className={styles.inputGroup}>
-              
+
               <div className={styles.inputWrapper}>
                 <input
                   id="invitationCode"
                   type="text"
                   value={invitationCode}
-                  onChange={(e) => setInvitationCode(e.target.value)}
+                  onChange={(e) => setSharedValue({ ...sharedValue, invitationCode: e.target.value })}
                   placeholder="Enter your invitation code"
                   className={styles.input}
                   disabled={isLoading}

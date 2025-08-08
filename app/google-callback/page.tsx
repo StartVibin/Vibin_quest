@@ -16,12 +16,25 @@ function GoogleCallbackContent() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
+    console.log("🔄 [Google Callback] Component mounted");
+    console.log("🔄 [Google Callback] Window opener exists:", !!window.opener);
+    console.log("🔄 [Google Callback] Window location:", window.location.href);
+    console.log("🔄 [Google Callback] Callback page loaded");
+    console.log("🔍 [Google Callback] Search params:", Object.fromEntries(searchParams.entries()));
+    console.log("🔍 [Google Callback] Raw URL:", window.location.href);
+    
     const code = searchParams.get('code');
     const state = searchParams.get('state');
     const error = searchParams.get('error');
 
+    console.log("📋 [Google Callback] Extracted parameters:", { 
+      code: code ? `${code.substring(0, 10)}...` : null, 
+      state: !!state, 
+      error 
+    });
+
     if (error) {
-      console.error('Google OAuth error:', error);
+      console.error('❌ [Google Callback] Google OAuth error:', error);
       window.opener?.postMessage({
         type: 'google_auth_error',
         error: error
@@ -31,33 +44,43 @@ function GoogleCallbackContent() {
     }
 
     if (!code || !state) {
-      console.error('Missing code or state parameter');
+      console.error('❌ [Google Callback] Missing code or state parameter');
+      console.log('🔍 [Google Callback] Code:', code);
+      console.log('🔍 [Google Callback] State:', state);
       window.opener?.postMessage({
         type: 'google_auth_error',
-        error: 'Missing OAuth parameters'
+        error: 'Missing OAuth parameters',
+        source: 'google_oauth_callback',
+        timestamp: new Date().toISOString()
       }, window.location.origin);
       window.close();
       return;
     }
 
-    // Verify state parameter
     const savedState = localStorage.getItem('google_oauth_state');
+    console.log('🔐 [Google Callback] State verification:', { received: state, saved: savedState, match: state === savedState });
+    
     if (state !== savedState) {
-      console.error('State parameter mismatch');
+      console.error('❌ [Google Callback] State parameter mismatch');
       window.opener?.postMessage({
         type: 'google_auth_error',
-        error: 'State parameter mismatch'
+        error: 'State parameter mismatch',
+        source: 'google_oauth_callback',
+        timestamp: new Date().toISOString()
       }, window.location.origin);
       window.close();
       return;
     }
 
-    // Exchange code for access token
+    console.log('✅ [Google Callback] All parameters valid, starting token exchange');
     exchangeCodeForToken(code);
   }, [searchParams]);
 
   const exchangeCodeForToken = async (code: string) => {
     try {
+      console.log('🔄 [Google Callback] Starting token exchange with code:', code.substring(0, 10) + '...');
+      
+      console.log('📡 [Google Callback] Calling /api/google/token...');
       const response = await fetch('/api/google/token', {
         method: 'POST',
         headers: {
@@ -66,41 +89,124 @@ function GoogleCallbackContent() {
         body: JSON.stringify({ code }),
       });
 
+      console.log('📊 [Google Callback] Token response status:', response.status);
+      console.log('📊 [Google Callback] Token response ok:', response.ok);
+
       if (!response.ok) {
-        throw new Error('Failed to exchange code for token');
+        const errorText = await response.text();
+        console.error('❌ [Google Callback] Token exchange failed:', errorText);
+        throw new Error(`Failed to exchange code for token: ${response.status} ${errorText}`);
       }
 
-      const { access_token } = await response.json();
+      const tokenData = await response.json();
+      console.log('✅ [Google Callback] Token received:', { 
+        hasAccessToken: !!tokenData.access_token,
+        tokenLength: tokenData.access_token?.length 
+      });
 
-      // Get user data with access token
+      const { access_token } = tokenData;
+
+      console.log('👤 [Google Callback] Fetching user info from Google...');
       const userResponse = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
         headers: {
           'Authorization': `Bearer ${access_token}`,
         },
       });
 
+      console.log('📊 [Google Callback] User info response status:', userResponse.status);
+
       if (!userResponse.ok) {
-        throw new Error('Failed to get user data');
+        const errorText = await userResponse.text();
+        console.error('❌ [Google Callback] Failed to get user data:', errorText);
+        throw new Error(`Failed to get user data: ${userResponse.status} ${errorText}`);
       }
 
       const userData: GoogleUserData = await userResponse.json();
+      console.log('✅ [Google Callback] User data received:', userData);
 
-      // Send user data back to parent window
+      console.log('📤 [Google Callback] Sending success message to parent window');
       window.opener?.postMessage({
         type: 'google_auth_success',
-        user: userData
+        user: userData,
+        source: 'google_oauth_callback',
+        timestamp: new Date().toISOString()
       }, window.location.origin);
 
-      // Clean up
       localStorage.removeItem('google_oauth_state');
-      window.close();
+      console.log('🧹 [Google Callback] Cleanup completed, attempting to close window');
+      
+      try {
+        window.close();
+      } catch (error) {
+        console.warn('⚠️ [Google Callback] Could not close window automatically:', error);
+        document.body.innerHTML = `
+          <div style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            text-align: center;
+          ">
+            <div>
+              <h2 style="color: #4CAF50;">✅ Authentication Successful!</h2>
+              <p>You can now close this window and return to the main application.</p>
+              <button onclick="window.close()" style="
+                padding: 10px 20px;
+                background: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-top: 10px;
+              ">Close Window</button>
+            </div>
+          </div>
+        `;
+      }
     } catch (error) {
-      console.error('Error exchanging code for token:', error);
+      console.error('❌ [Google Callback] Error in token exchange:', error);
+      console.error('🔍 [Google Callback] Error details:', {
+        message: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined
+      });
+      
       window.opener?.postMessage({
         type: 'google_auth_error',
-        error: 'Failed to authenticate with Google'
+        error: 'Failed to authenticate with Google',
+        source: 'google_oauth_callback',
+        timestamp: new Date().toISOString()
       }, window.location.origin);
-      window.close();
+      
+      try {
+        window.close();
+      } catch (error) {
+        console.warn('⚠️ [Google Callback] Could not close window automatically:', error);
+        document.body.innerHTML = `
+          <div style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            text-align: center;
+          ">
+            <div>
+              <h2 style="color: #f44336;">❌ Authentication Failed</h2>
+              <p>There was an error during authentication. Please try again.</p>
+              <button onclick="window.close()" style="
+                padding: 10px 20px;
+                background: #f44336;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                margin-top: 10px;
+              ">Close Window</button>
+            </div>
+          </div>
+        `;
+      }
     }
   };
 

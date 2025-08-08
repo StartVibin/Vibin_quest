@@ -52,7 +52,7 @@ I've updated your Spotify OAuth scopes to include all necessary permissions:
 Since the existing tokens don't have the new scopes, you need to re-authenticate:
 
 ```javascript
-// Run this in browser console to clear existing tokens
+// Run this in browser //console to clear existing tokens
 localStorage.removeItem('spotify_access_token');
 localStorage.removeItem('spotify_refresh_token');
 localStorage.removeItem('spotify_expires_in');
@@ -81,20 +81,20 @@ localStorage.removeItem('spotify_name');
 After re-authenticating, test these endpoints:
 
 ```javascript
-// Test in browser console
+// Test in browser //console
 const spotifyService = new SpotifyService(localStorage.getItem('spotify_access_token'));
 
 // Test user profile (should work)
-spotifyService.getUserProfile().then(console.log);
+spotifyService.getUserProfile().then(//console.log);
 
 // Test saved tracks (should work now)
-spotifyService.getSavedTracks().then(console.log);
+spotifyService.getSavedTracks().then(//console.log);
 
 // Test followed artists (should work now)
-spotifyService.getFollowedArtists().then(console.log);
+spotifyService.getFollowedArtists().then(//console.log);
 
 // Test playlists (should work now)
-spotifyService.getUserPlaylists().then(console.log);
+spotifyService.getUserPlaylists().then(//console.log);
 ```
 
 ## 🚨 **Common Issues**
@@ -108,7 +108,7 @@ try {
 } catch (error) {
   if (error.message.includes('403') || error.message.includes('Insufficient client scope')) {
     // User needs to re-authenticate with new scopes
-    console.log('Please re-authenticate with Spotify to access all features');
+    //console.log('Please re-authenticate with Spotify to access all features');
   }
 }
 ```

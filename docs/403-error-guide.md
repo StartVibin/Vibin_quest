@@ -5,7 +5,7 @@ A 403 error means "Forbidden" - the server understood the request but refuses to
 ## 🔍 **How to Identify the 403 Error**
 
 1. **Open Browser Developer Tools** (F12)
-2. **Go to Console tab** - look for 🚨 403 FORBIDDEN ERROR DETECTED
+2. **Go to //console tab** - look for 🚨 403 FORBIDDEN ERROR DETECTED
 3. **Go to Network tab** - look for failed requests with 403 status
 4. **Check the ErrorLogger component** - it will log all fetch requests and responses
 
@@ -20,8 +20,8 @@ A 403 error means "Forbidden" - the server understood the request but refuses to
 
 **Check:**
 ```javascript
-// In browser console
-console.log('Spotify tokens:', {
+// In browser //console
+//console.log('Spotify tokens:', {
   accessToken: localStorage.getItem('spotify_access_token'),
   refreshToken: localStorage.getItem('spotify_refresh_token'),
   expiresIn: localStorage.getItem('spotify_expires_in'),
@@ -61,8 +61,8 @@ console.log('Spotify tokens:', {
 
 **Check:**
 ```javascript
-// In browser console
-console.log('X tokens:', {
+// In browser //console
+//console.log('X tokens:', {
   accessToken: localStorage.getItem('x_access_token'),
   refreshToken: localStorage.getItem('x_refresh_token')
 });
@@ -178,6 +178,6 @@ localStorage.removeItem('x_refresh_token');
 When reporting a 403 error, include:
 1. **ErrorLogger output** (the 🚨 403 FORBIDDEN ERROR DETECTED log)
 2. **RegistrationDebug output** (what data is missing)
-3. **Browser console logs**
+3. **Browser //console logs**
 4. **Network tab** showing the failed request
 5. **Steps to reproduce** the error 

@@ -189,7 +189,7 @@ export class SpotifyService {
         },
       };
     } catch (error) {
-      console.error('Error fetching user stats:', error);
+      //console.error('Error fetching user stats:', error);
       throw error;
     }
   }
@@ -201,13 +201,13 @@ export function createSpotifyService(): SpotifyService | null {
   const tokenExpiry = localStorage.getItem('spotify_token_expiry');
   
   if (!accessToken) {
-    console.log('No Spotify access token found in localStorage');
+    //console.log('No Spotify access token found in localStorage');
     return null;
   }
 
   // Check if token is expired
   if (tokenExpiry && Date.now() > parseInt(tokenExpiry)) {
-    console.log('Spotify access token expired, attempting refresh...');
+    //console.log('Spotify access token expired, attempting refresh...');
     // For now, return null and let the hook handle the refresh
     // In a real app, you might want to handle this differently
     return null;
@@ -222,7 +222,7 @@ async function refreshSpotifyToken(): Promise<SpotifyService | null> {
   const refreshToken = localStorage.getItem('spotify_refresh_token');
   
   if (!refreshToken) {
-    console.log('No refresh token found');
+    //console.log('No refresh token found');
     localStorage.removeItem('spotify_access_token');
     localStorage.removeItem('spotify_refresh_token');
     localStorage.removeItem('spotify_expires_in');

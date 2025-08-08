@@ -16,11 +16,8 @@ function XCallback() {
     const processCallback = async () => {
       try {
         const code = searchParams.get('code');
-        console.log("🚀 ~ processCallback ~ code:", code)
         const state = searchParams.get('state');
-        console.log("🚀 ~ processCallback ~ state:", state)
         const error = searchParams.get('error');
-        console.log("🚀 ~ processCallback ~ error:", error)
 
         if (error) {
           setStatus('error');
@@ -31,19 +28,16 @@ function XCallback() {
         if (!code || !state) {
           setStatus('error');
           setMessage('Missing authorization code or state parameter');
-         
+
           return;
         }
 
-        // Verify state parameter
         let storedState = null;
         let codeVerifier = null;
         if (typeof window !== 'undefined') {
           storedState = localStorage.getItem('x_oauth_state');
           codeVerifier = localStorage.getItem('x_code_verifier');
         }
-        console.log("🚀 ~ processCallback ~ storedState:", storedState)
-        console.log("🚀 ~ processCallback ~ codeVerifier:", codeVerifier)
         if (storedState !== state || !codeVerifier) {
           setStatus('error');
           setMessage('Invalid state parameter or missing code verifier');
@@ -51,9 +45,7 @@ function XCallback() {
           return;
         }
 
-        // Exchange code for access token via backend
         const redirectUri = `${window.location.origin}/x-callback`;
-        console.log("🚀 ~ processCallback ~ redirectUri:", redirectUri)
         const response = await fetch('/api/x/oauth-callback', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -66,14 +58,12 @@ function XCallback() {
           return;
         }
 
-        // Store the real access token (for demo; use secure storage in production)
         if (typeof window !== 'undefined') {
           localStorage.setItem('x_access_token', data.access_token);
           localStorage.setItem('x_verified', 'true');
           localStorage.setItem('x_verified_at', new Date().toISOString());
         }
 
-        // Fetch X user profile and send to backend for verification
         try {
           const profileRes = await fetch('/api/x/user-profile', {
             method: 'POST',
@@ -81,13 +71,10 @@ function XCallback() {
             body: JSON.stringify({ accessToken: data.access_token }),
           });
           const profileData = await profileRes.json();
-          console.log('X user profile:', profileData);
-          
-          if ( profileData.data) {
-            // Send X user data to backend for verification and points
+
+          if (profileData.data) {
             if (isConnected && address) {
-            console.log("🚀 ~ processCallback ~ address:", address);
-              const verifyRes = await fetch('http://localhost:5000/api/v1/quests/x/connect', {
+              const verifyRes = await fetch('https://api.startvibin.io/api/v1/quests/x/connect', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -99,33 +86,26 @@ function XCallback() {
                   xVerified: profileData.data.verified
                 }),
               });
-              console.log("🚀 ~ processCallback ~ verifyRes:", verifyRes)
-              
+
               if (verifyRes.ok) {
                 const verifyData = await verifyRes.json();
-                console.log('X connection verified:', verifyData);
                 setMessage(`X account connected successfully! Awarded ${verifyData.data.pointsAwarded} points!`);
               } else {
-                console.error('Failed to verify X connection:', verifyRes.status);
               }
             } else {
-              console.log('Wallet not connected, skipping backend verification');
             }
           }
         } catch (profileErr) {
           console.error('Failed to fetch X user profile:', profileErr);
         }
 
-        // Clean up temporary data
         if (typeof window !== 'undefined') {
           localStorage.removeItem('x_oauth_state');
           localStorage.removeItem('x_code_verifier');
         }
 
         setStatus('success');
-        // Message will be updated by the verification process above
 
-        // Redirect back to main page after a short delay
         setTimeout(() => {
           router.push('/');
         }, 2000);

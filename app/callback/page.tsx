@@ -10,26 +10,19 @@ function CallbackContent() {
 
   const completeRegistration = useCallback(async () => {
     try {
-      // Get all stored data
       const invitationCode = sessionStorage.getItem('invitationCode');
       const walletAddress = sessionStorage.getItem('walletAddress');
       const spotifyId = localStorage.getItem('spotify_id');
       const spotifyEmail = localStorage.getItem('spotify_email');
       const spotifyName = localStorage.getItem('spotify_name');
       const spotifyAccessToken = localStorage.getItem('spotify_access_token');
-
-      // Temporarily disable join functionality
-      toast.info('Join functionality is temporarily disabled. Please check back later.');
-      router.push('/');
-      return;
       
       if (!invitationCode || !walletAddress || !spotifyId) {
-        toast.error('Missing registration data. Please start over.');
+        toast.error('Missing registration data 1. Please start over.');
         router.push('/join');
         return;
       }
 
-      // Prepare registration data
       const registrationData = {
         invitationCode,
         walletAddress,
@@ -41,11 +34,8 @@ function CallbackContent() {
 
       console.log('Complete registration data:', registrationData);
 
-      // Here you would send the data to your backend
-      // For now, we'll simulate the API call
       await new Promise(resolve => setTimeout(resolve, 1000));
 
-      // Clear session storage (keep localStorage for Spotify data)
       sessionStorage.removeItem('invitationCode');
       sessionStorage.removeItem('walletAddress');
       sessionStorage.removeItem('spotifyEmail');
@@ -53,7 +43,6 @@ function CallbackContent() {
 
       toast.success('Registration completed successfully!');
       
-      // Redirect to dashboard
       router.push('/dashboard');
     } catch (error) {
       console.error('Registration completion error:', error);
@@ -70,7 +59,7 @@ function CallbackContent() {
         const error = searchParams.get('error');
 
         if (error) {
-          console.error('Spotify OAuth error:', error);
+          //console.error('Spotify OAuth error:', error);
           toast.error('Spotify authorization failed');
           router.push('/');
           return;
@@ -82,14 +71,11 @@ function CallbackContent() {
           return;
         }
 
-        // Verify state parameter (you should implement proper state verification)
         const storedState = sessionStorage.getItem('spotify_oauth_state');
         if (state !== storedState) {
-          console.warn('State mismatch - potential CSRF attack');
-          // For development, we'll continue anyway
+          //console.warn('State mismatch - potential CSRF attack');
         }
 
-        // Exchange the authorization code for access token
         const tokenResponse = await fetch('/api/auth/spotify/exchange-token', {
           method: 'POST',
           headers: {
@@ -108,7 +94,6 @@ function CallbackContent() {
 
         const tokenData = await tokenResponse.json();
         
-        // Store the tokens and user data in localStorage for persistence
         localStorage.setItem('spotify_access_token', tokenData.access_token);
         localStorage.setItem('spotify_refresh_token', tokenData.refresh_token);
         localStorage.setItem('spotify_expires_in', tokenData.expires_in.toString());
@@ -117,12 +102,10 @@ function CallbackContent() {
         localStorage.setItem('spotify_email', tokenData.spotify_email || '');
         localStorage.setItem('spotify_name', tokenData.spotify_name || '');
 
-        // Clear the OAuth state
         sessionStorage.removeItem('spotify_oauth_state');
 
         toast.success('Spotify connected successfully!');
         
-        // Complete the registration process
         await completeRegistration();
         
       } catch (error) {

@@ -13,10 +13,8 @@ export default function DashboardPage() {
   const [userLevel] = useState(23);
   const [contributeReward] = useState(123.02);
   
-  // Use the Spotify data hook (refreshes every minute)
   const { data: spotifyData, isLoading, error, lastUpdated } = useSpotifyData(60000);
 
-  // Extract data from the hook
   const topTracks = spotifyData?.topTracks || [];
   const topArtists = spotifyData?.topArtists || [];
   const listeningStats = spotifyData?.stats ? [
@@ -42,7 +40,6 @@ export default function DashboardPage() {
     },
   ] : [];
 
-  // Mock data for score breakdown
   const scoreBreakdown = [
     { name: "Volume Score", value: 125, icon: "🔊" },
     { name: "Diversity Score", value: 125, icon: "👤" },
@@ -61,21 +58,19 @@ export default function DashboardPage() {
   };
 
   useEffect(() => {
-    // Check if user is connected
     if (!isConnected) {
       toast.error('Please connect your wallet first');
+      location.href = "/"
       return;
     }
   }, [isConnected]);
 
-  // Show error toast if there's an error
   useEffect(() => {
     if (error) {
       toast.error(error);
     }
   }, [error]);
 
-  // Show success toast when data is loaded
   useEffect(() => {
     if (spotifyData && !isLoading) {
       toast.success('Spotify data loaded successfully!');

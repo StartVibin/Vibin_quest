@@ -1,3 +1,4 @@
+
 import type { Metadata } from "next";
 import "./globals.css";
 import AuthProvider from "./auth-provider";
@@ -6,10 +7,14 @@ import 'react-toastify/dist/ReactToastify.css';
 import Web3Provider from "@/provider/WagmiProvider";
 import ReactQueryProvider from "@/provider/ReactQueryProvider";
 import { Header } from "@/widgets/Header";
+import { SharedProvider } from "@/provider/SharedContext";
 
 export const metadata: Metadata = {
   title: "Vibin' Quest",
   description: "Participate in Vibin' Quests",
+  icons: {
+    icon: '/img/icon.svg',
+  },
 };
 
 export default function RootLayout({
@@ -20,26 +25,28 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ReactQueryProvider>
-          <Web3Provider>
-            <AuthProvider>
-              <Header />
-              {children}
-              <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="dark"
-              />
-            </AuthProvider>
-          </Web3Provider>
-        </ReactQueryProvider>
+        <SharedProvider>
+          <ReactQueryProvider>
+            <Web3Provider>
+              <AuthProvider>
+                <Header />
+                {children}
+                <ToastContainer
+                  position="top-right"
+                  autoClose={5000}
+                  hideProgressBar={false}
+                  newestOnTop={false}
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                  theme="dark"
+                />
+              </AuthProvider>
+            </Web3Provider>
+          </ReactQueryProvider>
+        </SharedProvider>
       </body>
     </html>
   );

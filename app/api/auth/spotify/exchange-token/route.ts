@@ -15,7 +15,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Exchange authorization code for access token
     const tokenResponse = await fetch('https://accounts.spotify.com/api/token', {
       method: 'POST',
       headers: {
@@ -41,7 +40,6 @@ export async function POST(request: NextRequest) {
     const tokenData = await tokenResponse.json();
     const { access_token, refresh_token, expires_in } = tokenData;
 
-    // Get user profile from Spotify
     const profileResponse = await fetch('https://api.spotify.com/v1/me', {
       headers: {
         'Authorization': `Bearer ${access_token}`
@@ -49,7 +47,7 @@ export async function POST(request: NextRequest) {
     });
 
     if (!profileResponse.ok) {
-      console.error('Profile fetch failed:', await profileResponse.text());
+      //console.error('Profile fetch failed:', await profileResponse.text());
       return NextResponse.json(
         { error: 'Failed to fetch user profile' },
         { status: 400 }
@@ -59,7 +57,6 @@ export async function POST(request: NextRequest) {
     const profileData = await profileResponse.json();
     const { id, email, display_name } = profileData;
 
-    // Return the tokens and user data
     return NextResponse.json({
       access_token,
       refresh_token,

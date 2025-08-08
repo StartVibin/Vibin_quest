@@ -14,13 +14,13 @@ export default function ErrorLogger() {
       
       try {
         // Log the request
-        console.log('🌐 Fetch Request:', {
-          url,
-          method: options?.method || 'GET',
-          headers: options?.headers,
-          body: options?.body,
-          timestamp: new Date().toISOString()
-        });
+        // console.log('🌐 Fetch Request:', {
+        //   url,
+        //   method: options?.method || 'GET',
+        //   headers: options?.headers,
+        //   body: options?.body,
+        //   timestamp: new Date().toISOString()
+        // });
 
         // Make the actual request
         const response = await originalFetch.apply(this, args);

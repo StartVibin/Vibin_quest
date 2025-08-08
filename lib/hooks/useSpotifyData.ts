@@ -80,15 +80,15 @@ export function useSpotifyData(refreshInterval: number = 60000): UseSpotifyDataR
   const fetchData = useCallback(async () => {
     try {
       // Debug: Log what's in localStorage
-      console.log('Spotify localStorage data:', {
-        accessToken: localStorage.getItem('spotify_access_token') ? 'Present' : 'Missing',
-        refreshToken: localStorage.getItem('spotify_refresh_token') ? 'Present' : 'Missing',
-        expiresIn: localStorage.getItem('spotify_expires_in'),
-        tokenExpiry: localStorage.getItem('spotify_token_expiry'),
-        spotifyId: localStorage.getItem('spotify_id'),
-        spotifyEmail: localStorage.getItem('spotify_email'),
-        spotifyName: localStorage.getItem('spotify_name'),
-      });
+      // console.log('Spotify localStorage data:', {
+      //   accessToken: localStorage.getItem('spotify_access_token') ? 'Present' : 'Missing',
+      //   refreshToken: localStorage.getItem('spotify_refresh_token') ? 'Present' : 'Missing',
+      //   expiresIn: localStorage.getItem('spotify_expires_in'),
+      //   tokenExpiry: localStorage.getItem('spotify_token_expiry'),
+      //   spotifyId: localStorage.getItem('spotify_id'),
+      //   spotifyEmail: localStorage.getItem('spotify_email'),
+      //   spotifyName: localStorage.getItem('spotify_name'),
+      // });
 
       let spotifyService = createSpotifyService();
       
@@ -177,9 +177,9 @@ export function useSpotifyData(refreshInterval: number = 60000): UseSpotifyDataR
 
       setData(transformedData);
       setLastUpdated(new Date());
-      console.log('Spotify data fetched successfully:', transformedData);
+      //console.log('Spotify data fetched successfully:', transformedData);
     } catch (err) {
-      console.error('Error fetching Spotify data:', err);
+      //console.error('Error fetching Spotify data:', err);
       setError(err instanceof Error ? err.message : 'Failed to fetch Spotify data');
     } finally {
       setIsLoading(false);
@@ -199,7 +199,7 @@ export function useSpotifyData(refreshInterval: number = 60000): UseSpotifyDataR
   useEffect(() => {
     if (refreshInterval > 0) {
       const interval = setInterval(() => {
-        console.log('Refreshing Spotify data...');
+        //console.log('Refreshing Spotify data...');
         fetchData();
       }, refreshInterval);
 

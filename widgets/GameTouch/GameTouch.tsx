@@ -39,7 +39,7 @@ const GameTouch = () => {
                 setGamesRemaining(response.data.gamesRemaining);
             }
         } catch (error) {
-            console.error('Error checking if user can play:', error);
+            //console.error('Error checking if user can play:', error);
         }
     };
 
@@ -54,7 +54,7 @@ const GameTouch = () => {
                 return true;
             }
         } catch (error) {
-            console.error('Error recording game play:', error);
+            //console.error('Error recording game play:', error);
             if (error instanceof Error && error.message.includes('Daily game limit reached')) {
                 toast.error('Daily game limit reached. You can play 5 games per day.');
                 setCanPlayToday(false);
@@ -126,7 +126,7 @@ const GameTouch = () => {
                 toast.error('Failed to save game points');
             }
         } catch (error) {
-            console.error('Error sending game points:', error);
+            //console.error('Error sending game points:', error);
             toast.error('Failed to save game points');
         }
     };

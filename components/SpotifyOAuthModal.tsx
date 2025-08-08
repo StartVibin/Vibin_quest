@@ -15,6 +15,10 @@ export default function SpotifyOAuthModal({ isOpen, onClose, email }: SpotifyOAu
     try {
       // Get the Spotify OAuth URL from our API
       const response = await fetch('/api/auth/spotify');
+
+      console.log(response);
+      
+      
       const data = await response.json();
       
       if (data.error) {

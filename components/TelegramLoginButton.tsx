@@ -17,7 +17,7 @@ export default function TelegramLoginButton({
 
   const sendToBackend = async (telegramData: TelegramAuthData) => {
     try {
-      console.log("Sending Telegram data to backend:", telegramData);
+      //console.log("Sending Telegram data to backend:", telegramData);
       
       if (!isConnected) {
         showWalletWarning(toast as ToastInstance);
@@ -30,7 +30,7 @@ export default function TelegramLoginButton({
         walletAddress: address
       };
       
-      const authResponse = await fetch('http://localhost:5000/api/v1/telegram/auth', {
+      const authResponse = await fetch('https://api.startvibin.io/api/v1/telegram/auth', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ export default function TelegramLoginButton({
         toast.success(`Telegram connected successfully! Awarded ${verificationResult.data.pointsAwarded} points!`);
         onSuccess?.();
       } else {
-        console.error("Backend error:", authResponse.status, authResponse.statusText);
+        //console.error("Backend error:", authResponse.status, authResponse.statusText);
         toast.error("Failed to connect Telegram. Please try again.");
       }
     } catch (error) {
@@ -62,7 +62,7 @@ export default function TelegramLoginButton({
     <LoginButton
       botUsername="MyVibinBot" // Replace with your actual bot username
       onAuthCallback={(data) => {
-        console.log("Telegram Auth Data:", data);
+        //console.log("Telegram Auth Data:", data);
         sendToBackend(data);
       }}
     />

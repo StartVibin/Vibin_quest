@@ -36,20 +36,18 @@ const CustomTelegramButton = memo(function CustomTelegramButton({
 
   const sendToBackend = useCallback(async (telegramData: TelegramAuthData) => {
     try {
-      console.log("Sending Telegram data to backend:", telegramData);
       
       if (!isConnected) {
         showWalletWarning(toast as ToastInstance);
         return;
       }
       
-      // First save Telegram auth data
       const authData = {
         telegramData,
         walletAddress: address
       };
       
-      const authResponse = await fetch('http://localhost:5000/api/v1/telegram/auth', {
+      const authResponse = await fetch('https://api.startvibin.io/api/v1/telegram/auth', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -61,7 +59,6 @@ const CustomTelegramButton = memo(function CustomTelegramButton({
         const authResult = await authResponse.json();
         console.log("Telegram auth response:", authResult);
         
-        // Then verify quest completion
         const { verifyTelegramConnection } = await import('@/lib/api');
         const verificationResult = await verifyTelegramConnection(address!, telegramData);
         
@@ -69,7 +66,6 @@ const CustomTelegramButton = memo(function CustomTelegramButton({
         setShowModal(false);
         onSuccess?.();
       } else {
-        console.error("Backend error:", authResponse.status, authResponse.statusText);
         toast.error("Failed to connect Telegram. Please try again.");
       }
     } catch (error) {

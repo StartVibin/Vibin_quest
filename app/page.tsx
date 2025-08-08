@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from 'next/router';
 import cn from "classnames";
 import { useEffect, useCallback, useState } from "react";
 import { toast } from "react-toastify";
@@ -26,37 +27,49 @@ import { GameTouch } from "@/widgets/GameTouch";
 import {
   handleXConnect,
   handleXFollow,
-  handleXRepost,
-  handleXReply,
+  //handleXRepost,
+  //handleXReply,
   checkXActionStatus,
   showWalletWarning,
 } from "@/lib/utils";
-import { Mailbox } from "@/shared/icons/Mailbox";
+//import { Mailbox } from "@/shared/icons/Mailbox";
 import CustomTelegramButton from "@/components/CustomTelegramButton";
 import TelegramGroupJoinButton from "@/components/TelegramGroupJoinButton";
-import GoogleOAuthButton from "@/components/GoogleOAuthButton";
+//import GoogleOAuthButton from "@/components/GoogleOAuthButton";
 import { useUserProfile } from "@/lib/hooks/useUserProfile";
 import { useMemo } from "react";
 import { useLeaderboard } from "@/lib/hooks/useLeaderboard";
 import { Modal } from "@/shared/ui/Modal";
-import { getXPostId } from "@/lib/api";
+// import { getXPostId } from "@/lib/api";
 import { ToastInstance } from "@/lib/types";
 import ErrorLogger from "@/components/ErrorLogger";
+import { useSharedContext } from "@/provider/SharedContext";
 
 export default function Home() {
   const { address, isConnected } = useAccount();
+
   const { profile } = useUserProfile();
+  const { sharedValue, setSharedValue } = useSharedContext();
+  console.log("🚀 ~ Home ~ profile:", profile)
+
   const {
     leaderboardData,
     loading: leaderboardLoading,
     error: leaderboardError,
     refetch: refetchLeaderboard,
   } = useLeaderboard();
-  const [showInviteModal, setShowInviteModal] = useState(false);
-  const [accessModal, setAccessModal] = useState(true);
-  const [xPostId, setXPostId] = useState<string>("");
 
   useEffect(() => {
+    if (leaderboardData) {
+      console.log('🏆 [Leaderboard] Data fetched from backend:', leaderboardData);
+    }
+  }, [leaderboardData]);
+  const [showInviteModal, setShowInviteModal] = useState(false);
+  const [accessModal, setAccessModal] = useState(true);
+  //const [xPostId, setXPostId] = useState<string>("");
+
+  useEffect(() => {
+    setSharedValue({ ...sharedValue, showWallet: true })
     if (window && !window.localStorage.getItem("accessModal")) {
       setAccessModal(true);
     }
@@ -67,38 +80,38 @@ export default function Home() {
     if (typeof window !== "undefined") {
       const urlParams = new URLSearchParams(window.location.search);
       const referralCode = urlParams.get('ref');
-      
+
       if (referralCode && isConnected && address) {
         // Store the referral code for later use during registration
         sessionStorage.setItem('pendingReferralCode', referralCode);
-        console.log('Referral code detected:', referralCode);
-        
+        ////console.log('Referral code detected:', referralCode);
+
         // Clean up the URL without the ref parameter
         const newUrl = new URL(window.location.href);
         newUrl.searchParams.delete('ref');
         window.history.replaceState({}, document.title, newUrl.toString());
-        
+
         toast.info(`Referral code ${referralCode} detected! You'll get bonus points when you complete registration.`);
       }
     }
   }, [isConnected, address]);
 
   // Fetch X post ID from API
-  useEffect(() => {
-    const fetchXPostId = async () => {
-      try {
-        const response = await getXPostId();
-        if (response.success && response.data) {
-          setXPostId(response.data.xPostId);
-          console.log("X Post ID fetched:", response.data.xPostId);
-        }
-      } catch (error) {
-        console.error("Error fetching X post ID:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchXPostId = async () => {
+  //     try {
+  //       const response = await getXPostId();
+  //       if (response.success && response.data) {
+  //         setXPostId(response.data.xPostId);
+  //         ////console.log("X Post ID fetched:", response.data.xPostId);
+  //       }
+  //     } catch (error) {
+  //      console.error("Error fetching X post ID:", error);
+  //     }
+  //   };
 
-    fetchXPostId();
-  }, []);
+  //   fetchXPostId();
+  // }, []);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -108,21 +121,21 @@ export default function Home() {
 
   const handleTelegramSuccess = useCallback(() => {
     // Handle successful Telegram connection
-    console.log("Telegram connected successfully");
-    console.log(
-      "You can now check the browser console and server logs for the full authentication data"
-    );
+    //console.log("Telegram connected successfully");
+    // console.log(
+    //   "You can now check the browser //console and server logs for the full authentication data"
+    // );
     toast.success("Telegram connected successfully!");
   }, []);
 
-  const handleEmailSuccess = useCallback(() => {
-    // Handle successful email connection
-    console.log("Email connected successfully");
-    console.log(
-      "You can now check the browser console and server logs for the full authentication data"
-    );
-    toast.success("Email connected successfully!");
-  }, []);
+  // const handleEmailSuccess = useCallback(() => {
+  //   // Handle successful email connection
+  //   //console.log("Email connected successfully");
+  //   // console.log(
+  //   //   "You can now check the browser //console and server logs for the full authentication data"
+  //   // );
+  //   toast.success("Email connected successfully!");
+  // }, []);
 
   // Memoize buttons to prevent flashing on profile updates
   const memoizedTelegramButton = useMemo(
@@ -135,15 +148,15 @@ export default function Home() {
     [handleTelegramSuccess]
   );
 
-  const memoizedGoogleButton = useMemo(
-    () => (
-      <GoogleOAuthButton
-        className={styles.mainTaskButton}
-        onSuccess={handleEmailSuccess}
-      />
-    ),
-    [handleEmailSuccess]
-  );
+  // const memoizedGoogleButton = useMemo(
+  //   () => (
+  //     <GoogleOAuthButton
+  //       className={styles.mainTaskButton}
+  //       onSuccess={handleEmailSuccess}
+  //     />
+  //   ),
+  //   [handleEmailSuccess]
+  // );
 
   const memoizedTelegramGroupButton = useMemo(
     () => (
@@ -174,21 +187,21 @@ export default function Home() {
     handleXFollow(username, toast as ToastInstance, address);
   };
 
-  const handleXReplyWithWallet = (tweetId: string) => {
-    if (!isConnected) {
-      showWalletWarning(toast as ToastInstance);
-      return;
-    }
-    handleXReply(tweetId, toast as ToastInstance, address);
-  };
+  // const handleXReplyWithWallet = (tweetId: string) => {
+  //   if (!isConnected) {
+  //     showWalletWarning(toast as ToastInstance);
+  //     return;
+  //   }
+  //   handleXReply(tweetId, toast as ToastInstance, address);
+  // };
 
-  const handleXRepostWithWallet = (tweetId: string) => {
-    if (!isConnected) {
-      showWalletWarning(toast as ToastInstance);
-      return;
-    }
-    handleXRepost(tweetId, toast as ToastInstance, address);
-  };
+  // const handleXRepostWithWallet = (tweetId: string) => {
+  //   if (!isConnected) {
+  //     showWalletWarning(toast as ToastInstance);
+  //     return;
+  //   }
+  //   handleXRepost(tweetId, toast as ToastInstance, address);
+  // };
 
   // const handleXPostWithWallet = () => {
   //     if (!isConnected) {
@@ -216,13 +229,13 @@ export default function Home() {
   };
 
   // const handleInviteClick = () => {
-  //     console.log('Invite button clicked');
-  //     console.log('isConnected:', isConnected);
+  //     //console.log('Invite button clicked');
+  //     //console.log('isConnected:', isConnected);
   //     if (!isConnected) {
   //         showWalletWarning(toast);
   //         return;
   //     }
-  //     console.log('Setting modal to true');
+  //     //console.log('Setting modal to true');
   //     setShowInviteModal(true);
   // };
 
@@ -275,13 +288,13 @@ export default function Home() {
               done={profile?.telegramConnected || false}
             />
 
-            <TaskItem
+            {/* <TaskItem
               points={100}
               logo={<Mailbox />}
               button={memoizedGoogleButton}
               description="Connect your email to the Vibin app to get points."
               done={profile?.emailConnected || false}
-            />
+            /> */}
 
             <TaskItem
               points={200}
@@ -289,7 +302,7 @@ export default function Home() {
               button={
                 <button
                   className={styles.mainTaskButton}
-                  onClick={() => handleXFollowWithWallet("StartVibin")}
+                  onClick={() => handleXFollowWithWallet(process.env.NEXT_PUBLIC_X_USERNAME || "Start_Vibin")}
                 >
                   {checkXActionStatus("follow") ? "Followed" : "Follow"}
                 </button>
@@ -306,7 +319,7 @@ export default function Home() {
               done={profile?.telegramJoinedGroup || false}
             />
 
-            <TaskItem
+            {/* <TaskItem
               points={300}
               logo={<Twitter />}
               button={
@@ -320,9 +333,9 @@ export default function Home() {
               }
               description="Reply to our tweets to get points"
               done={profile?.xReplied || false}
-            />
+            /> */}
 
-            <TaskItem
+            {/* <TaskItem
               points={300}
               logo={<Twitter />}
               button={
@@ -336,7 +349,7 @@ export default function Home() {
               }
               description="Repost our content to get points"
               done={profile?.xReposted || false}
-            />
+            /> */}
 
             {/* <TaskItem
                             points={100}
@@ -374,8 +387,8 @@ export default function Home() {
                 <button
                   className={styles.inviteButton}
                   onClick={() => {
-                    console.log("Invite button clicked");
-                    console.log("isConnected:", isConnected);
+                    //console.log("Invite button clicked");
+                    //console.log("isConnected:", isConnected);
                     setShowInviteModal(true);
                   }}
                 >
@@ -547,8 +560,8 @@ export default function Home() {
                       styles.ratingTableWallet
                     )}
                   >
-                    {user.walletAddress.slice(0, 6)}...
-                    {user.walletAddress.slice(-4)}
+                    {user.walletAddress.slice(0, 4)}...
+                    {user.walletAddress.slice(-2)}
                   </p>
                   <div
                     className={cn(
@@ -556,7 +569,7 @@ export default function Home() {
                       styles.ratingTablePoints
                     )}
                   >
-                    <Logo />
+                    {/* <Logo /> */}
                     {user.totalPoints.toLocaleString()} Points
                   </div>
                   <div
@@ -566,8 +579,11 @@ export default function Home() {
                     )}
                   >
                     <>
-                      <Logo />
-                      {(user.airdroped || 0).toLocaleString()} Tokens
+                      {/* <Logo /> */}
+                      {user.airdroped && user.airdroped >= 1000
+                        ? `${(user.airdroped / 1000).toFixed(1).replace(/\.0$/, '')}k`
+                        : (user.airdroped || 0).toLocaleString()
+                      } Tokens
                     </>
                   </div>
                 </div>
@@ -725,12 +741,12 @@ export default function Home() {
                     transition: "background-color 0.2s",
                   }}
                   onMouseOver={(e) =>
-                    ((e.target as HTMLElement).style.backgroundColor =
-                      "#1D4ED8")
+                  ((e.target as HTMLElement).style.backgroundColor =
+                    "#1D4ED8")
                   }
                   onMouseOut={(e) =>
-                    ((e.target as HTMLElement).style.backgroundColor =
-                      "#2563EB")
+                  ((e.target as HTMLElement).style.backgroundColor =
+                    "#2563EB")
                   }
                 >
                   <svg
@@ -849,13 +865,19 @@ export default function Home() {
               already got one.
             </p>
 
-            <button className={styles.accessModalLink}>
+            <button
+              className={styles.accessModalLink}
+              onClick={() => {
+                setAccessModal(false);
+                window.localStorage.setItem("accessModal", "true");
+              }}
+            >
               Be one of the first. Start the ripple.
             </button>
           </div>
         </Modal>
       )}
-      
+
       <ErrorLogger />
     </div>
   );

@@ -84,11 +84,11 @@ const Header = () => {
                     </nav>
 
                     <div className={styles.headerWrap}>
-                        <button className={styles.headerNotify}>
+                        {/* <button className={styles.headerNotify}>
                             <Notify />
 
                             <span>1</span>
-                        </button>
+                        </button> */}
 
                         <WalletButton />
                     </div>

@@ -27,7 +27,7 @@ const TelegramGroupJoinButton = memo(function TelegramGroupJoinButton({
 
   const sendToBackend = useCallback(async () => {
     try {
-      console.log("Sending Telegram group join verification to backend");
+      //console.log("Sending Telegram group join verification to backend");
       
       if (!isConnected) {
         showWalletWarning(toast as ToastInstance);
