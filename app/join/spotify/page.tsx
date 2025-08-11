@@ -8,35 +8,41 @@ import styles from '../page.module.css';
 
 import LeftHalfModal from '@/components/LeftHalfModal';
 import SpotifyOAuthModal from '@/components/SpotifyOAuthModal';
+import { useSharedContext } from '@/provider/SharedContext';
 
 export default function SpotifyLoginPage() {
+
+  const { sharedValue, setSharedValue } = useSharedContext()
   const router = useRouter();
-  const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [, setInvitationCode] = useState('');
   const [showSpotifyModal, setShowSpotifyModal] = useState(false);
+
+  const {
+    invitationCode,
+    spotifyEmail
+  } = sharedValue
 
   const handleSpotifyOAuthSuccess = useCallback(async () => {
     try {
-      const storedCode = sessionStorage.getItem('invitationCode');
+
       const spotifyId = localStorage.getItem('spotify_id');
-      const spotifyEmail = localStorage.getItem('spotify_email');
       const spotifyName = localStorage.getItem('spotify_name');
       const spotifyAccessToken = localStorage.getItem('spotify_access_token');
 
-      if (!storedCode || !spotifyEmail) {
+      if (invitationCode == "" || spotifyEmail == "") {
+        console.log("HERERERER");
+
         toast.error('Missing registration data. Please start over.');
         router.push('/join');
         return;
       }
 
       const registrationData = {
-        invitationCode: storedCode,
+        invitationCode: invitationCode,
         spotifyId: spotifyId,
         spotifyEmail: spotifyEmail,
         spotifyName: spotifyName,
         spotifyAccessToken: spotifyAccessToken,
-        userEmail: email, 
       };
 
       console.log('Registration data:', registrationData);
@@ -51,20 +57,20 @@ export default function SpotifyLoginPage() {
       console.error('Registration error:', error);
       toast.error('Failed to complete registration. Please try again.');
     }
-  }, [router, email]);
+  }, [router, spotifyEmail]);
 
   useEffect(() => {
-    const storedCode = sessionStorage.getItem('invitationCode');
-    if (!storedCode) {
+    if (!invitationCode) {
       router.push('/join');
       return;
     }
 
-    setInvitationCode(storedCode || '');
-
     const urlParams = new URLSearchParams(window.location.search);
     const success = urlParams.get('success');
     const error = urlParams.get('error');
+
+    console.log(urlParams);
+
 
     if (success === 'true') {
       const spotifyId = urlParams.get('spotify_id');
@@ -96,21 +102,18 @@ export default function SpotifyLoginPage() {
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!email.trim()) {
+    if (!spotifyEmail.trim()) {
       toast.error('Please enter your Spotify email');
       return;
     }
 
-    if (!email.includes('@')) {
+    if (!spotifyEmail.includes('@')) {
       toast.error('Please enter a valid email address');
       return;
     }
 
     setIsLoading(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      sessionStorage.setItem('spotifyEmail', email);
 
       setShowSpotifyModal(true);
     } catch (error) {
@@ -150,8 +153,8 @@ export default function SpotifyLoginPage() {
                 <input
                   id="email"
                   type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={spotifyEmail}
+                  onChange={(e) => setSharedValue({ ...sharedValue, spotifyEmail: e.target.value })}
                   placeholder="Enter your Spotify email"
                   className={styles.input}
                   disabled={isLoading}
@@ -159,7 +162,7 @@ export default function SpotifyLoginPage() {
                 <button
                   type="submit"
                   className={styles.continueButton}
-                  disabled={isLoading || !email.trim()}
+                  disabled={isLoading || !spotifyEmail.trim()}
                 >
                   {isLoading ? (
                     <div className={styles.loadingSpinner} />
@@ -184,7 +187,7 @@ export default function SpotifyLoginPage() {
       <SpotifyOAuthModal
         isOpen={showSpotifyModal}
         onClose={() => setShowSpotifyModal(false)}
-        email={email}
+        email={spotifyEmail}
       />
     </div>
   );

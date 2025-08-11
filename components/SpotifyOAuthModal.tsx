@@ -16,8 +16,7 @@ export default function SpotifyOAuthModal({ isOpen, onClose, email }: SpotifyOAu
       // Get the Spotify OAuth URL from our API
       const response = await fetch('/api/auth/spotify');
 
-      console.log(response);
-      
+      console.log("response " , response);
       
       const data = await response.json();
       
@@ -26,7 +25,7 @@ export default function SpotifyOAuthModal({ isOpen, onClose, email }: SpotifyOAu
       }
       
       // Store state for verification (you might want to use a more secure method)
-      sessionStorage.setItem('spotify_oauth_state', data.state);
+      localStorage.setItem('spotify_oauth_state', data.state);
       
       // Redirect to Spotify OAuth
       window.location.href = data.authUrl;

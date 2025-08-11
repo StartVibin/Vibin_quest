@@ -43,7 +43,7 @@ const WalletButton: React.FC<WalletButtonProps> = ({
                     const signature = await signMessageAsync({ message: welcomeMessage });
 
                     // Check for pending referral code
-                    const pendingReferralCode = sessionStorage.getItem('pendingReferralCode');
+                    const pendingReferralCode = localStorage.getItem('pendingReferralCode');
 
                     const authData = await authenticateWallet(address, welcomeMessage, signature, pendingReferralCode || undefined);
                     //console.log('Authentication response:', authData);
@@ -52,7 +52,7 @@ const WalletButton: React.FC<WalletButtonProps> = ({
 
                         // Clear the pending referral code after successful authentication
                         if (pendingReferralCode) {
-                            sessionStorage.removeItem('pendingReferralCode');
+                            localStorage.removeItem('pendingReferralCode');
                             //console.log('Referral code applied during registration');
                         }
                     } else {

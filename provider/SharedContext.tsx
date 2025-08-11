@@ -1,9 +1,10 @@
 "use client";
 
-import { useContext, useState, createContext, ReactNode } from "react";
+import { useContext, useState, useEffect, createContext, ReactNode } from "react";
 
 export interface ContextType {
-    invitationCode: string;  // lowercase string type, not String object
+    invitationCode: string;
+    spotifyEmail: string;
     showWallet: boolean;
 }
 
@@ -15,11 +16,31 @@ interface SharedContextType {
 const SharedContext = createContext<SharedContextType | undefined>(undefined);
 
 export const SharedProvider = ({ children }: { children: ReactNode }) => {
+    
     const [sharedValue, setSharedValue] = useState<ContextType>({
         invitationCode: "",
+        spotifyEmail: "",
         showWallet: true,
     });
-    console.log(sharedValue);
+    
+    // Load from localStorage on mount
+    useEffect(() => {
+        const storedInvitationCode = localStorage.getItem("invitation_code") ?? "";
+        const storedSpotifyEmail = localStorage.getItem("spotify_email") ?? "";
+        setSharedValue({
+            invitationCode: storedInvitationCode,
+            spotifyEmail: storedSpotifyEmail,
+            showWallet: true,
+        });
+    }, []);
+
+    console.log("sharedValue ", sharedValue);
+
+    // Optional: keep localStorage updated when sharedValue changes
+    useEffect(() => {
+        localStorage.setItem("invitation_code", sharedValue.invitationCode);
+        localStorage.setItem("spotify_email", sharedValue.spotifyEmail);
+    }, [sharedValue.invitationCode, sharedValue.spotifyEmail]);
 
     return (
         <SharedContext.Provider value={{ sharedValue, setSharedValue }}>

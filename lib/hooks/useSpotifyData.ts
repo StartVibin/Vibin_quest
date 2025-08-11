@@ -79,19 +79,8 @@ export function useSpotifyData(refreshInterval: number = 60000): UseSpotifyDataR
 
   const fetchData = useCallback(async () => {
     try {
-      // Debug: Log what's in localStorage
-      // console.log('Spotify localStorage data:', {
-      //   accessToken: localStorage.getItem('spotify_access_token') ? 'Present' : 'Missing',
-      //   refreshToken: localStorage.getItem('spotify_refresh_token') ? 'Present' : 'Missing',
-      //   expiresIn: localStorage.getItem('spotify_expires_in'),
-      //   tokenExpiry: localStorage.getItem('spotify_token_expiry'),
-      //   spotifyId: localStorage.getItem('spotify_id'),
-      //   spotifyEmail: localStorage.getItem('spotify_email'),
-      //   spotifyName: localStorage.getItem('spotify_name'),
-      // });
-
       let spotifyService = createSpotifyService();
-      
+
       // If no service and we have a refresh token, try to refresh
       if (!spotifyService) {
         const refreshToken = localStorage.getItem('spotify_refresh_token');
@@ -107,9 +96,12 @@ export function useSpotifyData(refreshInterval: number = 60000): UseSpotifyDataR
               }),
             });
 
+            console.log(response);
+            
+
             if (response.ok) {
               const tokenData = await response.json();
-              
+
               // Update stored tokens
               localStorage.setItem('spotify_access_token', tokenData.access_token);
               localStorage.setItem('spotify_refresh_token', tokenData.refresh_token || refreshToken);
@@ -135,7 +127,10 @@ export function useSpotifyData(refreshInterval: number = 60000): UseSpotifyDataR
 
       // Get comprehensive user stats
       const userStats = await spotifyService.getUserStats();
-      
+
+      console.log("userStats ", userStats);
+
+
       // Transform the data for the dashboard
       const transformedData: SpotifyData = {
         profile: userStats.profile,

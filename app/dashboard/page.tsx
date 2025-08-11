@@ -12,8 +12,11 @@ export default function DashboardPage() {
   const [timeLeft] = useState('23:02:13');
   const [userLevel] = useState(23);
   const [contributeReward] = useState(123.02);
+
+  console.log("HERE");
   
-  const { data: spotifyData, isLoading, error, lastUpdated } = useSpotifyData(60000);
+  
+  const { data: spotifyData, isLoading, error, lastUpdated } = useSpotifyData(30000);
 
   const topTracks = spotifyData?.topTracks || [];
   const topArtists = spotifyData?.topArtists || [];
@@ -73,6 +76,9 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (spotifyData && !isLoading) {
+
+      console.log("spotifyData , " , spotifyData);
+      
       toast.success('Spotify data loaded successfully!');
     }
   }, [spotifyData, isLoading]);

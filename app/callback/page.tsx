@@ -10,8 +10,8 @@ function CallbackContent() {
 
   const completeRegistration = useCallback(async () => {
     try {
-      const invitationCode = sessionStorage.getItem('invitationCode');
-      const walletAddress = sessionStorage.getItem('walletAddress');
+      const invitationCode = localStorage.getItem('invitation_code');
+      const walletAddress = localStorage.getItem('walletAddress');
       const spotifyId = localStorage.getItem('spotify_id');
       const spotifyEmail = localStorage.getItem('spotify_email');
       const spotifyName = localStorage.getItem('spotify_name');
@@ -36,10 +36,10 @@ function CallbackContent() {
 
       await new Promise(resolve => setTimeout(resolve, 1000));
 
-      sessionStorage.removeItem('invitationCode');
-      sessionStorage.removeItem('walletAddress');
-      sessionStorage.removeItem('spotifyEmail');
-      sessionStorage.removeItem('spotify_oauth_state');
+      localStorage.removeItem('invitation_code');
+      localStorage.removeItem('walletAddress');
+      localStorage.removeItem('spotifyEmail');
+      localStorage.removeItem('spotify_oauth_state');
 
       toast.success('Registration completed successfully!');
       
@@ -71,7 +71,7 @@ function CallbackContent() {
           return;
         }
 
-        const storedState = sessionStorage.getItem('spotify_oauth_state');
+        const storedState = localStorage.getItem('spotify_oauth_state');
         if (state !== storedState) {
           //console.warn('State mismatch - potential CSRF attack');
         }
@@ -102,7 +102,7 @@ function CallbackContent() {
         localStorage.setItem('spotify_email', tokenData.spotify_email || '');
         localStorage.setItem('spotify_name', tokenData.spotify_name || '');
 
-        sessionStorage.removeItem('spotify_oauth_state');
+        localStorage.removeItem('spotify_oauth_state');
 
         toast.success('Spotify connected successfully!');
         

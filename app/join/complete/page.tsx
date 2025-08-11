@@ -12,9 +12,9 @@ export default function CompletionPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const storedCode = sessionStorage.getItem('invitationCode');
+    const storedCode = localStorage.getItem('invitation_code');
     const spotifyEmail = localStorage.getItem('spotify_email');
-    // const walletAddress = sessionStorage.getItem('walletAddress');
+    // const walletAddress = localStorage.getItem('walletAddress');
     
     if (!storedCode || !spotifyEmail) {
       toast.error('Missing registration data. Please start over.');
@@ -26,7 +26,7 @@ export default function CompletionPage() {
   const handleCompleteRegistration = async () => {
     setIsLoading(true);
     try {
-      const invitationCode = sessionStorage.getItem('invitationCode');
+      const invitationCode = localStorage.getItem('invitation_code');
       const spotifyId = localStorage.getItem('spotify_id');
       const spotifyEmail = localStorage.getItem('spotify_email');
       const spotifyName = localStorage.getItem('spotify_name');
@@ -44,10 +44,10 @@ export default function CompletionPage() {
       
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      sessionStorage.removeItem('invitationCode');
-      sessionStorage.removeItem('walletAddress');
-      sessionStorage.removeItem('spotifyEmail');
-      sessionStorage.removeItem('spotify_oauth_state');
+      localStorage.removeItem('invitation_code');
+      localStorage.removeItem('walletAddress');
+      localStorage.removeItem('spotifyEmail');
+      localStorage.removeItem('spotify_oauth_state');
       
       toast.success('Registration completed successfully!');
       
@@ -133,4 +133,5 @@ export default function CompletionPage() {
     </div>
   );
 }
+
 

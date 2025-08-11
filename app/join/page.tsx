@@ -17,8 +17,7 @@ export default function JoinPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [validReferral, isValidReferral] = useState(false);
-
-  const { invitationCode } = sharedValue;
+  const { invitationCode: inviteCode } = sharedValue;
 
   useEffect(() => {
     if (validReferral && !isConnected) {
@@ -27,7 +26,6 @@ export default function JoinPage() {
   }, [validReferral])
 
   useEffect(() => {
-    const inviteCode = sessionStorage.getItem('invitationCode') ?? "";
 
     setSharedValue({ ...sharedValue, invitationCode: inviteCode, showWallet: false })
 
@@ -37,17 +35,17 @@ export default function JoinPage() {
   const handleInvitationCodeSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!invitationCode.trim()) {
+    if (!inviteCode.trim()) {
       toast.error('Please enter an invitation code');
       return;
     }
 
     setIsLoading(true);
     try {
-      verifyReferalCode(invitationCode).then(e => {
+      verifyReferalCode(inviteCode).then(e => {
         if (e.success) {
           toast.success("Valid invitation code.");
-          sessionStorage.setItem('invitationCode', invitationCode);
+          localStorage.setItem('invitation_code', inviteCode);
         } else toast.error("Invalid invitation code. Please try again.")
         isValidReferral(e.success)
       })
@@ -86,7 +84,7 @@ export default function JoinPage() {
                 <input
                   id="invitationCode"
                   type="text"
-                  value={invitationCode}
+                  value={inviteCode}
                   onChange={(e) => setSharedValue({ ...sharedValue, invitationCode: e.target.value })}
                   placeholder="Enter your invitation code"
                   className={styles.input}
@@ -95,7 +93,7 @@ export default function JoinPage() {
                 <button
                   type="submit"
                   className={styles.continueButton}
-                  disabled={isLoading || !invitationCode.trim()}
+                  disabled={isLoading || !inviteCode.trim()}
                 >
                   {isLoading ? (
                     <div className={styles.loadingSpinner} />

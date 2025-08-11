@@ -18,7 +18,7 @@ export default function WalletConnectionPage() {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
 
   useEffect(() => {
-    const storedCode = sessionStorage.getItem('invitationCode');
+    const storedCode = localStorage.getItem('invitation_code');
     const spotifyEmail = localStorage.getItem('spotify_email');
 
     if (!storedCode || !spotifyEmail) {
@@ -45,12 +45,12 @@ export default function WalletConnectionPage() {
       const welcomeMessage = "Welcome to Vibin!";
       const signature = await signMessageAsync({ message: welcomeMessage });
 
-      const pendingReferralCode = sessionStorage.getItem('pendingReferralCode');
+      const pendingReferralCode = localStorage.getItem('pendingReferralCode');
       const authData = await authenticateWallet(address, welcomeMessage, signature, pendingReferralCode || undefined);
 
       if (authData.success) {
         if (pendingReferralCode) {
-          sessionStorage.removeItem('pendingReferralCode');
+          localStorage.removeItem('pendingReferralCode');
         }
 
         toast.success('Wallet connected successfully!');

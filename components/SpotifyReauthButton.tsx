@@ -27,7 +27,7 @@ export default function SpotifyReauthButton({
       localStorage.removeItem('spotify_name');
       
       // Clear session storage
-      sessionStorage.removeItem('spotify_oauth_state');
+      localStorage.removeItem('spotify_oauth_state');
       
       toast.success('Spotify tokens cleared. Please re-authenticate.');
       

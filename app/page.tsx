@@ -82,7 +82,7 @@ export default function Home() {
 
       if (referralCode && isConnected && address) {
         // Store the referral code for later use during registration
-        sessionStorage.setItem('pendingReferralCode', referralCode);
+        localStorage.setItem('pendingReferralCode', referralCode);
         ////console.log('Referral code detected:', referralCode);
 
         // Clean up the URL without the ref parameter

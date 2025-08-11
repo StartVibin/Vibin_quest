@@ -101,7 +101,7 @@ The ErrorLogger component will show:
 
 ### Step 2: Check Registration Debug Component
 Look at the RegistrationDebug component to see:
-- What data is missing from sessionStorage/localStorage
+- What data is missing from localStorage/localStorage
 - If OAuth tokens are properly stored
 
 ### Step 3: Check Environment Variables
