@@ -6,6 +6,7 @@
   position: relative;
   overflow: hidden;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 1rem;
 }
 
 .background {
@@ -59,6 +60,12 @@
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+@media (max-width: 768px) {
+  .title {
+    text-align: center;
+  }
+}
+
 .subtitle {
   font-size: 1.5rem;
   font-weight: 400;
@@ -67,6 +74,12 @@
   max-width: 100%;
   line-height: 1.5;
   text-align: left;
+}
+
+@media (max-width: 768px) {
+  .subtitle {
+    text-align: center;
+  }
 }
 
 .loginSection {
@@ -225,6 +238,10 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .container {
+    padding: 0.5rem;
+  }
+  
   .content {
     padding: 1rem;
     gap: 2rem;
@@ -272,6 +289,10 @@
 }
 
 @media (max-width: 480px) {
+  .container {
+    padding: 0.25rem;
+  }
+  
   .title {
     font-size: 2rem;
   }
@@ -322,6 +343,14 @@
   align-items: flex-end;
 }
 
+@media (max-width: 480px) {
+  .inputWrapper {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: stretch;
+  }
+}
+
 .input {
   flex: 1;
   padding: 1rem;
@@ -330,6 +359,13 @@
   font-size: 1rem;
   background: white;
   transition: border-color 0.2s ease;
+}
+
+@media (max-width: 480px) {
+  .input {
+    padding: 1.25rem 1rem;
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
 }
 
 .input:focus {
@@ -356,6 +392,13 @@
   min-width: 120px;
 }
 
+@media (max-width: 480px) {
+  .continueButton {
+    min-width: 100%;
+    padding: 1rem;
+  }
+}
+
 .continueButton:hover:not(:disabled) {
   background: #374151;
   transform: translateY(-1px);
@@ -376,6 +419,17 @@
   cursor: pointer;
   transition: color 0.2s ease;
   margin-top: 1rem;
+}
+
+@media (max-width: 480px) {
+  .backButton {
+    padding: 1rem;
+    font-size: 1rem;
+    width: 100%;
+    text-align: center;
+    background: rgba(107, 114, 128, 0.1);
+    border-radius: 8px;
+  }
 }
 
 .backButton:hover:not(:disabled) {
@@ -435,15 +489,33 @@
   text-align: left;
 }
 
+@media (max-width: 768px) {
+  .stepIndicator {
+    text-align: center;
+  }
+}
+
 /* Wallet section styles */
 .walletSection {
   margin: 2rem 0;
+}
+
+@media (max-width: 480px) {
+  .walletSection {
+    margin: 1.5rem 0;
+  }
 }
 
 .walletOptions {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+}
+
+@media (max-width: 480px) {
+  .walletOptions {
+    gap: 0.75rem;
+  }
 }
 
 .walletOption {
@@ -454,6 +526,15 @@
   border-radius: 12px;
   background: white;
   transition: all 0.2s ease;
+}
+
+@media (max-width: 480px) {
+  .walletOption {
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
+    padding: 1.5rem 1rem;
+  }
 }
 
 .walletOption:hover {
@@ -468,6 +549,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media (max-width: 480px) {
+  .walletIcon {
+    margin-right: 0;
+    width: 50px;
+    height: 50px;
+  }
 }
 
 .walletIcon img {
@@ -498,6 +587,14 @@
   cursor: pointer;
   transition: all 0.2s ease;
   min-width: 100px;
+}
+
+@media (max-width: 480px) {
+  .connectButton {
+    min-width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+  }
 }
 
 .connectButton:hover:not(:disabled) {

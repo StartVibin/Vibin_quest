@@ -184,4 +184,34 @@
   .modalHeader h2 {
     font-size: 1.25rem;
   }
+}
+
+@media (max-width: 480px) {
+  .modalOverlay {
+    padding: 0.5rem;
+  }
+  
+  .modal {
+    margin: 0.5rem;
+    border-radius: 16px;
+  }
+  
+  .modalHeader {
+    padding: 1rem 1.25rem 0.75rem;
+  }
+  
+  .modalContent {
+    padding: 1.25rem;
+  }
+  
+  .spotifyIcon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 1rem;
+  }
+  
+  .spotifyButton {
+    padding: 1.25rem 1.5rem;
+    font-size: 1rem;
+  }
 } 

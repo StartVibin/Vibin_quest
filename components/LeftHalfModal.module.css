@@ -1,14 +1,69 @@
 .leftHalfModal {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 50%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.5);
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  min-height: 100vh;
+  background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(10px);
   z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10rem;
+  padding: 3rem 2rem;
+  border-radius: 0;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* Desktop styles - only apply the left-half layout on larger screens */
+@media (min-width: 900px) {
+  .leftHalfModal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    max-width: none;
+    min-height: 100vh;
+    padding: 10rem;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+/* Below 900px - ensure full width and centered */
+@media (max-width: 899px) {
+  .leftHalfModal {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    left: auto;
+    top: auto;
+  }
+}
+
+/* Tablet styles */
+@media (max-width: 1023px) and (min-width: 768px) {
+  .leftHalfModal {
+    padding: 4rem 3rem;
+    max-width: 500px;
+  }
+}
+
+/* Mobile styles */
+@media (max-width: 767px) {
+  .leftHalfModal {
+    padding: 2rem 1.5rem;
+    max-width: 100%;
+    width: 100%;
+    min-height: 100vh;
+    background: rgba(255, 255, 255, 0.75);
+  }
+}
+
+/* Small mobile styles */
+@media (max-width: 480px) {
+  .leftHalfModal {
+    padding: 1.5rem 1rem;
+  }
 } 
