@@ -62,7 +62,7 @@ export class SpotifyService {
         'Content-Type': 'application/json',
       },
     });
-
+    console.log(endpoint,"request to the spotify api");
     if (!response.ok) {
       const errorText = await response.text();
       let errorMessage = `Spotify API error: ${response.status} ${response.statusText}`;
@@ -169,10 +169,10 @@ export class SpotifyService {
     try {
       const [profile, topTracks, topArtists, recentlyPlayed, savedTracks] = await Promise.all([
         this.getUserProfile(),
-        this.getTopTracks('medium_term', 10),
-        this.getTopArtists('medium_term', 10),
-        this.getRecentlyPlayed(20),
-        this.getSavedTracks(20),
+        this.getTopTracks('long_term', 50),
+        this.getTopArtists('medium_term', 50),
+        this.getRecentlyPlayed(50),
+        this.getSavedTracks(50),
       ]);
 
       return {

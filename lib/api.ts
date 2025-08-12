@@ -5,7 +5,7 @@
 import { WalletAuthUser } from "./types"
 import { XUserData, TelegramAuthData, GoogleUserData, QuestProgressData } from './types';
 
-const API_BASE_URL = 'https://api.startvibin.io/api/v1'
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 // API endpoints
 export const API_ENDPOINTS = {

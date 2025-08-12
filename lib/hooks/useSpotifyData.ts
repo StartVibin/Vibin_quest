@@ -148,14 +148,14 @@ export function useSpotifyData(refreshInterval: number = 60000): UseSpotifyDataR
           image: artist.images?.[0]?.url || null,
           spotifyUrl: artist.external_urls?.spotify || null,
         })),
-        recentlyPlayed: userStats.recentlyPlayed.slice(0, 10).map((item: { track: { id: string; name: string; artists: Array<{ name: string }>; album?: { images?: Array<{ url: string }> } }; played_at: string }) => ({
+        recentlyPlayed: userStats.recentlyPlayed.map((item: { track: { id: string; name: string; artists: Array<{ name: string }>; album?: { images?: Array<{ url: string }> } }; played_at: string }) => ({
           id: item.track.id,
           name: item.track.name,
           artist: item.track.artists[0]?.name || 'Unknown Artist',
           playedAt: item.played_at,
           image: item.track.album?.images?.[0]?.url || null,
         })),
-        savedTracks: userStats.savedTracks.slice(0, 10).map((item: { track: { id: string; name: string; artists: Array<{ name: string }>; album?: { images?: Array<{ url: string }> } }; added_at: string }) => ({
+        savedTracks: userStats.savedTracks.map((item: { track: { id: string; name: string; artists: Array<{ name: string }>; album?: { images?: Array<{ url: string }> } }; added_at: string }) => ({
           id: item.track.id,
           name: item.track.name,
           artist: item.track.artists[0]?.name || 'Unknown Artist',

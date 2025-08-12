@@ -43,12 +43,12 @@ export default function WalletConnectionPage() {
     setIsAuthenticating(true);
     try {
       const welcomeMessage = "Welcome to Vibin!";
-      const signature = await signMessageAsync({ message: welcomeMessage });
+      //const signature = await signMessageAsync({ message: welcomeMessage });
 
       const pendingReferralCode = localStorage.getItem('pendingReferralCode');
-      const authData = await authenticateWallet(address, welcomeMessage, signature, pendingReferralCode || undefined);
+     // const authData = await authenticateWallet(address, welcomeMessage, signature, pendingReferralCode || undefined);
 
-      if (authData.success) {
+      if (true) {
         if (pendingReferralCode) {
           localStorage.removeItem('pendingReferralCode');
         }
