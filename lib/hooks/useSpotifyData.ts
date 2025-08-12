@@ -1,212 +1,245 @@
-import { useState, useEffect, useCallback } from 'react';
-import { createSpotifyService } from '@/lib/spotifyService';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { spotifyAPI } from '@/lib/api/spotify';
 
-interface SpotifyTrack {
-  id: string;
-  name: string;
-  artist: string;
-  album: string;
-  image: string | null;
-  spotifyUrl: string | null;
-}
+export function useSpotifyData(inviteCode?: string) {
+  const queryClient = useQueryClient();
 
-interface SpotifyArtist {
-  id: string;
-  name: string;
-  image: string | null;
-  spotifyUrl: string | null;
-}
+  // Get data directly from localStorage
+  const code = inviteCode || (typeof window !== 'undefined' ? localStorage.getItem('spotify_id') || '' : '');
+  const mail = (typeof window !== 'undefined' ? localStorage.getItem('spotify_email') || '' : '');
+  const accessToken = (typeof window !== 'undefined' ? localStorage.getItem('spotify_access_token') || '' : '');
+  const refreshToken = (typeof window !== 'undefined' ? localStorage.getItem('spotify_refresh_token') || '' : '');
+  const tokenExpiry = (typeof window !== 'undefined' ? localStorage.getItem('spotify_token_expiry') || '0' : '0');
 
-interface SpotifyRecentlyPlayed {
-  id: string;
-  name: string;
-  artist: string;
-  playedAt: string;
-  image: string | null;
-}
+  console.log(`[${new Date().toISOString()}] [useSpotifyData] Hook initialized:`, { 
+    code: !!code, 
+    mail: !!mail,
+    accessToken: !!accessToken,
+    refreshToken: !!refreshToken,
+    actualCode: code,
+    actualMail: mail 
+  });
 
-interface SpotifySavedTrack {
-  id: string;
-  name: string;
-  artist: string;
-  addedAt: string;
-  image: string | null;
-}
-
-interface SpotifyProfile {
-  id: string;
-  display_name: string;
-  email: string;
-  images: Array<{
-    url: string;
-    width: number;
-    height: number;
-  }>;
-  followers: {
-    total: number;
+  // Check if token is expired
+  const isTokenExpired = () => {
+    // Check if we have a timestamp expiry
+    if (tokenExpiry && tokenExpiry !== '0') {
+      const expiryTime = parseInt(tokenExpiry);
+      const now = Date.now();
+      const isExpired = now >= expiryTime;
+      
+      console.log(`[${new Date().toISOString()}] [isTokenExpired] Using timestamp:`, {
+        expiryTime,
+        now,
+        isExpired,
+        expiryDate: new Date(expiryTime).toISOString(),
+        nowDate: new Date(now).toISOString(),
+        timeUntilExpiry: expiryTime - now
+      });
+      
+      return isExpired;
+    }
+    
+    // Check if we have expires_in (seconds from now)
+    const expiresIn = (typeof window !== 'undefined' ? localStorage.getItem('spotify_expires_in') || '0' : '0');
+    if (expiresIn && expiresIn !== '0') {
+      // Calculate when the token was created and when it expires
+      const expiresInSeconds = parseInt(expiresIn);
+      const tokenCreated = (typeof window !== 'undefined' ? localStorage.getItem('spotify_token_created') || '0' : '0');
+      
+      if (tokenCreated && tokenCreated !== '0') {
+        const createdTime = parseInt(tokenCreated);
+        const expiryTime = createdTime + (expiresInSeconds * 1000);
+        const now = Date.now();
+        const isExpired = now >= expiryTime;
+        
+        console.log(`[${new Date().toISOString()}] [isTokenExpired] Using expires_in:`, {
+          expiresInSeconds,
+          createdTime,
+          expiryTime,
+          now,
+          isExpired,
+          expiryDate: new Date(expiryTime).toISOString(),
+          nowDate: new Date(now).toISOString(),
+          timeUntilExpiry: expiryTime - now
+        });
+        
+        return isExpired;
+      }
+    }
+    
+    // If we can't determine expiry, assume not expired
+    console.log(`[${new Date().toISOString()}] [isTokenExpired] Cannot determine expiry, assuming not expired`);
+    return false;
   };
-  country: string;
-  product: string;
-}
 
-interface SpotifyData {
-  profile: SpotifyProfile;
-  topTracks: SpotifyTrack[];
-  topArtists: SpotifyArtist[];
-  recentlyPlayed: SpotifyRecentlyPlayed[];
-  savedTracks: SpotifySavedTrack[];
-  stats: {
-    totalSavedTracks: number;
-    uniqueArtists: number;
-    uniqueTracks: number;
-    listeningSessions: number;
-  };
-}
+  // Fetch Spotify data using tokens from localStorage
+  const fetchSpotifyData = async () => {
+    console.log(`[${new Date().toISOString()}] [fetchSpotifyData] Refreshing spotify data of user`);
+    
+    if (!accessToken || !refreshToken) {
+      throw new Error('No access token or refresh token found');
+    }
 
-interface UseSpotifyDataReturn {
-  data: SpotifyData | null;
-  isLoading: boolean;
-  error: string | null;
-  refresh: () => void;
-  lastUpdated: Date | null;
-}
+    if (isTokenExpired()) {
+      console.log(`[${new Date().toISOString()}] [fetchSpotifyData] Token expired, need to refresh`);
+      // For now, just throw an error - you'll need to implement token refresh
+      throw new Error('Token expired - please re-authenticate with Spotify');
+    }
 
-export function useSpotifyData(refreshInterval: number = 60000): UseSpotifyDataReturn {
-  const [data, setData] = useState<SpotifyData | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
-
-  const fetchData = useCallback(async () => {
     try {
-      let spotifyService = createSpotifyService();
-
-      // If no service and we have a refresh token, try to refresh
-      if (!spotifyService) {
-        const refreshToken = localStorage.getItem('spotify_refresh_token');
-        if (refreshToken) {
-          try {
-            const response = await fetch('/api/auth/spotify/refresh-token', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                refresh_token: refreshToken,
-              }),
-            });
-
-            console.log(response);
-            
-
-            if (response.ok) {
-              const tokenData = await response.json();
-
-              // Update stored tokens
-              localStorage.setItem('spotify_access_token', tokenData.access_token);
-              localStorage.setItem('spotify_refresh_token', tokenData.refresh_token || refreshToken);
-              localStorage.setItem('spotify_expires_in', tokenData.expires_in.toString());
-              localStorage.setItem('spotify_token_expiry', (Date.now() + tokenData.expires_in * 1000).toString());
-
-              spotifyService = new (await import('@/lib/spotifyService')).SpotifyService(tokenData.access_token);
-            }
-          } catch (refreshError) {
-            console.error('Failed to refresh token:', refreshError);
-          }
-        }
-      }
-
-      if (!spotifyService) {
-        setError('No Spotify access token found. Please connect your Spotify account.');
-        setIsLoading(false);
-        return;
-      }
-
-      setIsLoading(true);
-      setError(null);
-
-      // Get comprehensive user stats
-      const userStats = await spotifyService.getUserStats();
-
-      console.log("userStats ", userStats);
-
-
-      // Transform the data for the dashboard
-      const transformedData: SpotifyData = {
-        profile: userStats.profile,
-        topTracks: userStats.topTracks.slice(0, 5).map((track: { id: string; name: string; artists: Array<{ name: string }>; album: { name: string; images?: Array<{ url: string }> }; external_urls?: { spotify: string } }) => ({
-          id: track.id,
-          name: track.name,
-          artist: track.artists[0]?.name || 'Unknown Artist',
-          album: track.album?.name || 'Unknown Album',
-          image: track.album?.images?.[0]?.url || null,
-          spotifyUrl: track.external_urls?.spotify || null,
-        })),
-        topArtists: userStats.topArtists.slice(0, 5).map((artist: { id: string; name: string; images?: Array<{ url: string }>; external_urls?: { spotify: string } }) => ({
-          id: artist.id,
-          name: artist.name,
-          image: artist.images?.[0]?.url || null,
-          spotifyUrl: artist.external_urls?.spotify || null,
-        })),
-        recentlyPlayed: userStats.recentlyPlayed.map((item: { track: { id: string; name: string; artists: Array<{ name: string }>; album?: { images?: Array<{ url: string }> } }; played_at: string }) => ({
-          id: item.track.id,
-          name: item.track.name,
-          artist: item.track.artists[0]?.name || 'Unknown Artist',
-          playedAt: item.played_at,
-          image: item.track.album?.images?.[0]?.url || null,
-        })),
-        savedTracks: userStats.savedTracks.map((item: { track: { id: string; name: string; artists: Array<{ name: string }>; album?: { images?: Array<{ url: string }> } }; added_at: string }) => ({
-          id: item.track.id,
-          name: item.track.name,
-          artist: item.track.artists[0]?.name || 'Unknown Artist',
-          addedAt: item.added_at,
-          image: item.track.album?.images?.[0]?.url || null,
-        })),
-        stats: {
-          totalSavedTracks: userStats.stats.totalSavedTracks,
-          uniqueArtists: userStats.stats.uniqueArtists,
-          uniqueTracks: userStats.stats.uniqueTracks,
-          listeningSessions: userStats.stats.listeningSessions,
-        },
+      // Fetch comprehensive user data using the access token
+      const userData = await spotifyAPI.getComprehensiveUserData(accessToken, refreshToken);
+      
+      // Extract required stats
+      const stats = spotifyAPI.getListeningStats(userData);
+      
+      const statsWithEmail = {
+        listeningTime: stats.totalListeningTimeMs,
+        uniqueArtistCount: stats.uniqueArtistsCount,
+        tracksPlayedCount: stats.totalTracksPlayed,
+        anonymousTracksPlayedCount: stats.anonymousTrackCount,
+        spotifyEmail: mail,
       };
 
-      setData(transformedData);
-      setLastUpdated(new Date());
-      //console.log('Spotify data fetched successfully:', transformedData);
-    } catch (err) {
-      //console.error('Error fetching Spotify data:', err);
-      setError(err instanceof Error ? err.message : 'Failed to fetch Spotify data');
-    } finally {
-      setIsLoading(false);
+      // Send data to backend
+      await sendSpotifyData(statsWithEmail);
+      console.log(`[${new Date().toISOString()}] [fetchSpotifyData] Data fetched and sent successfully`);
+      
+      return {
+        topArtists: stats.topArtists.slice(0, 5),
+        topTracks: stats.topTracks.slice(0, 5),
+        totalListeningTimeMs: stats.totalListeningTimeMs,
+        totalTracksPlayed: stats.totalTracksPlayed,
+        uniqueArtistsCount: stats.uniqueArtistsCount,
+        anonymousTrackCount: stats.anonymousTrackCount,
+      };
+    } catch (error) {
+      console.error(`[${new Date().toISOString()}] [fetchSpotifyData] Error:`, error);
+      throw error;
     }
+  };
+
+  // Query for Spotify data, refetch every 6 sec
+  const {
+    data: spotifyData,
+    isLoading: isSpotifyLoading,
+    error: spotifyError,
+    refetch: refetchSpotifyData,
+  } = useQuery({
+    queryKey: ['spotify-data', code, accessToken],
+    queryFn: fetchSpotifyData,
+    enabled: !!(code && mail && accessToken && refreshToken), // Simplified: just check if we have the basic data
+    refetchInterval: 6000, // 6 seconds
+    refetchIntervalInBackground: true, // Critical: allows refetching when tab is not focused
+    refetchOnWindowFocus: true, // Refetch when user returns to tab
+    retry: 3, // Retry failed requests
+    retryDelay: 1000, // Wait 1 second between retries
+    staleTime: 0, // Data is always considered stale, so it will refetch
+    gcTime: 5 * 60 * 1000, // Keep data in cache for 5 minutes
+  });
+
+  // Test query to verify React Query intervals work
+  const testQuery = useQuery({
+    queryKey: ['test-interval'],
+    queryFn: () => {
+      console.log(`[${new Date().toISOString()}] [testQuery] Test interval working!`);
+      return { timestamp: Date.now() };
+    },
+    refetchInterval: 3000, // 3 seconds for testing
+    refetchIntervalInBackground: true,
+    staleTime: 0,
+  });
+
+  // Monitor hook state changes
+  useEffect(() => {
+    console.log(`[${new Date().toISOString()}] [useSpotifyData] State changed:`, {
+      spotifyData: !!spotifyData,
+      isSpotifyLoading,
+      spotifyError: !!spotifyError,
+      code: !!code,
+      mail: !!mail,
+      accessToken: !!accessToken,
+      refreshToken: !!refreshToken,
+      tokenExpired: isTokenExpired(),
+      enabled: !!(code && mail && accessToken && refreshToken)
+    });
+  }, [spotifyData, isSpotifyLoading, spotifyError, code, mail, accessToken, refreshToken]);
+
+  // Log when the query is enabled/disabled
+  useEffect(() => {
+    const isEnabled = !!(code && mail && accessToken && refreshToken);
+    console.log(`[${new Date().toISOString()}] [useSpotifyData] Query enabled:`, isEnabled, {
+      hasCode: !!code,
+      hasMail: !!mail,
+      hasAccessToken: !!accessToken,
+      hasRefreshToken: !!refreshToken,
+      tokenExpired: isTokenExpired()
+    });
+  }, [code, mail, accessToken, refreshToken]);
+
+  // Debug localStorage values
+  useEffect(() => {
+    console.log(`[${new Date().toISOString()}] [useSpotifyData] localStorage values:`, {
+      spotify_id: localStorage.getItem('spotify_id'),
+      spotify_email: localStorage.getItem('spotify_email'),
+      spotify_access_token: localStorage.getItem('spotify_access_token')?.substring(0, 20) + '...',
+      spotify_refresh_token: localStorage.getItem('spotify_refresh_token')?.substring(0, 20) + '...',
+      spotify_token_expiry: localStorage.getItem('spotify_token_expiry'),
+      spotify_expires_in: localStorage.getItem('spotify_expires_in')
+    });
   }, []);
 
-  const refresh = useCallback(() => {
-    fetchData();
-  }, [fetchData]);
-
-  // Initial fetch
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
-  // Set up interval for periodic refresh
-  useEffect(() => {
-    if (refreshInterval > 0) {
-      const interval = setInterval(() => {
-        //console.log('Refreshing Spotify data...');
-        fetchData();
-      }, refreshInterval);
-
-      return () => clearInterval(interval);
-    }
-  }, [fetchData, refreshInterval]);
-
   return {
-    data,
-    isLoading,
-    error,
-    refresh,
-    lastUpdated,
+    isLoading: isSpotifyLoading,
+    error: spotifyError,
+    data: spotifyData,
+    refetch: refetchSpotifyData,
   };
+}
+
+/**
+ * Send Spotify stats to the backend for updating user info
+ * @param stats Object containing all Spotify stats and scores
+ * Required: spotifyEmail
+ */
+export async function sendSpotifyData(stats: {
+  spotifyEmail: string;
+  invitationCode?: string;
+  accessToken?: string;
+  refreshToken?: string;
+  expiresIn?: number;
+  volumeScore?: number;
+  diversityScore?: number;
+  historyScore?: number;
+  referralScore?: number;
+  totalBasePoints?: number;
+  referralCode?: string;
+  tracksPlayedCount?: number;
+  uniqueArtistCount?: number;
+  listeningTime?: number;
+  anonymousTracksPlayedCount?: number;
+  playedDays?: number;
+  referralCount?: number;
+  point?: number;
+  pointsToday?: number;
+  invitedUsers?: any;
+}) {
+  if (!stats.spotifyEmail) {
+    throw new Error('spotifyEmail is required');
+  }
+  try {
+    const res = await fetch('https://api.startvibin.io/api/v1/auth/spotify-info/update', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(stats),
+    });
+    const data = await res.json();
+    console.log('[sendSpotifyData] Response:', data);
+    return data;
+  } catch (error) {
+    console.error('[sendSpotifyData] Error:', error);
+    throw error;
+  }
 } 

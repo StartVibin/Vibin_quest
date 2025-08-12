@@ -29,27 +29,42 @@
     gap: 24px;
 }
 
+@media (max-width: 1200px) {
+    .headerInner{
+        gap: 12px;
+    }
+}
+
 .headerLogo{
     display: flex;
     align-items: center;
     gap: 6px;
-    text-transform: uppercase;
     font-size: 2.4rem;
     font-weight: 600;
 }
 
-.headerLogo img {
-    width: 41px;
-    height: 33px;
+.headerLogo svg{
+    width: 31px;
+    height: 31px;
     flex-shrink: 0;
 }
 
+@media (max-width: 1200px) {
+    .headerLogo{
+        font-size: 2rem;
+    }
+
+    .headerLogo svg{
+        width: 20px;
+        height: 20px;
+    }
+}
 @media (max-width: 998px) {
     .headerLogo{
         font-size: 1.8rem;
     }
 
-    .headerLogo img {
+    .headerLogo svg{
         width: 30px;
         height: 25px;
     }
@@ -58,9 +73,14 @@
 .headerNav{
     display: flex;
     align-items: center;
-    gap: 60px;
+    gap: 35px;
 }
 
+@media(max-width: 1400px){
+    .headerNav{
+        gap: 12px;
+    }
+}
 @media (max-width: 998px) {
     .headerNav{
         display: none;
@@ -69,12 +89,26 @@
 
 .headerNavLink{
     border-radius: 12px;
-    width: 44px;
-    height: 44px;
+    padding: 1.2rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #818097;
+    gap: 10px;
+    color: rgba(24, 34, 46, .5);
+}
+
+@media (max-width: 1400px) {
+    .headerNavLink{
+        padding: 0.8rem;
+        font-size: 1.4rem;
+    }
+}
+@media (max-width: 1200px) {
+    .headerNavLink{
+        font-size: 1.2rem;
+        padding: 0.6rem .4rem;
+        border-radius: 6px;
+    }
 }
 
 .headerNavLink svg{
@@ -83,14 +117,35 @@
     flex-shrink: 0;
 }
 
+.headerNavLinkWrap{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+}
+
+.headerNavLinkText{
+    font-weight: 500;
+}
+
 .headerNavLink.active, .headerNavLink:hover{
     background: rgba(255, 255, 255, .3);
     color: #18222E;
 }
 
 .headerNavLink.disabled{
-    opacity: 0.3;
     pointer-events: none;
+}
+
+.headerNavLinkTextSoon{
+    font-size: 1.2rem;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    color: #18222E;
+}
+
+.headerNavLink.disabled svg, .headerNavLink.disabled .headerNavLinkText{
+    opacity: 0.5;
 }
 
 .headerWrap{
@@ -145,3 +200,39 @@
     flex-shrink: 0;
 }
 
+.headerConnect{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 1.2rem 1.6rem;
+    background: rgba(255, 255, 255, .3);
+    border: 1px solid #A0A3C1;
+    border-radius: 12px;
+    font-size: 1.8rem;
+    font-weight: 500;
+}
+
+@media (max-width: 1200px) {
+    .headerConnect{
+        font-size: 1.4rem;
+        padding: 0.8rem;
+    }
+}
+
+.headerConnect:hover{
+    color: #7323B8;
+    border: 1px solid #7323B8;
+}
+
+.headerConnect svg{
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+@media (max-width: 998px) {
+    .headerConnect{
+        padding: 0.8rem;
+        font-size: 1.4rem;
+    }
+}

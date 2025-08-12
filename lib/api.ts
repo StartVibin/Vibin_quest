@@ -25,7 +25,7 @@ export const API_ENDPOINTS = {
   GET_AUTH_MESSAGE: `${API_BASE_URL}/auth/message`,
   WALLET_AUTH: `${API_BASE_URL}/auth/wallet`,
   USER_PROFILE: `${API_BASE_URL}/auth/profile`,
-  VERIFY_CODE: `${API_BASE_URL}/auth/verify-code`,
+  VERIFY_CODE: `${API_BASE_URL}/api/v1/auth/verify-code`,
   TELEGRAM_USER_DATA: `${API_BASE_URL}/auth/telegram`,
 
   //  Spotify Token
@@ -404,7 +404,7 @@ export const verifyReferalCode = async (referralCode: string) => {
   if (!response.ok) {
     throw new Error('Failed to verify Referral')
   }
-
+  localStorage.setItem('inviteCode', referralCode);
   return response.json()
 }
 

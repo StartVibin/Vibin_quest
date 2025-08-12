@@ -1,308 +1,924 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import { useAccount } from 'wagmi';
-import { toast } from 'react-toastify';
-import styles from './page.module.css';
+import React from "react";
+import cn from "classnames";
 
-import { useSpotifyData } from '@/lib/hooks/useSpotifyData';
+import styles from "./page.module.css";
+import base from "@/shared/styles/base.module.css";
 
-export default function DashboardPage() {
-  const { isConnected } = useAccount();
-  const [timeLeft] = useState('23:02:13');
-  const [userLevel] = useState(23);
-  const [contributeReward] = useState(123.02);
+import {
+  Close,
+  Group,
+  Headphone,
+  History,
+  Info,
+  Link2,
+  Logo2,
+  Mask,
+  Note,
+  Play,
+  Share,
+  Share2,
+  Star,
+  Timer,
+  Trophy,
+  User,
+  Volume,
+} from "@/shared/icons";
+import Image from "next/image";
+import { Modal } from "@/shared/ui/Modal";
+import { useToast } from "@/lib/hooks/useToast";
+import { useSpotifyData } from "@/lib/hooks/useSpotifyData";
+import { handleXConnect, postXStats } from "@/lib/utils";
+import { claimWithContract } from "@/lib/api/claimWithContract";
+import { useAccount, useWalletClient } from "wagmi";
+import { BrowserProvider, JsonRpcSigner } from "ethers";
+import { ToastInstance } from "@/lib/types";
 
-  console.log("HERE");
+// Custom hook to convert wagmi wallet client to ethers signer
+function useEthersSigner() {
+  const { data: walletClient } = useWalletClient();
+
+  return React.useMemo(() => {
+    if (!walletClient) return null;
+
+    const provider = new BrowserProvider(walletClient.transport);
+    return provider.getSigner();
+  }, [walletClient]);
+}
+
+function formatMsToHrMin(ms: number): string {
+  const hours = Math.floor(ms / 3600000);
+  const minutes = Math.floor((ms % 3600000) / 60000);
+  if (hours > 0) {
+    return `${hours}hr ${minutes}min`;
+  }
+  return `${minutes}min`;
+}
+
+export default function Home() {
+  const [shareModal, setShareModal] = React.useState(false);
+  const [claimModal, setClaimModal] = React.useState(false);
+  const toast = useToast();
   
+  // Get invite code from localStorage
+  const inviteCode = typeof window !== 'undefined' ? localStorage.getItem('spotify_id') || '' : '';
+  const { data, refetch, isLoading, error } = useSpotifyData(inviteCode);
   
-  const { data: spotifyData, isLoading, error, lastUpdated } = useSpotifyData(30000);
+  const { address } = useAccount();
+  const signer = useEthersSigner();
+  const [ethersSigner, setEthersSigner] = React.useState<JsonRpcSigner | null>(
+    null
+  );
+  React.useEffect(() => {
+    if (signer) {
+      signer.then(setEthersSigner).catch(console.error);
+    } else {
+      setEthersSigner(null);
+    }
+  }, [signer]);
 
-  const topTracks = spotifyData?.topTracks || [];
-  const topArtists = spotifyData?.topArtists || [];
-  const listeningStats = spotifyData?.stats ? [
-    { 
-      value: spotifyData.stats.totalSavedTracks, 
-      label: "Tracks Played", 
-      icon: "🎵" 
-    },
-    { 
-      value: spotifyData.stats.uniqueArtists, 
-      label: "Unique Artists", 
-      icon: "👤" 
-    },
-    { 
-      value: `${spotifyData.stats.listeningSessions} sessions`, 
-      label: "Listening Sessions", 
-      icon: "🎧" 
-    },
-    { 
-      value: spotifyData.stats.uniqueTracks, 
-      label: "Unique Tracks", 
-      icon: "😴" 
-    },
-  ] : [];
-
-  const scoreBreakdown = [
-    { name: "Volume Score", value: 125, icon: "🔊" },
-    { name: "Diversity Score", value: 125, icon: "👤" },
-    { name: "History Score", value: 125, icon: "⏰" },
-    { name: "Referral Score", value: 125, icon: "🔗" },
-  ];
-
-
-
-  const handleClaimReward = () => {
-    toast.success('Reward claimed successfully!');
+  console.log("Spotify data:", data);
+  console.log("Invite code:", inviteCode);
+  console.log("Loading:", isLoading);
+  console.log("Error:", error);
+  
+  const handleManualRefetch = () => {
+    console.log(`[${new Date().toISOString()}] Manual refetch triggered`);
+    refetch();
   };
 
-  const handleShareInsights = () => {
-    toast.info('Sharing insights...');
+  const handleXConnectWithWallet = () => {
+    handleXConnect(toast as ToastInstance);
+    // Add your X connection logic here
   };
 
-  useEffect(() => {
-    if (!isConnected) {
-      toast.error('Please connect your wallet first');
-      location.href = "/"
-      return;
-    }
-  }, [isConnected]);
+  // const handleClaimReward = () => {
+  //   toast.success("Reward claimed successfully!");
+  //   // Add your claim logic here
+  // };
+  return (
+    <>
+      <div className={styles.dashboard}>
+        <div className={base.container}>
+          <div className={styles.dashboardInner}>
+            <div className={styles.dashboardOverlay}>
+              <div className={styles.dashboardTitleInner}>
+                <p className={styles.dashboardTitle}>Your Musical</p>
 
-  useEffect(() => {
-    if (error) {
-      toast.error(error);
-    }
-  }, [error]);
+                <p className={styles.dashboardText}>Identity Revealed</p>
+              </div>
 
-  useEffect(() => {
-    if (spotifyData && !isLoading) {
+              <div className={styles.dashboardScreens}>
+                <Image
+                  src="/img/claim-bg.png"
+                  alt="bg"
+                  fill
+                  className={styles.dashboardScreenBg}
+                />
 
-      console.log("spotifyData , " , spotifyData);
-      
-      toast.success('Spotify data loaded successfully!');
-    }
-  }, [spotifyData, isLoading]);
+                <div className={styles.dashboardScreenTop}>
+                  <div className={styles.dashboardScreenClaim}>
+                    <div className={styles.dashboardScreenClaimIcon}>
+                      <Timer />
+                    </div>
 
-  if (isLoading) {
-    return (
-      <div className={styles.container}>
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          minHeight: '100vh',
-          flexDirection: 'column',
-          gap: '1rem'
-        }}>
-          <div style={{
-            width: '40px',
-            height: '40px',
-            border: '4px solid #f3f3f3',
-            borderTop: '4px solid #1DB954',
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite'
-          }} />
-          <p>Loading your Spotify data...</p>
-          <style jsx>{`
-            @keyframes spin {
-              0% { transform: rotate(0deg); }
-              100% { transform: rotate(360deg); }
-            }
-          `}</style>
+                    <div className={styles.dashboardScreenClaimTextBlock}>
+                      <p>Next claim:</p>
+                      <p>23:02:13</p>
+                    </div>
+                  </div>
+                  <div className={styles.shareBlock}>
+                    <button
+                      className={styles.dashboardScreenTopShare}
+                      onClick={handleXConnectWithWallet}
+                    >
+                      connect X
+                    </button>
+                    <button
+                      className={styles.dashboardScreenTopShare}
+                      onClick={() => setShareModal(true)}
+                    >
+                      <Share />
+                      Share Insights
+                    </button>
+                    
+                    {/* Test button for Spotify data refetch */}
+                    {/* <button
+                      className={styles.dashboardScreenTopShare}
+                      onClick={handleManualRefetch}
+                      style={{ backgroundColor: '#1DB954', color: 'white' }}
+                    >
+                      🔄 Test Refetch
+                    </button> */}
+                  </div>
+                </div>
+
+                <div className={styles.dashboardScreenReward}>
+                  <div className={styles.dashboardScreenRewardWrap}>
+                    <p className={styles.dashboardScreenRewardText}>
+                      Contribute Reward:
+                    </p>
+
+                    <div className={styles.dashboardScreenRewardValue}>
+                      123.02
+                      <Logo2 />
+                    </div>
+                  </div>
+
+                  <div className={styles.dashboardScreenRewardClaim}>
+                    <button
+                      className={styles.dashboardScreenRewardClaimButton}
+                      onClick={() =>
+                        claimWithContract(
+                          address,
+                          process.env.NEXT_PUBLIC_CLAIM_CONTRACT!,
+                          ethersSigner!
+                        )
+                      }
+                    >
+                      Claim reward
+                    </button>
+
+                    <button
+                      className={styles.dashboardScreenRewardClaimInfo}
+                      onClick={() => setClaimModal(true)}
+                    >
+                      Eligibility to Claim
+                      <Info />
+                    </button>
+                  </div>
+
+                  <div className={styles.dashboardScreenLvlInner}>
+                    <div className={styles.dashboardScreenLvl}>
+                      <p className={styles.dashboardScreenLvlText}>your LVL:</p>
+
+                      <p className={styles.dashboardScreenLvlValue}>23</p>
+
+                      <div className={styles.dashboardScreenLvlChart}>
+                        <div
+                          className={styles.dashboardScreenLvlChartProgress}
+                        ></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.dashboardTables}>
+              <div
+                className={cn(
+                  styles.dashboardTable,
+                  styles.dashboardTableBlock
+                )}
+              >
+                <Image
+                  src="/img/track-bg.png"
+                  alt="bg"
+                  fill
+                  className={styles.dashboardTableBlockBg}
+                />
+
+                <div className={styles.statsBlockTitle}>
+                  <span>
+                    <Note />
+                  </span>
+                  Top Tracks
+                </div>
+
+                <div className={styles.dashboardTableItems}>
+                  {/* <div className={styles.dashboardTableItem}>
+                    <div className={styles.dashboardTableItemWrap}>
+                      <p className={styles.dashboardTableItemPlace}>#1</p>
+
+                      <div className={styles.dashboardTableItemImg}></div>
+
+                      <div className={styles.dashboardTableItemTextBlock}>
+                        <p className={styles.dashboardTableItemTitle}>
+                          Name of Song
+                        </p>
+
+                        <p className={styles.dashboardTableItemText}>
+                          Artist name
+                        </p>
+                      </div>
+                    </div>
+
+                    <a
+                      href="https://google.com"
+                      target="_blank"
+                      className={styles.dashboardTableItemLink}
+                    >
+                      <Link2 />
+                    </a>
+                  </div>
+
+                  <div className={styles.dashboardTableItem}>
+                    <div className={styles.dashboardTableItemWrap}>
+                      <p className={styles.dashboardTableItemPlace}>#2</p>
+
+                      <div className={styles.dashboardTableItemImg}></div>
+
+                      <div className={styles.dashboardTableItemTextBlock}>
+                        <p className={styles.dashboardTableItemTitle}>
+                          Name of Song
+                        </p>
+
+                        <p className={styles.dashboardTableItemText}>
+                          Artist name
+                        </p>
+                      </div>
+                    </div>
+
+                    <a
+                      href="https://google.com"
+                      target="_blank"
+                      className={styles.dashboardTableItemLink}
+                    >
+                      <Link2 />
+                    </a>
+                  </div>
+
+                  <div className={styles.dashboardTableItem}>
+                    <div className={styles.dashboardTableItemWrap}>
+                      <p className={styles.dashboardTableItemPlace}>#3</p>
+
+                      <div className={styles.dashboardTableItemImg}></div>
+
+                      <div className={styles.dashboardTableItemTextBlock}>
+                        <p className={styles.dashboardTableItemTitle}>
+                          Name of Song
+                        </p>
+
+                        <p className={styles.dashboardTableItemText}>
+                          Artist name
+                        </p>
+                      </div>
+                    </div>
+
+                    <a
+                      href="https://google.com"
+                      target="_blank"
+                      className={styles.dashboardTableItemLink}
+                    >
+                      <Link2 />
+                    </a>
+                  </div>
+
+                  <div className={styles.dashboardTableItem}>
+                    <div className={styles.dashboardTableItemWrap}>
+                      <p className={styles.dashboardTableItemPlace}>#4</p>
+
+                      <div className={styles.dashboardTableItemImg}></div>
+
+                      <div className={styles.dashboardTableItemTextBlock}>
+                        <p className={styles.dashboardTableItemTitle}>
+                          Name of Song
+                        </p>
+
+                        <p className={styles.dashboardTableItemText}>
+                          Artist name
+                        </p>
+                      </div>
+                    </div>
+
+                    <a
+                      href="https://google.com"
+                      target="_blank"
+                      className={styles.dashboardTableItemLink}
+                    >
+                      <Link2 />
+                    </a>
+                  </div>
+
+                  <div className={styles.dashboardTableItem}>
+                    <div className={styles.dashboardTableItemWrap}>
+                      <p className={styles.dashboardTableItemPlace}>#5</p>
+
+                      <div className={styles.dashboardTableItemImg}></div>
+
+                      <div className={styles.dashboardTableItemTextBlock}>
+                        <p className={styles.dashboardTableItemTitle}>
+                          Name of Song
+                        </p>
+
+                        <p className={styles.dashboardTableItemText}>
+                          Artist name
+                        </p>
+                      </div>
+                    </div>
+
+                    <a
+                      href="https://google.com"
+                      target="_blank"
+                      className={styles.dashboardTableItemLink}
+                    >
+                      <Link2 />
+                    </a>
+                  </div> */}
+                  {data?.topTracks.map((track, index) => (
+                    <div className={styles.dashboardTableItem} key={index}>
+                      <div className={styles.dashboardTableItemWrap}>
+                        <p className={styles.dashboardTableItemPlace}>
+                          #{index + 1}
+                        </p>
+                        <div className={styles.dashboardTableItemImg}></div>
+
+                        <div className={styles.dashboardTableItemTextBlock}>
+                          <p className={styles.dashboardTableItemTitle}>
+                            {track.name}
+                          </p>
+
+                          <p className={styles.dashboardTableItemText}>
+                            {track.artist}
+                          </p>
+                        </div>
+                      </div>
+                      <a
+                        href="https://google.com"
+                        target="_blank"
+                        className={styles.dashboardTableItemLink}
+                      >
+                        <Link2 />
+                      </a>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div
+                className={cn(
+                  styles.dashboardTable,
+                  styles.dashboardTableBlock
+                )}
+              >
+                <Image
+                  src="/img/artist-bg.png"
+                  alt="bg"
+                  fill
+                  className={styles.dashboardTableBlockBg}
+                />
+
+                <div className={styles.statsBlockTitle}>
+                  <span>
+                    <Play />
+                  </span>
+                  Top Artist
+                </div>
+
+                <div className={styles.dashboardTableItems}>
+                  {/* <div className={styles.dashboardTableItem}>
+                    <div className={styles.dashboardTableItemWrap}>
+                      <p className={styles.dashboardTableItemPlace}>#1</p>
+
+                      <div className={styles.dashboardTableItemImg}></div>
+
+                      <div className={styles.dashboardTableItemTextBlock}>
+                        <p className={styles.dashboardTableItemTitle}>
+                          Artist name
+                        </p>
+                      </div>
+                    </div>
+
+                    <a
+                      href="https://google.com"
+                      target="_blank"
+                      className={styles.dashboardTableItemLink}
+                    >
+                      <Link2 />
+                    </a>
+                  </div>
+
+                  <div className={styles.dashboardTableItem}>
+                    <div className={styles.dashboardTableItemWrap}>
+                      <p className={styles.dashboardTableItemPlace}>#2</p>
+
+                      <div className={styles.dashboardTableItemImg}></div>
+
+                      <div className={styles.dashboardTableItemTextBlock}>
+                        <p className={styles.dashboardTableItemTitle}>
+                          Artist name
+                        </p>
+                      </div>
+                    </div>
+
+                    <a
+                      href="https://google.com"
+                      target="_blank"
+                      className={styles.dashboardTableItemLink}
+                    >
+                      <Link2 />
+                    </a>
+                  </div>
+
+                  <div className={styles.dashboardTableItem}>
+                    <div className={styles.dashboardTableItemWrap}>
+                      <p className={styles.dashboardTableItemPlace}>#3</p>
+
+                      <div className={styles.dashboardTableItemImg}></div>
+
+                      <div className={styles.dashboardTableItemTextBlock}>
+                        <p className={styles.dashboardTableItemTitle}>
+                          Artist name
+                        </p>
+                      </div>
+                    </div>
+
+                    <a
+                      href="https://google.com"
+                      target="_blank"
+                      className={styles.dashboardTableItemLink}
+                    >
+                      <Link2 />
+                    </a>
+                  </div>
+
+                  <div className={styles.dashboardTableItem}>
+                    <div className={styles.dashboardTableItemWrap}>
+                      <p className={styles.dashboardTableItemPlace}>#4</p>
+
+                      <div className={styles.dashboardTableItemImg}></div>
+
+                      <div className={styles.dashboardTableItemTextBlock}>
+                        <p className={styles.dashboardTableItemTitle}>
+                          Artist name
+                        </p>
+                      </div>
+                    </div>
+
+                    <a
+                      href="https://google.com"
+                      target="_blank"
+                      className={styles.dashboardTableItemLink}
+                    >
+                      <Link2 />
+                    </a>
+                  </div>
+
+                  <div className={styles.dashboardTableItem}>
+                    <div className={styles.dashboardTableItemWrap}>
+                      <p className={styles.dashboardTableItemPlace}>#5</p>
+
+                      <div className={styles.dashboardTableItemImg}></div>
+
+                      <div className={styles.dashboardTableItemTextBlock}>
+                        <p className={styles.dashboardTableItemTitle}>
+                          Artist name
+                        </p>
+                      </div>
+                    </div>
+
+                    <a
+                      href="https://google.com"
+                      target="_blank"
+                      className={styles.dashboardTableItemLink}
+                    >
+                      <Link2 />
+                    </a>
+                  </div> */}
+
+                  {data?.topArtists.map((artist, index) => (
+                    <div className={styles.dashboardTableItem} key={index}>
+                      <div className={styles.dashboardTableItemWrap}>
+                        <p className={styles.dashboardTableItemPlace}>
+                          #{index + 1}
+                        </p>
+                        <div className={styles.dashboardTableItemImg}></div>
+
+                        <div className={styles.dashboardTableItemTextBlock}>
+                          <p className={styles.dashboardTableItemTitle}>
+                            {artist.name}
+                          </p>
+                        </div>
+                      </div>
+                      <a
+                        href="https://google.com"
+                        target="_blank"
+                        className={styles.dashboardTableItemLink}
+                      >
+                        <Link2 />
+                      </a>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div
+                className={cn(
+                  styles.dashboardTable,
+                  styles.dashboardTableScore
+                )}
+              >
+                <div
+                  className={cn(
+                    styles.statsBlockTitle,
+                    styles.dashboardTableScoreTitle
+                  )}
+                >
+                  <span>
+                    <Star />
+                  </span>
+                  Score Breakdown
+                </div>
+
+                <div className={styles.statsBlockWrap}>
+                  <div className={styles.statsBlockElems}>
+                    <div className={styles.statsBlockElem}>
+                      <div className={styles.statsBlockElemWrap}>
+                        <div className={styles.statsBlockElemTitle}>
+                          <Volume />
+                          Quantity Score
+                        </div>
+
+                        <p className={styles.statsBlockElemText}>
+                          0 (&lt;30 minutes)
+                        </p>
+                      </div>
+
+                      <p className={styles.statsBlockElemValue}>125</p>
+                    </div>
+
+                    <div className={styles.statsBlockElem}>
+                      <div className={styles.statsBlockElemWrap}>
+                        <div className={styles.statsBlockElemTitle}>
+                          <Group />
+                          Diversity Score
+                        </div>
+
+                        <p className={styles.statsBlockElemText}>
+                          0 (&lt;30 artist)
+                        </p>
+                      </div>
+
+                      <p className={styles.statsBlockElemValue}>125</p>
+                    </div>
+
+                    <div className={styles.statsBlockElem}>
+                      <div className={styles.statsBlockElemWrap}>
+                        <div className={styles.statsBlockElemTitle}>
+                          <History />
+                          History Score
+                        </div>
+
+                        <p className={styles.statsBlockElemText}>
+                          0 (&lt;7 days)
+                        </p>
+                      </div>
+
+                      <p className={styles.statsBlockElemValue}>125</p>
+                    </div>
+
+                    <div className={styles.statsBlockElem}>
+                      <div className={styles.statsBlockElemWrap}>
+                        <div className={styles.statsBlockElemTitle}>
+                          <Share2 />
+                          Referal Score
+                        </div>
+
+                        <p className={styles.statsBlockElemText}>
+                          0 (&lt;10 referalls)
+                        </p>
+                      </div>
+
+                      <p className={styles.statsBlockElemValue}>125</p>
+                    </div>
+
+                    <div className={styles.statsBlockElem}>
+                      <div className={styles.statsBlockElemWrap}>
+                        <div className={styles.statsBlockElemTitle}>
+                          <Trophy />
+                          Total Base Points
+                        </div>
+                      </div>
+
+                      <p className={styles.statsBlockElemValue}>789</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.statsBlock}>
+              <div className={styles.statsBlockTitle}>
+                <span>
+                  <Play />
+                </span>
+                Your Listening Stats
+              </div>
+
+              <div className={styles.statsItems}>
+                <div className={styles.statsItem}>
+                  <Image
+                    src="/img/stat1-bg.png"
+                    alt="bg"
+                    fill
+                    className={styles.statsItemBg}
+                  />
+
+                  <div className={styles.statsItemIcon}>
+                    <Note />
+                  </div>
+
+                  <p className={styles.statsItemValue}>
+                    {data?.totalTracksPlayed}
+                  </p>
+
+                  <p className={styles.statsItemText}>Tracks Played</p>
+                </div>
+
+                <div className={styles.statsItem}>
+                  <Image
+                    src="/img/stat2-bg.png"
+                    alt="bg"
+                    fill
+                    className={styles.statsItemBg}
+                  />
+
+                  <div className={styles.statsItemIcon}>
+                    <User />
+                  </div>
+
+                  <p className={styles.statsItemValue}>
+                    {data?.uniqueArtistsCount}
+                  </p>
+
+                  <p className={styles.statsItemText}>Unique Artists</p>
+                </div>
+
+                <div className={styles.statsItem}>
+                  <Image
+                    src="/img/stat3-bg.png"
+                    alt="bg"
+                    fill
+                    className={styles.statsItemBg}
+                  />
+
+                  <div className={styles.statsItemIcon}>
+                    <Headphone />
+                  </div>
+
+                  <p className={styles.statsItemValue}>
+                    {formatMsToHrMin(data?.totalListeningTimeMs || 0)}
+                  </p>
+
+                  <p className={styles.statsItemText}>Listening Time</p>
+                </div>
+
+                <div className={styles.statsItem}>
+                  <Image
+                    src="/img/stat4-bg.png"
+                    alt="bg"
+                    fill
+                    className={styles.statsItemBg}
+                  />
+
+                  <div className={styles.statsItemIcon}>
+                    <Mask />
+                  </div>
+
+                  <p className={styles.statsItemValue}>
+                    {data?.anonymousTrackCount}
+                  </p>
+
+                  <p className={styles.statsItemText}>Tracks Played</p>
+                </div>
+              </div>
+            </div>
+
+            {/* <div className={styles.techBlock}>
+              <p className={styles.techBlockTitle}>Technical Details</p>
+
+              <div className={styles.techBlockInfo}>
+                <div className={styles.techBlockItem}>
+                  <p className={styles.techBlockItemText}>Contributor:</p>
+
+                  <p className={styles.techBlockItemValue}>0xasf1da..3123</p>
+                </div>
+
+                <div className={styles.techBlockItem}>
+                  <p className={styles.techBlockItemText}>Account Hash:</p>
+
+                  <p className={styles.techBlockItemValue}>0xasf1da..3123</p>
+                </div>
+
+                <div className={styles.techBlockItem}>
+                  <p className={styles.techBlockItemText}>Version:</p>
+
+                  <p className={styles.techBlockItemValue}>1.1.1.1</p>
+                </div>
+
+                <div className={styles.techBlockItem}>
+                  <p className={styles.techBlockItemText}>Data Source:</p>
+
+                  <p className={styles.techBlockItemValue}>IPFS</p>
+                </div>
+              </div>
+            </div> */}
+          </div>
         </div>
       </div>
-    );
-  }
 
-  return (
-    <div className={styles.container}>
-      {/* Header */}
-      {/* <header className={styles.header}>
-        <div className={styles.logo}>
-          <Logo />
-          <span>VIBIN</span>
-        </div>
-        
-        <nav className={styles.navigation}>
-          <a href="/dashboard" className={`${styles.navLink} ${styles.active}`}>
-            Dashboard
-          </a>
-          <a href="/quest" className={styles.navLink}>
-            Quest
-          </a>
-          <a href="/staking" className={styles.navLink}>
-            Staking
-          </a>
-          <a href="#" className={styles.navLink}>
-            Burn (Coming Soon)
-          </a>
-        </nav>
-        
-        <button className={styles.connectWallet}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-            <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M2 17L12 22L22 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            <path d="M2 12L12 17L22 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-          Connect Wallet
-        </button>
-      </header> */}
-
-      {/* Main Content */}
-      <main className={styles.main}>
-        {/* Top Section - Identity & Rewards */}
-        <section className={styles.topSection}>
-          <div className={styles.identitySection}>
-            <h1 className={styles.identityTitle}>Your Musical</h1>
-            <h2 className={styles.identitySubtitle}>Identity Revealed</h2>
-          </div>
-          
-          <div className={styles.rewardCard}>
-            <div className={styles.rewardHeader}>
-              <div className={styles.claimTimer}>
-                Next claim: {timeLeft}
-              </div>
-              <div className={styles.userLevel}>
-                your LVL: {userLevel}
-                <div className={styles.levelIcon}>⭐</div>
-              </div>
-            </div>
-            
-            <div className={styles.rewardAmount}>
-              Contribute Reward: {contributeReward}
-              <span className={styles.currencySymbol}>λ</span>
-            </div>
-            
-            <button onClick={handleClaimReward} className={styles.claimButton}>
-              CLAIM REWARD
-            </button>
-            
-            <div className={styles.eligibility}>
-              Eligibility to Claim
-              <span className={styles.infoIcon}>ℹ️</span>
-            </div>
-            
-                      <button onClick={handleShareInsights} className={styles.shareButton}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <path d="M4 12V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M16 6L12 2L8 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M12 2V15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-            Share Insights
+      <Modal value={claimModal}>
+        <div className={styles.claimModal}>
+          <button
+            onClick={() => setClaimModal(false)}
+            className={styles.claimModalClose}
+          >
+            <Close />
           </button>
-          
-          {lastUpdated && (
-            <div className={styles.lastUpdated}>
-              Last updated: {lastUpdated.toLocaleTimeString()}
-            </div>
-          )}
-          </div>
-        </section>
 
-        {/* Middle Section - Data Panels */}
-        <section className={styles.middleSection}>
-          {/* Top Tracks Panel */}
-          <div className={styles.panel}>
-            <h3 className={styles.panelTitle}>Top Tracks</h3>
-            <div className={styles.panelContent}>
-              {topTracks.map((track, index) => (
-                <div key={track.id} className={styles.listItem}>
-                  <div className={`${styles.numberCircle} ${styles.purpleGradient}`}>
-                    #{index + 1}
-                  </div>
-                  <div className={styles.itemInfo}>
-                    <div className={styles.itemName}>{track.name}</div>
-                    <div className={styles.itemSubtext}>{track.artist}</div>
-                  </div>
-                  <div className={styles.itemIcon}>▶️</div>
+          <div className={styles.claimModalTextBlock}>
+            <p className={styles.claimModalTitle}>Eligibility to Claim</p>
+
+            <p className={styles.claimModalText}>
+              Lorem ipsum, or lipsum as it is sometimes known, is dummy text
+              used in laying out print, graphic or web designs.
+            </p>
+
+            <p className={styles.claimModalText}>
+              The passage is attributed to an unknown typesetter in the 15th
+              century who is thought to have scrambled parts of Cicero&apos;s De
+              Finibus Bonorum et Malorum for use in a type specimen book. It
+              usually begins with:
+            </p>
+          </div>
+        </div>
+      </Modal>
+
+      <Modal value={shareModal}>
+        <div className={styles.shareModal}>
+          <button
+            onClick={() => setShareModal(false)}
+            className={styles.claimModalClose}
+          >
+            <Close />
+          </button>
+
+          <div className={styles.shareModalContent}>
+            <div className={styles.shareModalTitleInner}>
+              <div className={styles.shareModalImg}>
+                <Image src="/img/share.svg" alt="Share" fill />
+              </div>
+
+              <p className={styles.shareModalTitle}>Share Your Insights!</p>
+
+              <p className={styles.shareModalText}>
+                Proud Of Your musical taste? Share it
+              </p>
+            </div>
+
+            <div className={styles.shareModalBanner}>
+              <Image
+                src="/img/banner-bg.png"
+                alt="banner"
+                fill
+                className={styles.shareModalBannerBg}
+              />
+
+              <div className={styles.shareModalBannerTop}>
+                <p className={styles.shareModalBannerTitle}>My Musical DNA</p>
+
+                <div className={styles.shareModalBannerLogo}>
+                  <Logo2 />
+                  Vibin
                 </div>
-              ))}
-            </div>
-          </div>
+              </div>
 
-          {/* Top Artist Panel */}
-          <div className={styles.panel}>
-            <h3 className={styles.panelTitle}>Top Artist</h3>
-            <div className={styles.panelContent}>
-              {topArtists.map((artist, index) => (
-                <div key={artist.id} className={styles.listItem}>
-                  <div className={`${styles.numberCircle} ${styles.blueGradient}`}>
-                    #{index + 1}
+              <div className={styles.shareModalBannerStats}>
+                <div className={styles.shareModalBannerStatsWrap}>
+                  <div className={styles.shareModalBannerStatsBlock}>
+                    <p>My Spotify listening data</p>
+
+                    <div className={styles.shareModalBannerStatsEarn}>
+                      <p>Earned:</p>
+
+                      <div className={styles.shareModalBannerStatsEarnValue}>
+                        123.02
+                        <Logo2 />
+                      </div>
+                    </div>
                   </div>
-                  <div className={styles.itemInfo}>
-                    <div className={styles.itemName}>{artist.name}</div>
+
+                  <div className={styles.shareModalBannerStatsItem}>
+                    <div className={styles.shareModalBannerStatsItemIcon}>
+                      <Headphone />
+                    </div>
+
+                    <p className={styles.shareModalBannerStatsItemTitle}>
+                      Listening Time
+                    </p>
+
+                    <p className={styles.shareModalBannerStatsItemValue}>
+                      {formatMsToHrMin(data?.totalListeningTimeMs || 0)}
+                    </p>
                   </div>
-                  <div className={styles.itemIcon}>▶️</div>
-                </div>
-              ))}
-            </div>
-          </div>
 
-          {/* Score Breakdown Panel */}
-          <div className={`${styles.panel} ${styles.scorePanel}`}>
-            <h3 className={styles.panelTitle}>Score Breakdown</h3>
-            <div className={styles.panelContent}>
-              {scoreBreakdown.map((score, index) => (
-                <div key={index} className={styles.scoreItem}>
-                  <div className={styles.scoreInfo}>
-                    <span className={styles.scoreIcon}>{score.icon}</span>
-                    <span className={styles.scoreName}>{score.name}</span>
+                  <div className={styles.shareModalBannerStatsItem}>
+                    <div className={styles.shareModalBannerStatsItemIcon}>
+                      <Note />
+                    </div>
+
+                    <p className={styles.shareModalBannerStatsItemTitle}>
+                      Discover
+                    </p>
+
+                    <p className={styles.shareModalBannerStatsItemValue}>
+                      {data?.uniqueArtistsCount} artist
+                    </p>
                   </div>
-                  <span className={styles.scoreValue}>{score.value}</span>
                 </div>
-              ))}
-              <div className={styles.totalScore}>
-                <div className={styles.totalInfo}>
-                  <span className={styles.totalIcon}>🏆</span>
-                  <span className={styles.totalLabel}>Total Base Points</span>
+
+                <div className={styles.shareModalBannerArtist}>
+                  <p className={styles.shareModalBannerArtistText}>
+                    Top Artist:
+                  </p>
+
+                  <div className={styles.shareModalBannerArtistItem}>
+                    <div className={styles.shareModalBannerArtistItemImg}></div>
+
+                    <p className={styles.shareModalBannerArtistItemName}>
+                      {data?.topArtists[0].name}
+                    </p>
+                  </div>
+
+                  <div className={styles.shareModalBannerArtistItem}>
+                    <div className={styles.shareModalBannerArtistItemImg}></div>
+
+                    <p className={styles.shareModalBannerArtistItemName}>
+                      {data?.topArtists[1].name}
+                    </p>
+                  </div>
+
+                  <div className={styles.shareModalBannerArtistItem}>
+                    <div className={styles.shareModalBannerArtistItemImg}></div>
+
+                    <p className={styles.shareModalBannerArtistItemName}>
+                      {data?.topArtists[2].name}
+                    </p>
+                  </div>
                 </div>
-                <span className={styles.totalValue}>789</span>
-              </div>
-            </div>
-          </div>
-        </section>
 
-        {/* Bottom Section - Listening Stats */}
-        <section className={styles.bottomSection}>
-          <h3 className={styles.sectionTitle}>Your Listening Stats</h3>
-          <div className={styles.statsGrid}>
-            {listeningStats.map((stat, index) => (
-              <div key={index} className={styles.statCard}>
-                <div className={styles.statIcon}>{stat.icon}</div>
-                <div className={styles.statValue}>{stat.value}</div>
-                <div className={styles.statLabel}>{stat.label}</div>
+                <p className={styles.shareModalBannerStatsText}>vibin.io</p>
               </div>
-            ))}
-          </div>
-        </section>
+            </div>
 
-        {/* Footer - Technical Details */}
-        <section className={styles.footer}>
-          <h3 className={styles.sectionTitle}>Technical Details</h3>
-          <div className={styles.technicalGrid}>
-            <div className={styles.technicalColumn}>
-              <div className={styles.technicalItem}>
-                <span className={styles.technicalLabel}>Contributor</span>
-                <span className={styles.technicalValue}>Oxasf1da.3123</span>
-              </div>
-              <div className={styles.technicalItem}>
-                <span className={styles.technicalLabel}>Version</span>
-                <span className={styles.technicalValue}>1.1.1.1</span>
-              </div>
-            </div>
-            <div className={styles.technicalColumn}>
-              <div className={styles.technicalItem}>
-                <span className={styles.technicalLabel}>Account Hash</span>
-                <span className={styles.technicalValue}>Oxasf1da.3123</span>
-              </div>
-              <div className={styles.technicalItem}>
-                <span className={styles.technicalLabel}>Data Source</span>
-                <span className={styles.technicalValue}>IPFS</span>
-              </div>
-            </div>
+            <button
+              className={styles.shareModalLink}
+              onClick={() =>
+                postXStats({
+                  topTracks: data!.topTracks!,
+                  totalListeningTimeMs: data!.totalListeningTimeMs!,
+                  uniqueArtistsCount: data!.uniqueArtistsCount!,
+                  topArtists: data!.topArtists!,
+                })
+              }
+            >
+              Share on X
+            </button>
           </div>
-        </section>
-      </main>
-    </div>
+        </div>
+      </Modal>
+    </>
   );
-} 
+}

@@ -346,3 +346,60 @@ export const updateUserStatsWithGamePoints = (
     })
   };
 };
+
+export async function postXStats({
+  topTracks,
+  totalListeningTimeMs,
+  uniqueArtistsCount,
+  topArtists
+}: {
+  topTracks: { name: string; artist: string }[];
+  totalListeningTimeMs: number;
+  uniqueArtistsCount: number;
+  topArtists: { name: string; trackCount?: number }[];
+}) {
+    console.log("topTracks", topTracks)
+    console.log("totalListeningTimeMs", totalListeningTimeMs)
+    console.log("uniqueArtistsCount", uniqueArtistsCount)
+    console.log("topArtists", topArtists)   
+  if (typeof window === 'undefined') return;
+  const accessToken = getAccessToken();
+  if (!accessToken) {
+    console.error('No X access token found. Please connect X first.');
+    return;
+  }
+
+  // Format listening time
+  function formatMsToHrMin(ms: number): string {
+    const hours = Math.floor(ms / 3600000);
+    const minutes = Math.floor((ms % 3600000) / 60000);
+    if (hours > 0) return `${hours}h ${minutes}m`;
+    return `${minutes}m`;
+  }
+
+  // Compose the tweet
+  const tweet =
+    `🎧 My Spotify stats this week:\n` +
+    `Top 3 Artists: ${topArtists.slice(0, 3).map(a => a.name).join(', ')}\n` +
+    `Top 3 Tracks: ${topTracks.slice(0, 3).map(t => t.name).join(', ')}\n` +
+    `Total Listening Time: ${formatMsToHrMin(totalListeningTimeMs)}\n` +
+    `Unique Artists: ${uniqueArtistsCount}\n` +
+    `#Vibin #SpotifyStats`;
+
+  // Post to local API route to avoid CORS
+  try {
+    const response = await fetch('/api/x/post', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ accessToken, tweet }),
+    });
+    const result = await response.json();
+    console.log('✅ [postXStats] Tweet posted:', result);
+    return result;
+  } catch (error) {
+    console.error('❌ [postXStats] Error posting to X:', error);
+    return null;
+  }
+}
