@@ -52,43 +52,6 @@ A 403 error means "Forbidden" - the server understood the request but refuses to
 - Check if backend server is running
 - Verify CORS configuration
 
-### 3. **X (Twitter) API 403 Errors**
-**Causes:**
-- Invalid access token
-- Missing permissions
-- Rate limiting
-- App not approved for required scopes
-
-**Check:**
-```javascript
-// In browser //console
-//console.log('X tokens:', {
-  accessToken: localStorage.getItem('x_access_token'),
-  refreshToken: localStorage.getItem('x_refresh_token')
-});
-```
-
-**Fix:**
-- Re-authenticate with X
-- Check X app permissions
-- Verify OAuth scopes
-
-### 4. **Google OAuth 403 Errors**
-**Causes:**
-- Invalid client credentials
-- Incorrect redirect URI
-- Missing scopes
-- App not verified
-
-**Check:**
-```javascript
-// Look for requests to https://oauth2.googleapis.com/*
-```
-
-**Fix:**
-- Verify Google OAuth configuration
-- Check environment variables
-- Ensure redirect URI matches
 
 ## 🛠️ **Debugging Steps**
 
