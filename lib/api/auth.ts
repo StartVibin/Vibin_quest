@@ -13,6 +13,7 @@ export interface VerifyCodeRequest {
 export interface VerifyCodeResponse {
   success: boolean;
   message?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data?: any;
 }
 

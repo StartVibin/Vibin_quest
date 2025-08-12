@@ -264,6 +264,7 @@ export const spotifyAPI = {
   },
 
   // Submit comprehensive Spotify data to backend
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   submitSpotifyData: async (data: SpotifyDataSubmission): Promise<any> => {
     const response = await fetch(`${API_BASE_URL}/api/v1/auth/spotify-connect`, {
       method: 'POST',
@@ -314,7 +315,7 @@ export const spotifyAPI = {
 
   // Calculate listening statistics
   getListeningStats: (userData: SpotifyUserData): SpotifyListeningStats => {
-    const { topTracks, recentlyPlayed } = userData;
+    const { topTracks } = userData;
     
     // Get unique artists from top tracks
     const uniqueArtists = new Set<string>();
@@ -374,6 +375,7 @@ export const spotifyAPI = {
     spotifyEmail: string,
     invitationCode: string,
     userData: SpotifyUserData
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any> => {
    // console.log('🎵 Frontend: Submitting comprehensive Spotify data...');
     

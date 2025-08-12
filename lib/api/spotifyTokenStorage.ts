@@ -73,7 +73,7 @@ export const spotifyTokenStorage = {
     expiresIn: number
   ): Promise<TokenStorageResponse> => {
     console.log('[spotifyTokenStorage.storeTokens] Called', { spotifyEmail, invitationCode, accessToken, refreshToken, expiresIn });
-    const expiresAt = Date.now() + (expiresIn * 1000); // Convert to milliseconds
+    //const expiresAt = Date.now() + (expiresIn * 1000); // Convert to milliseconds
     
     return spotifyTokenStorage.handleTokenOperation('store', {
       spotifyEmail,

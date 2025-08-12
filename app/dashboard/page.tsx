@@ -63,7 +63,7 @@ export default function Home() {
   
   // Get invite code from localStorage
   const inviteCode = typeof window !== 'undefined' ? localStorage.getItem('spotify_id') || '' : '';
-  const { data, refetch, isLoading, error } = useSpotifyData(inviteCode);
+  const { data, isLoading, error } = useSpotifyData(inviteCode);
   
   const { address } = useAccount();
   const signer = useEthersSigner();
@@ -83,10 +83,10 @@ export default function Home() {
   console.log("Loading:", isLoading);
   console.log("Error:", error);
   
-  const handleManualRefetch = () => {
-    console.log(`[${new Date().toISOString()}] Manual refetch triggered`);
-    refetch();
-  };
+  // const handleManualRefetch = () => {
+  //   console.log(`[${new Date().toISOString()}] Manual refetch triggered`);
+  //   refetch();
+  // };
 
   const handleXConnectWithWallet = () => {
     handleXConnect(toast as ToastInstance);

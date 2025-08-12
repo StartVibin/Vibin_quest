@@ -1,9 +1,9 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { spotifyAPI } from '@/lib/api/spotify';
 
 export function useSpotifyData(inviteCode?: string) {
-  const queryClient = useQueryClient();
+  //const queryClient = useQueryClient();
 
   // Get data directly from localStorage
   const code = inviteCode || (typeof window !== 'undefined' ? localStorage.getItem('spotify_id') || '' : '');
@@ -141,16 +141,16 @@ export function useSpotifyData(inviteCode?: string) {
   });
 
   // Test query to verify React Query intervals work
-  const testQuery = useQuery({
-    queryKey: ['test-interval'],
-    queryFn: () => {
-      console.log(`[${new Date().toISOString()}] [testQuery] Test interval working!`);
-      return { timestamp: Date.now() };
-    },
-    refetchInterval: 3000, // 3 seconds for testing
-    refetchIntervalInBackground: true,
-    staleTime: 0,
-  });
+  // const testQuery = useQuery({
+  //   queryKey: ['test-interval'],
+  //   queryFn: () => {
+  //     console.log(`[${new Date().toISOString()}] [testQuery] Test interval working!`);
+  //     return { timestamp: Date.now() };
+  //   },
+  //   refetchInterval: 3000, // 3 seconds for testing
+  //   refetchIntervalInBackground: true,
+  //   staleTime: 0,
+  // });
 
   // Monitor hook state changes
   useEffect(() => {
@@ -224,6 +224,7 @@ export async function sendSpotifyData(stats: {
   referralCount?: number;
   point?: number;
   pointsToday?: number;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   invitedUsers?: any;
 }) {
   if (!stats.spotifyEmail) {
