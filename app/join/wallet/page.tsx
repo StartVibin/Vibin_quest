@@ -2,17 +2,15 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAccount, useConnect, useSignMessage } from 'wagmi';
+import { useAccount, useConnect } from 'wagmi';
 import { toast } from 'react-toastify';
 import styles from '../page.module.css';
 
 import LeftHalfModal from '@/components/LeftHalfModal';
-import { authenticateWallet } from '@/lib/api';
 
 export default function WalletConnectionPage() {
   const router = useRouter();
   const { address, isConnected } = useAccount();
-  const { signMessageAsync } = useSignMessage();
   const { connect, connectors } = useConnect();
   // const [isLoading, setIsLoading] = useState(false);
   const [isAuthenticating, setIsAuthenticating] = useState(false);
@@ -42,7 +40,7 @@ export default function WalletConnectionPage() {
 
     setIsAuthenticating(true);
     try {
-      const welcomeMessage = "Welcome to Vibin!";
+      //const welcomeMessage = "Welcome to Vibin!";
       //const signature = await signMessageAsync({ message: welcomeMessage });
 
       const pendingReferralCode = localStorage.getItem('pendingReferralCode');
