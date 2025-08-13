@@ -48,7 +48,7 @@ export async function POST(req: Request) {
     spotifyAuthUrl.searchParams.append('response_type', 'code');
     spotifyAuthUrl.searchParams.append('redirect_uri', SPOTIFY_REDIRECT_URI);
     spotifyAuthUrl.searchParams.append('state', state);
-    spotifyAuthUrl.searchParams.append('index', index.toString());
+    //spotifyAuthUrl.searchParams.append('index', index.toString());
 
     spotifyAuthUrl.searchParams.append('scope', 'user-read-email user-read-private user-read-recently-played user-top-read user-read-playback-state user-modify-playback-state user-library-read user-follow-read playlist-read-private playlist-read-collaborative');
 
