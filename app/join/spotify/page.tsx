@@ -9,6 +9,7 @@ import styles from '../page.module.css';
 import LeftHalfModal from '@/components/LeftHalfModal';
 import SpotifyOAuthModal from '@/components/SpotifyOAuthModal';
 import { useSharedContext } from '@/provider/SharedContext';
+import { getIndexOfEmail } from '@/lib/api/getIndexOfEmail';
 
 export default function SpotifyLoginPage() {
 
@@ -16,6 +17,7 @@ export default function SpotifyLoginPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [showSpotifyModal, setShowSpotifyModal] = useState(false);
+  const [index, setIndex] = useState(0);
 
   const {
     invitationCode,
@@ -114,7 +116,9 @@ export default function SpotifyLoginPage() {
 
     setIsLoading(true);
     try {
-
+      const index = await getIndexOfEmail(spotifyEmail);
+      console.log("index==============================", index);
+      setIndex(index);
       setShowSpotifyModal(true);
     } catch (error) {
       console.error('Email validation error:', error);
@@ -188,6 +192,7 @@ export default function SpotifyLoginPage() {
         isOpen={showSpotifyModal}
         onClose={() => setShowSpotifyModal(false)}
         email={spotifyEmail}
+        index={index}
       />
     </div>
   );

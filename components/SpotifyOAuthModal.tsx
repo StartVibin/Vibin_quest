@@ -5,16 +5,20 @@ interface SpotifyOAuthModalProps {
   isOpen: boolean;
   onClose: () => void;
   email: string;
+  index: number;
 }
 
-export default function SpotifyOAuthModal({ isOpen, onClose, email }: SpotifyOAuthModalProps) {
+export default function SpotifyOAuthModal({ isOpen, onClose, email, index }: SpotifyOAuthModalProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSpotifyAuth = async () => {
     setIsLoading(true);
     try {
       // Get the Spotify OAuth URL from our API
-      const response = await fetch('/api/auth/spotify');
+      const response = await fetch('/api/auth/spotify', {
+        method: 'POST',
+        body: JSON.stringify({ email, index }),
+      });
 
       console.log("response " , response);
       

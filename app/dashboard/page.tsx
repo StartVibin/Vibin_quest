@@ -367,7 +367,7 @@ export default function Home() {
 
                         <div className={styles.dashboardTableItemTextBlock}>
                           <p className={styles.dashboardTableItemTitle}>
-                            {track.name}
+                            {track?.name}
                           </p>
 
                           <p className={styles.dashboardTableItemText}>
@@ -528,7 +528,7 @@ export default function Home() {
 
                         <div className={styles.dashboardTableItemTextBlock}>
                           <p className={styles.dashboardTableItemTitle}>
-                            {artist.name}
+                            {artist?.name}
                           </p>
                         </div>
                       </div>
@@ -878,7 +878,7 @@ export default function Home() {
                     <div className={styles.shareModalBannerArtistItemImg}></div>
 
                     <p className={styles.shareModalBannerArtistItemName}>
-                      {data?.topArtists[0].name}
+                      {data?.topArtists[0]?.name}
                     </p>
                   </div>
 
@@ -886,7 +886,7 @@ export default function Home() {
                     <div className={styles.shareModalBannerArtistItemImg}></div>
 
                     <p className={styles.shareModalBannerArtistItemName}>
-                      {data?.topArtists[1].name}
+                      {data?.topArtists[1]?.name}
                     </p>
                   </div>
 
@@ -894,7 +894,7 @@ export default function Home() {
                     <div className={styles.shareModalBannerArtistItemImg}></div>
 
                     <p className={styles.shareModalBannerArtistItemName}>
-                      {data?.topArtists[2].name}
+                      {data?.topArtists[2]?.name}
                     </p>
                   </div>
                 </div>

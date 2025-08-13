@@ -1,4 +1,4 @@
-export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://api.startvibin.io';
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ;
 
 console.log('🌍 Environment check:', {
   NEXT_PUBLIC_API: process.env.NEXT_PUBLIC_API_URL,

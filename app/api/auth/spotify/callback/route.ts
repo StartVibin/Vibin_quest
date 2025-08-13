@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { sessionStore } from '@/lib/sessionStore';
 
-const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
-const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
 const SPOTIFY_REDIRECT_URI = process.env.SPOTIFY_REDIRECT_URI || 'http://localhost:3000/api/auth/spotify/callback';
 
 export async function GET(request: NextRequest) {
@@ -9,7 +8,8 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const code = searchParams.get('code');
     const error = searchParams.get('error');
-
+    const state = searchParams.get('state');
+    
     if (error) {
       return NextResponse.redirect(new URL('/join/spotify?error=oauth_failed', request.url));
     }
@@ -17,6 +17,32 @@ export async function GET(request: NextRequest) {
     if (!code) {
       return NextResponse.redirect(new URL('/join/spotify?error=no_code', request.url));
     }
+
+    if (!state) {
+      return NextResponse.redirect(new URL('/join/spotify?error=missing_state', request.url));
+    }
+
+    // Get email and index from SERVER-SIDE session store using state
+    console.log("🔍 ~ GET ~ Looking for session with state:", state);
+    
+    // Log session store stats before getting
+    const statsBefore = sessionStore.getStats();
+    console.log("📊 Session store stats before getting:", statsBefore);
+    
+    const sessionData = sessionStore.get(state);
+    if (!sessionData) {
+      console.log("❌ ~ GET ~ Session not found or expired for state:", state);
+      return NextResponse.redirect(new URL('/join/spotify?error=session_expired', request.url));
+    }
+
+    const { email: sessionEmail, index } = sessionData;
+    const SPOTIFY_CLIENT_ID = process.env[`SPOTIFY_CLIENT_ID_${index}`];
+    const SPOTIFY_CLIENT_SECRET = process.env[`SPOTIFY_CLIENT_SECRET_${index}`];
+    
+    console.log("🚀 ~ GET ~ SPOTIFY_CLIENT_ID in callback:", SPOTIFY_CLIENT_ID);
+    console.log("🚀 ~ GET ~ SPOTIFY_CLIENT_SECRET in callback:", SPOTIFY_CLIENT_SECRET);
+    console.log("🚀 ~ GET ~ Email from session:", sessionEmail);
+    console.log("🚀 ~ GET ~ Index from session:", index);
 
     const tokenResponse = await fetch('https://accounts.spotify.com/api/token', {
       method: 'POST',
@@ -32,10 +58,9 @@ export async function GET(request: NextRequest) {
     });
 
     console.log(tokenResponse);
-    
 
     if (!tokenResponse.ok) {
-      //console.error('Token exchange failed:', await tokenResponse.text());
+      console.error('Token exchange failed:', await tokenResponse.text());
       return NextResponse.redirect(new URL('/join/spotify?error=token_exchange_failed', request.url));
     }
 
@@ -49,7 +74,7 @@ export async function GET(request: NextRequest) {
     });
 
     if (!profileResponse.ok) {
-      //console.error('Profile fetch failed:', await profileResponse.text());
+      console.error('Profile fetch failed:', await profileResponse.text());
       return NextResponse.redirect(new URL('/join/spotify?error=profile_fetch_failed', request.url));
     }
 
