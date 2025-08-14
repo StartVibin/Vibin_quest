@@ -6,6 +6,7 @@ interface UsePointsOptions {
   email: string;
   enabled?: boolean;
   refetchInterval?: number;
+ // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSuccess?: (data: any) => void;
   onError?: (error: Error) => void;
 }

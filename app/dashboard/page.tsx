@@ -20,7 +20,7 @@ import {
   Share,
   Share2,
   Star,
-  Timer,
+ 
   Trophy,
   User,
   Volume,
@@ -58,15 +58,28 @@ function formatMsToHrMin(ms: number): string {
 }
 
 export default  function Home() {
-  const email = localStorage.getItem('spotify_email') || 'example@gmail.com';
-  const { data: pointsData, } = usePointsWithInterval(email);
+  const [email, setEmail] = React.useState<string>('example@gmail.com');
+  const [inviteCode, setInviteCode] = React.useState<string>('');
+  
+  // Move localStorage access to useEffect to avoid SSR issues
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedEmail = localStorage.getItem('spotify_email') || 'example@gmail.com';
+      const storedInviteCode = localStorage.getItem('spotify_id') || '';
+      setEmail(storedEmail);
+      setInviteCode(storedInviteCode);
+    }
+  }, []);
+
+  const { data: pointsData, } = usePointsWithInterval(
+    email !== 'example@gmail.com' ? email : '', 
+    email !== 'example@gmail.com'
+  );
   console.log("Points data:::::::::::::::::::::::::::::::::::::::::::::::::", pointsData);
   const [shareModal, setShareModal] = React.useState(false);
   const [claimModal, setClaimModal] = React.useState(false);
   const toast = useToast();
   
-  // Get invite code from localStorage
-  const inviteCode = typeof window !== 'undefined' ? localStorage.getItem('spotify_id') || '' : '';
   const { data, isLoading, error } = useSpotifyData(inviteCode);
   
   const { address } = useAccount();
@@ -97,7 +110,9 @@ export default  function Home() {
     // Add your X connection logic here
   };
   const handleNavigateToDoc = () => {
-    window.open("https://docs.startvibin.io/claiming", "_blank");
+    if (typeof window !== 'undefined') {
+      window.open("https://docs.startvibin.io/claiming", "_blank");
+    }
   };
   // const handleClaimReward = () => {
   //   toast.success("Reward claimed successfully!");
