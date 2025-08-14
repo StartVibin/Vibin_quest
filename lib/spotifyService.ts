@@ -90,27 +90,27 @@ export class SpotifyService {
   }
 
   // Get user's top tracks (short_term, medium_term, long_term)
-  async getTopTracks(timeRange: 'short_term' | 'medium_term' | 'long_term' = 'medium_term', limit: number = 20): Promise<{ items: SpotifyTrack[] }> {
+  async getTopTracks(timeRange: 'short_term' | 'medium_term' | 'long_term' = 'medium_term', limit: number = 20): Promise<{ items: SpotifyTrack[]; total: number }> {
     return this.makeRequest(`/me/top/tracks?time_range=${timeRange}&limit=${limit}`);
   }
 
   // Get user's top artists
-  async getTopArtists(timeRange: 'short_term' | 'medium_term' | 'long_term' = 'medium_term', limit: number = 20): Promise<{ items: SpotifyArtist[] }> {
+  async getTopArtists(timeRange: 'short_term' | 'medium_term' | 'long_term' = 'medium_term', limit: number = 20): Promise<{ items: SpotifyArtist[]; total: number }> {
     return this.makeRequest(`/me/top/artists?time_range=${timeRange}&limit=${limit}`);
   }
 
   // Get recently played tracks
-  async getRecentlyPlayed(limit: number = 50): Promise<{ items: Array<{ track: SpotifyTrack; played_at: string }> }> {
+  async getRecentlyPlayed(limit: number = 50): Promise<{ items: Array<{ track: SpotifyTrack; played_at: string }>; total: number }> {
     return this.makeRequest(`/me/player/recently-played?limit=${limit}`);
   }
 
   // Get user's playlists
-  async getUserPlaylists(limit: number = 50): Promise<{ items: Array<{ id: string; name: string; images?: Array<{ url: string }> }> }> {
+  async getUserPlaylists(limit: number = 50): Promise<{ items: Array<{ id: string; name: string; images?: Array<{ url: string }> }>; total: number }> {
     return this.makeRequest(`/me/playlists?limit=${limit}`);
   }
 
   // Get user's saved tracks
-  async getSavedTracks(limit: number = 50): Promise<{ items: Array<{ track: SpotifyTrack; added_at: string }> }> {
+  async getSavedTracks(limit: number = 50): Promise<{ items: Array<{ track: SpotifyTrack; added_at: string }>; total: number }> {
     return this.makeRequest(`/me/tracks?limit=${limit}`);
   }
 
@@ -136,19 +136,20 @@ export class SpotifyService {
   }
 
   // Get user's listening history (recently played with more details)
-  async getListeningHistory(limit: number = 50): Promise<{ recentlyPlayed: Array<{ track: SpotifyTrack; played_at: string }>; audioFeatures: Array<{ id: string; danceability: number; energy: number; valence: number }> }> {
-    const recentlyPlayed = await this.getRecentlyPlayed(limit);
+  async getListeningHistory(limit: number = 50): Promise<{ recentlyPlayed: Array<{ track: SpotifyTrack; played_at: string }>; audioFeatures: Array<{ id: string; danceability: number; energy: number; valence: number }>; total: number }> {
+    const recentlyPlayedData = await this.getRecentlyPlayed(limit);
     
     // Get unique track IDs
-    const trackIds = [...new Set(recentlyPlayed.items.map(item => item.track.id))];
+    const trackIds = [...new Set(recentlyPlayedData.items.map(item => item.track.id))];
     
     // Get audio features for these tracks
     const audioFeatures = await this.getAudioFeatures(trackIds);
     
     // Combine the data
     return {
-      recentlyPlayed: recentlyPlayed.items,
+      recentlyPlayed: recentlyPlayedData.items,
       audioFeatures: audioFeatures.audio_features,
+      total: recentlyPlayedData.total, // Include total count from API
     };
   }
 
@@ -165,9 +166,16 @@ export class SpotifyService {
       uniqueTracks: number;
       listeningSessions: number;
     };
+    // Add total counts from API responses
+    totals: {
+      totalTopTracks: number;
+      totalTopArtists: number;
+      totalRecentlyPlayed: number;
+      totalSavedTracks: number;
+    };
   }> {
     try {
-      const [profile, topTracks, topArtists, recentlyPlayed, savedTracks] = await Promise.all([
+      const [profile, topTracksData, topArtistsData, recentlyPlayedData, savedTracksData] = await Promise.all([
         this.getUserProfile(),
         this.getTopTracks('long_term', 50),
         this.getTopArtists('medium_term', 50),
@@ -177,15 +185,22 @@ export class SpotifyService {
 
       return {
         profile,
-        topTracks: topTracks.items,
-        topArtists: topArtists.items,
-        recentlyPlayed: recentlyPlayed.items,
-        savedTracks: savedTracks.items,
+        topTracks: topTracksData.items,
+        topArtists: topArtistsData.items,
+        recentlyPlayed: recentlyPlayedData.items,
+        savedTracks: savedTracksData.items,
         stats: {
-          totalSavedTracks: savedTracks.items.length,
-          uniqueArtists: new Set(topArtists.items.map(artist => artist.id)).size,
-          uniqueTracks: new Set(topTracks.items.map(track => track.id)).size,
-          listeningSessions: recentlyPlayed.items.length,
+          totalSavedTracks: savedTracksData.total, // Use total from API instead of items.length
+          uniqueArtists: new Set(topArtistsData.items.map(artist => artist.id)).size,
+          uniqueTracks: new Set(topTracksData.items.map(track => track.id)).size,
+          listeningSessions: recentlyPlayedData.total, // Use total from API instead of items.length
+        },
+        // Add total counts from API responses
+        totals: {
+          totalTopTracks: topTracksData.total,
+          totalTopArtists: topArtistsData.total,
+          totalRecentlyPlayed: recentlyPlayedData.total,
+          totalSavedTracks: savedTracksData.total,
         },
       };
     } catch (error) {

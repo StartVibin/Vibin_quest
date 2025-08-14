@@ -92,7 +92,9 @@ export default function Home() {
     handleXConnect(toast as ToastInstance);
     // Add your X connection logic here
   };
-
+  const handleNavigateToDoc = () => {
+    window.open("https://docs.startvibin.io/claiming", "_blank");
+  };
   // const handleClaimReward = () => {
   //   toast.success("Reward claimed successfully!");
   //   // Add your claim logic here
@@ -104,9 +106,9 @@ export default function Home() {
           <div className={styles.dashboardInner}>
             <div className={styles.dashboardOverlay}>
               <div className={styles.dashboardTitleInner}>
-                <p className={styles.dashboardTitle}>Your Musical</p>
+                <p className={styles.dashboardTitle}>You Vibed. You Earned.</p>
 
-                <p className={styles.dashboardText}>Identity Revealed</p>
+                <p className={styles.dashboardText}>Own Your Music Data.</p>
               </div>
 
               <div className={styles.dashboardScreens}>
@@ -133,7 +135,7 @@ export default function Home() {
                       className={styles.dashboardScreenTopShare}
                       onClick={handleXConnectWithWallet}
                     >
-                      connect X
+                      Connect X
                     </button>
                     <button
                       className={styles.dashboardScreenTopShare}
@@ -157,7 +159,7 @@ export default function Home() {
                 <div className={styles.dashboardScreenReward}>
                   <div className={styles.dashboardScreenRewardWrap}>
                     <p className={styles.dashboardScreenRewardText}>
-                      Contribute Reward:
+                      Contribution Reward:
                     </p>
 
                     <div className={styles.dashboardScreenRewardValue}>
@@ -182,7 +184,7 @@ export default function Home() {
 
                     <button
                       className={styles.dashboardScreenRewardClaimInfo}
-                      onClick={() => setClaimModal(true)}
+                      onClick={() => handleNavigateToDoc()}
                     >
                       Eligibility to Claim
                       <Info />
@@ -568,11 +570,11 @@ export default function Home() {
                       <div className={styles.statsBlockElemWrap}>
                         <div className={styles.statsBlockElemTitle}>
                           <Volume />
-                          Quantity Score
+                          Volume Score
                         </div>
 
                         <p className={styles.statsBlockElemText}>
-                          0 (&lt;30 minutes)
+                         Scaled logarithmically
                         </p>
                       </div>
 
@@ -587,7 +589,7 @@ export default function Home() {
                         </div>
 
                         <p className={styles.statsBlockElemText}>
-                          0 (&lt;30 artist)
+                          Rewarded proportionally
                         </p>
                       </div>
 
@@ -602,7 +604,7 @@ export default function Home() {
                         </div>
 
                         <p className={styles.statsBlockElemText}>
-                          0 (&lt;7 days)
+                          Rewarded with a multiplier
                         </p>
                       </div>
 
@@ -617,7 +619,7 @@ export default function Home() {
                         </div>
 
                         <p className={styles.statsBlockElemText}>
-                          0 (&lt;10 referalls)
+                          Multiplier based on sync streaks
                         </p>
                       </div>
 
@@ -661,7 +663,7 @@ export default function Home() {
                   </div>
 
                   <p className={styles.statsItemValue}>
-                    {data?.totalTracksPlayed}
+                    {data?.totalTracksPlayed || 0}
                   </p>
 
                   <p className={styles.statsItemText}>Tracks Played</p>
@@ -680,7 +682,7 @@ export default function Home() {
                   </div>
 
                   <p className={styles.statsItemValue}>
-                    {data?.uniqueArtistsCount}
+                    {data?.uniqueArtistsCount || 0}
                   </p>
 
                   <p className={styles.statsItemText}>Unique Artists</p>
@@ -718,7 +720,7 @@ export default function Home() {
                   </div>
 
                   <p className={styles.statsItemValue}>
-                    {data?.anonymousTrackCount}
+                    {data?.anonymousTrackCount || 0}
                   </p>
 
                   <p className={styles.statsItemText}>Tracks Played</p>
@@ -772,8 +774,7 @@ export default function Home() {
             <p className={styles.claimModalTitle}>Eligibility to Claim</p>
 
             <p className={styles.claimModalText}>
-              Lorem ipsum, or lipsum as it is sometimes known, is dummy text
-              used in laying out print, graphic or web designs.
+              This is dummy.
             </p>
 
             <p className={styles.claimModalText}>

@@ -50,6 +50,8 @@ export interface SpotifyPlaylist {
 export interface SpotifyUserData {
   profile: SpotifyUser;
   topTracks: SpotifyTopTrack[];
+  totalTracksPlayed: number;
+  uniqueArtistsCount: number;
   recentlyPlayed: SpotifyRecentlyPlayed[];
   playlists: SpotifyPlaylist[];
   refreshToken: string;
@@ -184,8 +186,44 @@ export const spotifyAPI = {
     }
 
     const data = await response.json();
-    console.log('✅ Frontend: Got top tracks:', data.items.length);
+    console.log('✅ Frontend: Got top tracks:', data.total);
     return data.items;
+  },
+
+  getTopTracksCount: async (accessToken: string, limit: number = 20): Promise<number> => {
+    //console.log('🎵 Frontend: Getting user top tracks...');
+    
+    const response = await fetch(`https://api.spotify.com/v1/me/top/tracks?limit=${limit}&time_range=short_term`, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
+
+    if (!response.ok) {
+      console.error('❌ Frontend: Failed to get top tracks');
+      throw new Error('Failed to get top tracks');
+    }
+
+    const data = await response.json();
+    console.log('✅ Frontend: Got top tracks:', data.total);
+    return data.total;
+  },
+
+  getTopArtists: async (accessToken: string, limit: number = 50): Promise<number> => {
+    const response = await fetch(`https://api.spotify.com/v1/me/top/artists?limit=${limit}&time_range=medium_term`, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
+
+    if (!response.ok) {
+      console.error('❌ Frontend: Failed to get top artists');
+      throw new Error('Failed to get top artists');
+    }
+
+    const data = await response.json();
+    console.log('✅ Frontend: Got top artists:', data);
+    return data.total;
   },
 
   // Get user's recently played tracks
@@ -204,7 +242,7 @@ export const spotifyAPI = {
     }
 
     const data = await response.json();
-    console.log('✅ Frontend: Got recently played:', data.items.length);
+    console.log('✅ Frontend: Got recently played:', data.total);
     return data.items;
   },
 
@@ -224,7 +262,7 @@ export const spotifyAPI = {
     }
 
     const data = await response.json();
-    console.log('✅ Frontend: Got playlists:', data.items.length);
+    console.log('✅ Frontend: Got playlists:', data.total);
     return data.items;
   },
 
@@ -233,19 +271,22 @@ export const spotifyAPI = {
     //console.log('🎵 Frontend: Getting comprehensive user data...');
     
     try {
-      const [profile, topTracks, recentlyPlayed, playlists] = await Promise.all([
+      const [profile, topTracks, recentlyPlayed, playlists, totalTracksPlayed,uniqueArtistsCount] = await Promise.all([
         spotifyAPI.getUserProfile(accessToken),
-        spotifyAPI.getTopTracks(accessToken, 10),
-        spotifyAPI.getRecentlyPlayed(accessToken, 10),
-        spotifyAPI.getPlaylists(accessToken, 10)
+        spotifyAPI.getTopTracks(accessToken, 50),
+        spotifyAPI.getRecentlyPlayed(accessToken, 50),
+        spotifyAPI.getPlaylists(accessToken, 50),
+        spotifyAPI.getTopTracksCount(accessToken, 50),
+        spotifyAPI.getTopArtists(accessToken, 50),
       ]);
-
       const userData: SpotifyUserData = {
         profile,
         topTracks,
         recentlyPlayed,
         playlists,
-        refreshToken
+        refreshToken,
+        totalTracksPlayed,
+        uniqueArtistsCount
       };
 
       console.log('✅ Frontend: Comprehensive user data collected:', {
@@ -315,7 +356,7 @@ export const spotifyAPI = {
 
   // Calculate listening statistics
   getListeningStats: (userData: SpotifyUserData): SpotifyListeningStats => {
-    const { topTracks } = userData;
+    const { topTracks, totalTracksPlayed, uniqueArtistsCount} = userData;
     
     // Get unique artists from top tracks
     const uniqueArtists = new Set<string>();
@@ -338,8 +379,8 @@ export const spotifyAPI = {
     const topArtistsInfo = spotifyAPI.getTopArtistsInfo(topTracks, 5);
     
     const stats: SpotifyListeningStats = {
-      totalTracksPlayed: topTracks.length,
-      uniqueArtistsCount: uniqueArtists.size,
+      totalTracksPlayed: totalTracksPlayed,
+      uniqueArtistsCount: uniqueArtistsCount,
       totalListeningTimeMs,
       anonymousTrackCount,
       topTracks: topTracksInfo,
