@@ -78,6 +78,7 @@ export default  function Home() {
   console.log("Points data:::::::::::::::::::::::::::::::::::::::::::::::::", pointsData);
   const [shareModal, setShareModal] = React.useState(false);
   const [claimModal, setClaimModal] = React.useState(false);
+  const [isClaiming, setIsClaiming] = React.useState(false);
   const toast = useToast();
   
   const { data, isLoading, error } = useSpotifyData(inviteCode);
@@ -189,16 +190,46 @@ export default  function Home() {
                   <div className={styles.dashboardScreenRewardClaim}>
                     <button
                       className={styles.dashboardScreenRewardClaimButton}
-                      onClick={() =>
-                        claimWithContract(
-                          address,
-                          process.env.NEXT_PUBLIC_CLAIM_CONTRACT!,
-                          ethersSigner!,
-                          email
-                        )
-                      }
+                      disabled={!ethersSigner || !address || isClaiming}
+                      onClick={async () => {
+                        try {
+                          if (!ethersSigner || !address) {
+                            toast.error("Please connect your wallet first");
+                            return;
+                          }
+                          
+                          setIsClaiming(true);
+                          
+                          const result = await claimWithContract(
+                            address,
+                            process.env.NEXT_PUBLIC_CLAIM_CONTRACT!,
+                            ethersSigner,
+                            email
+                          );
+                          
+                          // The toast messages are already handled in claimWithContract
+                          // but we can add additional UI feedback here if needed
+                          if (result?.success) {
+                            console.log("Claim successful:", result.txHash);
+                            // You could update UI state here, like disabling the button
+                          } else {
+                            console.log("Claim failed:", result?.error);
+                            // You could show additional error UI here
+                          }
+                        } catch (error) {
+                          console.error("Claim error:", error);
+                          // Error toast is already shown in claimWithContract
+                        } finally {
+                          setIsClaiming(false);
+                        }
+                      }}
                     >
-                      Claim reward
+                      {!ethersSigner || !address 
+                        ? "Connect Wallet" 
+                        : isClaiming 
+                          ? "Claiming..." 
+                          : "Claim reward"
+                      }
                     </button>
 
                     <button

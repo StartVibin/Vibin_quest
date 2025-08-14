@@ -83,12 +83,12 @@ export const spotifyAPI = {
     const clientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID;
     const redirectUri = `${window.location.origin}/callback`;
     const scope = 'user-read-email user-read-private user-top-read user-read-recently-played';
-    
+
     // console.log('🎵 Frontend: Generating Spotify OAuth URL...');
     // console.log('🎵 Frontend: Client ID:', clientId ? 'present' : 'missing');
     // console.log('🎵 Frontend: Redirect URI:', redirectUri);
     // console.log('🎵 Frontend: Window location origin:', window.location.origin);
-    
+
     const params = new URLSearchParams({
       client_id: clientId!,
       response_type: 'code',
@@ -96,10 +96,10 @@ export const spotifyAPI = {
       scope: scope,
       show_dialog: 'true'
     });
-    
+
     const authUrl = `https://accounts.spotify.com/authorize?${params.toString()}`;
     //console.log('🎵 Frontend: Generated auth URL:', authUrl);
-    
+
     return authUrl;
   },
 
@@ -107,7 +107,7 @@ export const spotifyAPI = {
   exchangeCodeForToken: async (code: string): Promise<SpotifyAuthResponse> => {
     // console.log('🎵 Frontend: Sending code to backend for token exchange...');
     // console.log('🎵 Frontend: Code length:', code.length);
-    
+
     const response = await fetch('/api/auth/spotify/token', {
       method: 'POST',
       headers: {
@@ -139,9 +139,9 @@ export const spotifyAPI = {
 
   // Get user profile from Spotify
   getUserProfile: async (accessToken: string): Promise<SpotifyUser> => {
-   // console.log('🎵 Frontend: Getting user profile from Spotify...');
-   // console.log('🎵 Frontend: Using access token:', accessToken ? `${accessToken.substring(0, 20)}...` : 'undefined');
-    
+    // console.log('🎵 Frontend: Getting user profile from Spotify...');
+    // console.log('🎵 Frontend: Using access token:', accessToken ? `${accessToken.substring(0, 20)}...` : 'undefined');
+
     const response = await fetch('https://api.spotify.com/v1/me', {
       headers: {
         'Authorization': `Bearer ${accessToken}`
@@ -157,7 +157,7 @@ export const spotifyAPI = {
     }
 
     const userData = await response.json();
-   // console.log('✅ Frontend: Successfully got user profile!');
+    // console.log('✅ Frontend: Successfully got user profile!');
     // console.log('🎵 Frontend: User profile data:', {
     //   id: userData.id,
     //   email: userData.email,
@@ -170,10 +170,10 @@ export const spotifyAPI = {
     return userData;
   },
 
-  // Get user's top tracks
-  getTopTracks: async (accessToken: string, limit: number = 20): Promise<SpotifyTopTrack[]> => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  getTopTracks: async (accessToken: string, limit: number = 20): Promise<any> => {
     //console.log('🎵 Frontend: Getting user top tracks...');
-    
+
     const response = await fetch(`https://api.spotify.com/v1/me/top/tracks?limit=${limit}&time_range=short_term`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
@@ -186,13 +186,13 @@ export const spotifyAPI = {
     }
 
     const data = await response.json();
-    console.log('✅ Frontend: Got top tracks:', data.total);
+    //console.log('✅ Frontend: Got top tracks:', data.total);
     return data.items;
   },
 
   getTopTracksCount: async (accessToken: string, limit: number = 20): Promise<number> => {
     //console.log('🎵 Frontend: Getting user top tracks...');
-    
+
     const response = await fetch(`https://api.spotify.com/v1/me/top/tracks?limit=${limit}&time_range=short_term`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
@@ -205,11 +205,11 @@ export const spotifyAPI = {
     }
 
     const data = await response.json();
-    console.log('✅ Frontend: Got top tracks:', data.total);
+    //console.log('✅ Frontend: Got top tracks:', data.total);
     return data.total;
   },
-
-  getTopArtists: async (accessToken: string, limit: number = 50): Promise<number> => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  getTopArtists: async (accessToken: string, limit: number = 50): Promise<any> => {
     const response = await fetch(`https://api.spotify.com/v1/me/top/artists?limit=${limit}&time_range=medium_term`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
@@ -222,14 +222,30 @@ export const spotifyAPI = {
     }
 
     const data = await response.json();
-    console.log('✅ Frontend: Got top artists:', data);
+    //console.log('✅ Frontend: Got top artists:', data);
+    return data.items;
+  },
+  getTopArtistsCount: async (accessToken: string, limit: number = 50): Promise<number> => {
+    const response = await fetch(`https://api.spotify.com/v1/me/top/artists?limit=${limit}&time_range=medium_term`, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`
+      }
+    });
+
+    if (!response.ok) {
+      console.error('❌ Frontend: Failed to get top artists');
+      throw new Error('Failed to get top artists');
+    }
+
+    const data = await response.json();
+    //console.log('✅ Frontend: Got top artists:', data);
     return data.total;
   },
 
   // Get user's recently played tracks
   getRecentlyPlayed: async (accessToken: string, limit: number = 20): Promise<SpotifyRecentlyPlayed[]> => {
     //console.log('🎵 Frontend: Getting recently played tracks...');
-    
+
     const response = await fetch(`https://api.spotify.com/v1/me/player/recently-played?limit=${limit}`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
@@ -242,14 +258,14 @@ export const spotifyAPI = {
     }
 
     const data = await response.json();
-    console.log('✅ Frontend: Got recently played:', data.total);
+    //console.log('//console:', data.total);
     return data.items;
   },
 
   // Get user's playlists
   // getPlaylists: async (accessToken: string, limit: number = 20): Promise<SpotifyPlaylist[]> => {
   //   //console.log('🎵 Frontend: Getting user playlists...');
-    
+
   //   const response = await fetch(`https://api.spotify.com/v1/me/playlists?limit=${limit}`, {
   //     headers: {
   //       'Authorization': `Bearer ${accessToken}`
@@ -269,13 +285,13 @@ export const spotifyAPI = {
   // Get comprehensive user data (profile + music data)
   getComprehensiveUserData: async (accessToken: string, refreshToken: string): Promise<SpotifyUserData> => {
     //console.log('🎵 Frontend: Getting comprehensive user data...');
-    
+
     try {
-      const [profile, topTracks, recentlyPlayed, totalTracksPlayed,uniqueArtistsCount] = await Promise.all([
+      const [profile, topTracks, recentlyPlayed, totalTracksPlayed, uniqueArtistsCount] = await Promise.all([
         spotifyAPI.getUserProfile(accessToken),
         spotifyAPI.getTopTracks(accessToken, 50),
         spotifyAPI.getRecentlyPlayed(accessToken, 50),
-       // spotifyAPI.getPlaylists(accessToken, 50),
+        // spotifyAPI.getPlaylists(accessToken, 50),
         spotifyAPI.getTopTracksCount(accessToken, 50),
         spotifyAPI.getTopArtists(accessToken, 50),
       ]);
@@ -289,13 +305,13 @@ export const spotifyAPI = {
         uniqueArtistsCount
       };
 
-      console.log('✅ Frontend: Comprehensive user data collected:', {
-        profile: { id: profile.id, email: profile.email, display_name: profile.display_name },
-        topTracks: topTracks.length,
-        recentlyPlayed: recentlyPlayed.length,
-        //playlists: playlists.length,
-        hasRefreshToken: !!refreshToken
-      });
+      // console.log('✅ Frontend: Comprehensive user data collected:', {
+      //   profile: { id: profile.id, email: profile.email, display_name: profile.display_name },
+      //   topTracks: topTracks.length,
+      //   recentlyPlayed: recentlyPlayed.length,
+      //   //playlists: playlists.length,
+      //   hasRefreshToken: !!refreshToken
+      // });
 
       return userData;
     } catch (error) {
@@ -334,20 +350,20 @@ export const spotifyAPI = {
   // Extract top 5 artists with track count
   getTopArtistsInfo: (topTracks: SpotifyTopTrack[], limit: number = 5): SpotifyTopArtistInfo[] => {
     const artistCounts: { [key: string]: number } = {};
-    
+
     // Count tracks per artist
     topTracks.forEach(track => {
       track.artists.forEach(artist => {
         artistCounts[artist.name] = (artistCounts[artist.name] || 0) + 1;
       });
     });
-    
+
     // Convert to array and sort by track count
     const artistArray = Object.entries(artistCounts).map(([name, trackCount]) => ({
       name,
       trackCount
     }));
-    
+
     // Sort by track count (descending) and take top 5
     return artistArray
       .sort((a, b) => b.trackCount - a.trackCount)
@@ -356,28 +372,28 @@ export const spotifyAPI = {
 
   // Calculate listening statistics
   getListeningStats: (userData: SpotifyUserData): SpotifyListeningStats => {
-    const { topTracks, totalTracksPlayed, uniqueArtistsCount} = userData;
-    
+    const { topTracks, totalTracksPlayed, uniqueArtistsCount } = userData;
+
     // Get unique artists from top tracks
     const uniqueArtists = new Set<string>();
     topTracks.forEach(track => {
       track.artists.forEach(artist => uniqueArtists.add(artist.name));
     });
-    
+
     // Calculate total listening time (from top tracks)
     const totalListeningTimeMs = topTracks.reduce((total, track) => total + track.duration_ms, 0);
-    
+
     // Count anonymous tracks (tracks without proper artist info)
-    const anonymousTrackCount = topTracks.filter(track => 
-      !track.artists.length || track.artists.some(artist => 
+    const anonymousTrackCount = topTracks.filter(track =>
+      !track.artists.length || track.artists.some(artist =>
         !artist.name || artist.name.toLowerCase().includes('unknown') || artist.name.toLowerCase().includes('anonymous')
       )
     ).length;
-    
+
     // Get top 5 tracks and artists
     const topTracksInfo = spotifyAPI.getTopTracksInfo(topTracks, 5);
     const topArtistsInfo = spotifyAPI.getTopArtistsInfo(topTracks, 5);
-    
+
     const stats: SpotifyListeningStats = {
       totalTracksPlayed: totalTracksPlayed,
       uniqueArtistsCount: uniqueArtistsCount,
@@ -386,7 +402,7 @@ export const spotifyAPI = {
       topTracks: topTracksInfo,
       topArtists: topArtistsInfo
     };
-    
+
     // console.log('📊 Listening stats calculated:', {
     //   totalTracks: stats.totalTracksPlayed,
     //   uniqueArtists: stats.uniqueArtistsCount,
@@ -395,7 +411,7 @@ export const spotifyAPI = {
     //   topTracks: stats.topTracks.length,
     //   topArtists: stats.topArtists.length
     // });
-    
+
     return stats;
   },
 
@@ -403,7 +419,7 @@ export const spotifyAPI = {
   formatListeningTime: (milliseconds: number): string => {
     const hours = Math.floor(milliseconds / 3600000);
     const minutes = Math.floor((milliseconds % 3600000) / 60000);
-    
+
     if (hours > 0) {
       return `${hours}h ${minutes}m`;
     } else {
@@ -418,11 +434,11 @@ export const spotifyAPI = {
     userData: SpotifyUserData
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any> => {
-   // console.log('🎵 Frontend: Submitting comprehensive Spotify data...');
-    
+    // console.log('🎵 Frontend: Submitting comprehensive Spotify data...');
+
     // Calculate listening statistics
     const listeningStats = spotifyAPI.getListeningStats(userData);
-    
+
     const response = await fetch(`${API_BASE_URL}/api/v1/auth/spotify-connect-comprehensive`, {
       method: 'POST',
       headers: {
