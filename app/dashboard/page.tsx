@@ -34,6 +34,7 @@ import { claimWithContract } from "@/lib/api/claimWithContract";
 import { useAccount, useWalletClient } from "wagmi";
 import { BrowserProvider, JsonRpcSigner } from "ethers";
 import { ToastInstance } from "@/lib/types";
+import { usePointsWithInterval } from "@/lib/hooks/usePoints";
 
 // Custom hook to convert wagmi wallet client to ethers signer
 function useEthersSigner() {
@@ -56,7 +57,10 @@ function formatMsToHrMin(ms: number): string {
   return `${minutes}min`;
 }
 
-export default function Home() {
+export default  function Home() {
+  const email = localStorage.getItem('spotify_email') || 'example@gmail.com';
+  const { data: pointsData, } = usePointsWithInterval(email);
+  console.log("Points data:::::::::::::::::::::::::::::::::::::::::::::::::", pointsData);
   const [shareModal, setShareModal] = React.useState(false);
   const [claimModal, setClaimModal] = React.useState(false);
   const toast = useToast();
@@ -99,6 +103,8 @@ export default function Home() {
   //   toast.success("Reward claimed successfully!");
   //   // Add your claim logic here
   // };
+
+
   return (
     <>
       <div className={styles.dashboard}>
@@ -121,13 +127,10 @@ export default function Home() {
 
                 <div className={styles.dashboardScreenTop}>
                   <div className={styles.dashboardScreenClaim}>
-                    <div className={styles.dashboardScreenClaimIcon}>
-                      <Timer />
-                    </div>
+                    
 
                     <div className={styles.dashboardScreenClaimTextBlock}>
-                      <p>Next claim:</p>
-                      <p>23:02:13</p>
+                      
                     </div>
                   </div>
                   <div className={styles.shareBlock}>
@@ -175,7 +178,8 @@ export default function Home() {
                         claimWithContract(
                           address,
                           process.env.NEXT_PUBLIC_CLAIM_CONTRACT!,
-                          ethersSigner!
+                          ethersSigner!,
+                          email
                         )
                       }
                     >
@@ -578,7 +582,7 @@ export default function Home() {
                         </p>
                       </div>
 
-                      <p className={styles.statsBlockElemValue}>125</p>
+                      <p className={styles.statsBlockElemValue}>{pointsData?.volumeScore || 0}</p>
                     </div>
 
                     <div className={styles.statsBlockElem}>
@@ -593,7 +597,7 @@ export default function Home() {
                         </p>
                       </div>
 
-                      <p className={styles.statsBlockElemValue}>125</p>
+                      <p className={styles.statsBlockElemValue}>{pointsData?.diversityScore || 0}</p>
                     </div>
 
                     <div className={styles.statsBlockElem}>
@@ -608,7 +612,7 @@ export default function Home() {
                         </p>
                       </div>
 
-                      <p className={styles.statsBlockElemValue}>125</p>
+                      <p className={styles.statsBlockElemValue}>{pointsData?.historyScore || 0}</p>
                     </div>
 
                     <div className={styles.statsBlockElem}>
@@ -623,7 +627,7 @@ export default function Home() {
                         </p>
                       </div>
 
-                      <p className={styles.statsBlockElemValue}>125</p>
+                      <p className={styles.statsBlockElemValue}>{pointsData?.referralScore || 0}</p>
                     </div>
 
                     <div className={styles.statsBlockElem}>
@@ -634,7 +638,7 @@ export default function Home() {
                         </div>
                       </div>
 
-                      <p className={styles.statsBlockElemValue}>789</p>
+                      <p className={styles.statsBlockElemValue}>{pointsData?.totalBasePoints || 0}</p>
                     </div>
                   </div>
                 </div>

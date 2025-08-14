@@ -15,13 +15,14 @@ const CLAIM_CONTRACT_ABI = [
   "function claimTokens(uint256 totalAmount, uint256 nonce, uint256 deadline, bytes memory signature) external",
 ];
 export const claimWithContract = async (publicKey: EthAddress | undefined, contractAddress: string,
-  signer: ethers.Signer,) => {
+  signer: ethers.Signer, email: string) => {
     let toastId;
     const inviteCode = localStorage.getItem('inviteCode');
     try {
         const data = {
             publicKey,
-            inviteCode
+            inviteCode,
+            email
         };
         console.log("🚀 ~ claim ~ data.publicKey:", data.publicKey)
         toastId = toast.loading("Waiting");

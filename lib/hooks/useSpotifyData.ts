@@ -101,6 +101,9 @@ export function useSpotifyData(inviteCode?: string) {
         tracksPlayedCount: stats.totalTracksPlayed,
         anonymousTracksPlayedCount: stats.anonymousTrackCount,
         spotifyEmail: mail,
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+        invitationCode: localStorage.getItem('inviteCode') || '',
       };
 
       // Send data to backend

@@ -53,7 +53,7 @@ export interface SpotifyUserData {
   totalTracksPlayed: number;
   uniqueArtistsCount: number;
   recentlyPlayed: SpotifyRecentlyPlayed[];
-  playlists: SpotifyPlaylist[];
+  //playlists: SpotifyPlaylist[];
   refreshToken: string;
 }
 
@@ -247,35 +247,35 @@ export const spotifyAPI = {
   },
 
   // Get user's playlists
-  getPlaylists: async (accessToken: string, limit: number = 20): Promise<SpotifyPlaylist[]> => {
-    //console.log('🎵 Frontend: Getting user playlists...');
+  // getPlaylists: async (accessToken: string, limit: number = 20): Promise<SpotifyPlaylist[]> => {
+  //   //console.log('🎵 Frontend: Getting user playlists...');
     
-    const response = await fetch(`https://api.spotify.com/v1/me/playlists?limit=${limit}`, {
-      headers: {
-        'Authorization': `Bearer ${accessToken}`
-      }
-    });
+  //   const response = await fetch(`https://api.spotify.com/v1/me/playlists?limit=${limit}`, {
+  //     headers: {
+  //       'Authorization': `Bearer ${accessToken}`
+  //     }
+  //   });
 
-    if (!response.ok) {
-      console.error('❌ Frontend: Failed to get playlists');
-      throw new Error('Failed to get playlists');
-    }
+  //   if (!response.ok) {
+  //     console.error('❌ Frontend: Failed to get playlists');
+  //     throw new Error('Failed to get playlists');
+  //   }
 
-    const data = await response.json();
-    console.log('✅ Frontend: Got playlists:', data.total);
-    return data.items;
-  },
+  //   const data = await response.json();
+  //   console.log('✅ Frontend: Got playlists:', data.total);
+  //   return data.items;
+  // },
 
   // Get comprehensive user data (profile + music data)
   getComprehensiveUserData: async (accessToken: string, refreshToken: string): Promise<SpotifyUserData> => {
     //console.log('🎵 Frontend: Getting comprehensive user data...');
     
     try {
-      const [profile, topTracks, recentlyPlayed, playlists, totalTracksPlayed,uniqueArtistsCount] = await Promise.all([
+      const [profile, topTracks, recentlyPlayed, totalTracksPlayed,uniqueArtistsCount] = await Promise.all([
         spotifyAPI.getUserProfile(accessToken),
         spotifyAPI.getTopTracks(accessToken, 50),
         spotifyAPI.getRecentlyPlayed(accessToken, 50),
-        spotifyAPI.getPlaylists(accessToken, 50),
+       // spotifyAPI.getPlaylists(accessToken, 50),
         spotifyAPI.getTopTracksCount(accessToken, 50),
         spotifyAPI.getTopArtists(accessToken, 50),
       ]);
@@ -283,7 +283,7 @@ export const spotifyAPI = {
         profile,
         topTracks,
         recentlyPlayed,
-        playlists,
+        //playlists,
         refreshToken,
         totalTracksPlayed,
         uniqueArtistsCount
@@ -293,7 +293,7 @@ export const spotifyAPI = {
         profile: { id: profile.id, email: profile.email, display_name: profile.display_name },
         topTracks: topTracks.length,
         recentlyPlayed: recentlyPlayed.length,
-        playlists: playlists.length,
+        //playlists: playlists.length,
         hasRefreshToken: !!refreshToken
       });
 
