@@ -93,7 +93,7 @@ export function useSpotifyData(inviteCode?: string) {
       const userData = await spotifyAPI.getComprehensiveUserData(accessToken, refreshToken);
       
       // Extract required stats
-      const stats = spotifyAPI.getListeningStats(userData);
+      const stats = await spotifyAPI.getListeningStats(userData, accessToken);
       
       const statsWithEmail = {
         listeningTime: stats.totalListeningTimeMs,

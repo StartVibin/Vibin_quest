@@ -49,7 +49,7 @@ export default function Home() {
 
   const { profile } = useUserProfile();
   const { sharedValue, setSharedValue } = useSharedContext();
-  console.log("🚀 ~ Home ~ profile:", profile)
+  //console.log("🚀 ~ Home ~ profile:", profile)
 
   const {
     leaderboardData,
@@ -60,7 +60,7 @@ export default function Home() {
 
   useEffect(() => {
     if (leaderboardData) {
-      console.log('🏆 [Leaderboard] Data fetched from backend:', leaderboardData);
+      //console.log('🏆 [Leaderboard] Data fetched from backend:', leaderboardData);
     }
   }, [leaderboardData]);
   const [showInviteModal, setShowInviteModal] = useState(false);

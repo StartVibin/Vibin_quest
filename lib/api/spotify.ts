@@ -73,8 +73,10 @@ export interface SpotifyListeningStats {
   uniqueArtistsCount: number;
   totalListeningTimeMs: number;
   anonymousTrackCount: number;
-  topTracks: SpotifyTopTrackInfo[];
-  topArtists: SpotifyTopArtistInfo[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any    
+  topTracks: any[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  topArtists: any[];
 }
 
 export const spotifyAPI = {
@@ -209,7 +211,7 @@ export const spotifyAPI = {
     return data.total;
   },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  getTopArtists: async (accessToken: string, limit: number = 50): Promise<any> => {
+  getTopArtists: async (accessToken: string, limit: number = 50): Promise<any[]> => {
     const response = await fetch(`https://api.spotify.com/v1/me/top/artists?limit=${limit}&time_range=medium_term`, {
       headers: {
         'Authorization': `Bearer ${accessToken}`
@@ -222,7 +224,7 @@ export const spotifyAPI = {
     }
 
     const data = await response.json();
-    //console.log('✅ Frontend: Got top artists:', data);
+    console.log('✅ Frontend: Got top artists:', data.items);
     return data.items;
   },
   getTopArtistsCount: async (accessToken: string, limit: number = 50): Promise<number> => {
@@ -293,7 +295,7 @@ export const spotifyAPI = {
         spotifyAPI.getRecentlyPlayed(accessToken, 50),
         // spotifyAPI.getPlaylists(accessToken, 50),
         spotifyAPI.getTopTracksCount(accessToken, 50),
-        spotifyAPI.getTopArtists(accessToken, 50),
+        spotifyAPI.getTopArtistsCount(accessToken, 50),
       ]);
       const userData: SpotifyUserData = {
         profile,
@@ -371,7 +373,7 @@ export const spotifyAPI = {
   },
 
   // Calculate listening statistics
-  getListeningStats: (userData: SpotifyUserData): SpotifyListeningStats => {
+  getListeningStats: async (userData: SpotifyUserData, accessToken: string): Promise<SpotifyListeningStats> => {
     const { topTracks, totalTracksPlayed, uniqueArtistsCount } = userData;
 
     // Get unique artists from top tracks
@@ -391,8 +393,10 @@ export const spotifyAPI = {
     ).length;
 
     // Get top 5 tracks and artists
-    const topTracksInfo = spotifyAPI.getTopTracksInfo(topTracks, 5);
-    const topArtistsInfo = spotifyAPI.getTopArtistsInfo(topTracks, 5);
+    //const topTracksInfo = spotifyAPI.getTopTracksInfo(topTracks, 5);
+    const topTracksInfo = await spotifyAPI.getTopTracks(accessToken);
+    //const topArtistsInfo = spotifyAPI.getTopArtistsInfo(topTracks, 5);
+    const topArtistsInfo = await spotifyAPI.getTopArtists(accessToken);
 
     const stats: SpotifyListeningStats = {
       totalTracksPlayed: totalTracksPlayed,
@@ -431,13 +435,14 @@ export const spotifyAPI = {
   submitComprehensiveSpotifyData: async (
     spotifyEmail: string,
     invitationCode: string,
-    userData: SpotifyUserData
+    userData: SpotifyUserData,
+    accessToken: string
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any> => {
     // console.log('🎵 Frontend: Submitting comprehensive Spotify data...');
 
     // Calculate listening statistics
-    const listeningStats = spotifyAPI.getListeningStats(userData);
+    const listeningStats = spotifyAPI.getListeningStats(userData, accessToken);
 
     const response = await fetch(`${API_BASE_URL}/api/v1/auth/spotify-connect-comprehensive`, {
       method: 'POST',

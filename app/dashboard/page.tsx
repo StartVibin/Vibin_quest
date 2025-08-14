@@ -75,14 +75,15 @@ export default  function Home() {
     email !== 'example@gmail.com' ? email : '', 
     email !== 'example@gmail.com'
   );
-  console.log("Points data:::::::::::::::::::::::::::::::::::::::::::::::::", pointsData);
+ // console.log("Points data:::::::::::::::::::::::::::::::::::::::::::::::::", pointsData);
   const [shareModal, setShareModal] = React.useState(false);
   const [claimModal, setClaimModal] = React.useState(false);
   const [isClaiming, setIsClaiming] = React.useState(false);
   const toast = useToast();
   
   const { data, isLoading, error } = useSpotifyData(inviteCode);
-  
+  console.log("Spotify artists data:::::::::::::::::::::::::::::::::::::::::::::::::", data?.topArtists);
+  console.log("Spotify tracks data:::::::::::::::::::::::::::::::::::::::::::::::::", data?.topTracks);
   const { address } = useAccount();
   const signer = useEthersSigner();
   const [ethersSigner, setEthersSigner] = React.useState<JsonRpcSigner | null>(
@@ -415,7 +416,31 @@ export default  function Home() {
                         <p className={styles.dashboardTableItemPlace}>
                           #{index + 1}
                         </p>
-                        <div className={styles.dashboardTableItemImg}></div>
+                        <div className={styles.dashboardTableItemImg}>
+                          {track?.album?.images ? (
+                            <Image 
+                              src={track.album.images[0].url} 
+                              alt={track?.name || 'Track image'} 
+                              width={40} 
+                              height={40}
+                              style={{ borderRadius: '4px', objectFit: 'cover' }}
+                            />
+                          ) : (
+                            <div style={{ 
+                              width: '40px', 
+                              height: '40px', 
+                              backgroundColor: '#333', 
+                              borderRadius: '4px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              color: '#fff',
+                              fontSize: '12px'
+                            }}>
+                              🎵
+                            </div>
+                          )}
+                        </div>
 
                         <div className={styles.dashboardTableItemTextBlock}>
                           <p className={styles.dashboardTableItemTitle}>
@@ -576,23 +601,47 @@ export default  function Home() {
                         <p className={styles.dashboardTableItemPlace}>
                           #{index + 1}
                         </p>
-                        <div className={styles.dashboardTableItemImg}></div>
+                        <div className={styles.dashboardTableItemImg}>
+                          {artist?.images ? (
+                            <Image 
+                              src={artist.images[0].url} 
+                              alt={artist?.name || 'Artist image'} 
+                              width={40} 
+                              height={40}
+                              style={{ borderRadius: '50%', objectFit: 'cover' }}
+                            />
+                          ) : (
+                            <div style={{ 
+                              width: '40px', 
+                              height: '40px', 
+                              backgroundColor: '#333', 
+                              borderRadius: '50%',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              color: '#fff',
+                              fontSize: '12px'
+                            }}>
+                               👤
+                             </div>
+                           )}
+                         </div>
 
-                        <div className={styles.dashboardTableItemTextBlock}>
-                          <p className={styles.dashboardTableItemTitle}>
-                            {artist?.name}
-                          </p>
-                        </div>
-                      </div>
-                      <a
-                        href="https://google.com"
-                        target="_blank"
-                        className={styles.dashboardTableItemLink}
-                      >
-                        <Link2 />
-                      </a>
-                    </div>
-                  ))}
+                         <div className={styles.dashboardTableItemTextBlock}>
+                           <p className={styles.dashboardTableItemTitle}>
+                             {artist?.name}
+                           </p>
+                         </div>
+                       </div>
+                       <a
+                         href="https://google.com"
+                         target="_blank"
+                         className={styles.dashboardTableItemLink}
+                       >
+                         <Link2 />
+                       </a>
+                     </div>
+                   ))}
                 </div>
               </div>
 
@@ -926,24 +975,93 @@ export default  function Home() {
                   </p>
 
                   <div className={styles.shareModalBannerArtistItem}>
-                    <div className={styles.shareModalBannerArtistItemImg}></div>
-
+                    <div className={styles.shareModalBannerArtistItemImg}>
+                      {data?.topArtists[0]?.images ? (
+                        <Image 
+                          src={data.topArtists[0].images[0].url} 
+                          alt={data.topArtists[0]?.name || 'Artist 1'} 
+                          width={35}
+                          height={35}
+                          style={{ objectFit: 'cover', borderRadius: '50%' }}
+                        />
+                      ) : (
+                        <div style={{ 
+                          width: '60px', 
+                          height: '60px', 
+                          backgroundColor: '#333', 
+                          borderRadius: '50%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: '#fff',
+                          fontSize: '14px'
+                        }}>
+                          👤
+                        </div>
+                      )}
+                    </div>
                     <p className={styles.shareModalBannerArtistItemName}>
                       {data?.topArtists[0]?.name}
                     </p>
                   </div>
 
                   <div className={styles.shareModalBannerArtistItem}>
-                    <div className={styles.shareModalBannerArtistItemImg}></div>
-
+                    <div className={styles.shareModalBannerArtistItemImg}>
+                      {data?.topArtists[1]?.images ? (
+                        <Image 
+                          src={data.topArtists[1].images[0].url} 
+                          alt={data.topArtists[1]?.name || 'Artist 2'} 
+                          width={35}
+                          height={35}
+                          style={{ objectFit: 'cover', borderRadius: '50%' }}
+                        />
+                      ) : (
+                        <div style={{ 
+                          width: '60px', 
+                          height: '60px', 
+                          backgroundColor: '#333', 
+                          borderRadius: '50%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: '#fff',
+                          fontSize: '14px'
+                        }}>
+                          👤
+                        </div>
+                      )}
+                    </div>
                     <p className={styles.shareModalBannerArtistItemName}>
                       {data?.topArtists[1]?.name}
                     </p>
                   </div>
 
                   <div className={styles.shareModalBannerArtistItem}>
-                    <div className={styles.shareModalBannerArtistItemImg}></div>
-
+                    <div className={styles.shareModalBannerArtistItemImg}>
+                      {data?.topArtists[2]?.images ? (
+                        <Image 
+                          src={data.topArtists[2].images[0].url} 
+                          alt={data.topArtists[2]?.name || 'Artist 3'} 
+                          width={35}
+                          height={35}
+                          style={{ objectFit: 'cover', borderRadius: '50%' }}
+                        />
+                      ) : (
+                        <div style={{ 
+                          width: '60px', 
+                          height: '60px', 
+                          backgroundColor: '#333', 
+                          borderRadius: '50%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: '#fff',
+                          fontSize: '14px'
+                        }}>
+                          👤
+                        </div>
+                      )}
+                    </div>
                     <p className={styles.shareModalBannerArtistItemName}>
                       {data?.topArtists[2]?.name}
                     </p>
