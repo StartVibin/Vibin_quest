@@ -923,7 +923,6 @@ function DashboardContent() {
     </>
   );
 }
-
 export default function DashboardPage() {
   return (
     <AuthGuard requireFullAuth={true}>
@@ -931,3 +930,4 @@ export default function DashboardPage() {
     </AuthGuard>
   );
 }
+

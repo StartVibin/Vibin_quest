@@ -404,7 +404,7 @@ export const verifyReferalCode = async (referralCode: string) => {
   if (!response.ok) {
     throw new Error('Failed to verify Referral')
   }
-  localStorage.setItem('inviteCode', referralCode);
+  localStorage.setItem('invitation_code', referralCode); // Fixed: use correct key
   return response.json()
 }
 

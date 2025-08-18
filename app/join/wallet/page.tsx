@@ -179,7 +179,6 @@ function WalletConnectionContent() {
     </div>
   );
 }
-
 export default function WalletConnectionPage() {
   return (
     <AuthGuard requireFullAuth={false}>
@@ -187,3 +186,4 @@ export default function WalletConnectionPage() {
     </AuthGuard>
   );
 }
+

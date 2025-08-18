@@ -4,72 +4,58 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAccount } from 'wagmi';
 import { toast } from 'react-toastify';
-// import Image from "next/image";
-// import cn from "classnames";
 
 import styles from "./page.module.css";
-// import base from "@/shared/styles/base.module.css";
-
-// import {
-//   Close,
-//   Blank,
-//   Ticket,
-//   Peoples,
-// } from "@/shared/icons";
 import LeftHalfModal from '@/components/LeftHalfModal';
 import { verifyReferalCode } from '@/lib/api';
 import { useSharedContext } from '@/provider/SharedContext';
-// import { Modal } from "@/shared/ui/Modal";
 
 export default function Home() {
   const { sharedValue, setSharedValue } = useSharedContext();
   const { isConnected } = useAccount();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [validReferral, isValidReferral] = useState(false);
-  // const [accessModal, setAccessModal] = useState(true);
-  const { invitationCode: inviteCode } = sharedValue;
+  const [invitationCode, setInvitationCode] = useState(''); // Local state for input
 
   useEffect(() => {
-    if (validReferral && !isConnected) {
-      router.push('/join/spotify');
+    // Clear any old invitation code data to ensure clean start
+    if (window) {
+      localStorage.removeItem('invitation_code');
+      localStorage.removeItem('inviteCode');
+      localStorage.removeItem('spotify_id');
+      localStorage.removeItem('spotify_email');
+      localStorage.removeItem('spotify_access_token');
     }
-  }, [validReferral, isConnected, router]);
-
-  useEffect(() => {
-    setSharedValue({ ...sharedValue, invitationCode: inviteCode, showWallet: false });
-    
-    if (inviteCode) {
-      verifyReferalCode(inviteCode).then(e => isValidReferral(e.success));
-    }
-
-  }, [inviteCode, sharedValue, setSharedValue]);
+  }, []);
 
   const handleInvitationCodeSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!inviteCode?.trim()) {
+    if (!invitationCode?.trim()) {
       toast.error('Please enter an invitation code');
       return;
     }
 
     setIsLoading(true);
     try {
-      const result = await verifyReferalCode(inviteCode);
+      const result = await verifyReferalCode(invitationCode);
       if (result.success) {
         toast.success("Valid invitation code.");
-        localStorage.setItem('inviteCode', inviteCode);
+        // Store in the correct localStorage key that other pages expect
+        // Note: verifyReferalCode already stores this in localStorage
         // Also store in cookies for middleware access
-        document.cookie = `inviteCode=${inviteCode}; path=/; max-age=86400`; // 24 hours
-        isValidReferral(true);
+        document.cookie = `inviteCode=${invitationCode}; path=/; max-age=86400`; // 24 hours
+        // Update shared context
+        setSharedValue({ ...sharedValue, invitationCode: invitationCode, showWallet: false });
+        
+        // Redirect to Spotify page after successful verification
+        router.push('/join/spotify');
       } else {
         toast.error("Invalid invitation code. Please try again.");
-        isValidReferral(false);
       }
     } catch (error) {
       console.error('Invitation code error:', error);
       toast.error('Invalid invitation code. Please try again.');
-      isValidReferral(false);
     } finally {
       setIsLoading(false);
     }
@@ -100,8 +86,8 @@ export default function Home() {
                 <input
                   id="invitationCode"
                   type="text"
-                  value={inviteCode || ''}
-                  onChange={(e) => setSharedValue({ ...sharedValue, invitationCode: e.target.value })}
+                  value={invitationCode}
+                  onChange={(e) => setInvitationCode(e.target.value)}
                   placeholder="Enter your invitation code"
                   className={styles.input}
                   disabled={isLoading}
@@ -109,7 +95,7 @@ export default function Home() {
                 <button
                   type="submit"
                   className={styles.continueButton}
-                  disabled={isLoading || !inviteCode?.trim()}
+                  disabled={isLoading || !invitationCode?.trim()}
                 >
                   {isLoading ? (
                     <div className={styles.loadingSpinner} />
@@ -122,7 +108,6 @@ export default function Home() {
           </form>
         </div>
       </LeftHalfModal>
-
     </div>
   );
 }

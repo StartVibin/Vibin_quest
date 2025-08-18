@@ -23,7 +23,7 @@ export default function AuthGuard({ children, requireFullAuth = true }: AuthGuar
   const checkAuthenticationStatus = () => {
     try {
       // Check if user has completed the full authentication flow
-      const invitationCode = localStorage.getItem('inviteCode');
+      const invitationCode = localStorage.getItem('invitation_code');
       const spotifyId = localStorage.getItem('spotify_id');
       const spotifyEmail = localStorage.getItem('spotify_email');
       const spotifyAccessToken = localStorage.getItem('spotify_access_token');

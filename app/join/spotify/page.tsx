@@ -62,8 +62,11 @@ function SpotifyLoginContent() {
   }, [router, spotifyEmail]);
 
   useEffect(() => {
-    if (!invitationCode) {
-      router.push('/join');
+    // Get invitation code from shared context or localStorage as fallback
+    const code = invitationCode || localStorage.getItem('invitation_code');
+    
+    if (!code) {
+      router.push('/');
       return;
     }
 
