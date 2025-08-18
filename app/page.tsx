@@ -4,22 +4,22 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAccount } from 'wagmi';
 import { toast } from 'react-toastify';
-import Image from "next/image";
+// import Image from "next/image";
 // import cn from "classnames";
 
 import styles from "./page.module.css";
 // import base from "@/shared/styles/base.module.css";
 
-import {
-  Close,
-  Blank,
-  Ticket,
-  Peoples,
-} from "@/shared/icons";
+// import {
+//   Close,
+//   Blank,
+//   Ticket,
+//   Peoples,
+// } from "@/shared/icons";
 import LeftHalfModal from '@/components/LeftHalfModal';
 import { verifyReferalCode } from '@/lib/api';
 import { useSharedContext } from '@/provider/SharedContext';
-import { Modal } from "@/shared/ui/Modal";
+// import { Modal } from "@/shared/ui/Modal";
 
 export default function Home() {
   const { sharedValue, setSharedValue } = useSharedContext();
@@ -27,7 +27,7 @@ export default function Home() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [validReferral, isValidReferral] = useState(false);
-  const [accessModal, setAccessModal] = useState(true);
+  // const [accessModal, setAccessModal] = useState(true);
   const { invitationCode: inviteCode } = sharedValue;
 
   useEffect(() => {
@@ -43,10 +43,6 @@ export default function Home() {
       verifyReferalCode(inviteCode).then(e => isValidReferral(e.success));
     }
 
-    // Show access modal on first visit
-    if (window && !window.localStorage.getItem("accessModal")) {
-      setAccessModal(true);
-    }
   }, [inviteCode, sharedValue, setSharedValue]);
 
   const handleInvitationCodeSubmit = async (e: React.FormEvent) => {
@@ -127,83 +123,6 @@ export default function Home() {
         </div>
       </LeftHalfModal>
 
-      {/* Access Modal - Keep the popup from original main page */}
-      {accessModal && (
-        <Modal value={accessModal}>
-          <div className={styles.accessModalContent}>
-            <button
-              className={styles.accessModalClose}
-              onClick={() => {
-                setAccessModal(false);
-                window.localStorage.setItem("accessModal", "true");
-              }}
-            >
-              <Close />
-            </button>
-
-            <div className={styles.accessModalWrap}>
-              <div className={styles.accessModalLinkIcon}>
-                <Image src="/img/link.svg" alt="link" fill />
-              </div>
-
-              <p className={styles.accessModalTitle}>Exclusive Access Only</p>
-
-              <p className={styles.accessModalText}>
-                To join the Vibin&rsquo; Network, you&rsquo;ll need an
-                invitation code; no code, no entry.
-              </p>
-            </div>
-
-            <div className={styles.accessModalPoints}>
-              <div className={styles.accessModalPoint}>
-                <div className={styles.accessModalPointIcon}>
-                  <Ticket />
-                </div>
-
-                <p className={styles.accessModalPointText}>
-                  Only 100 invite codes will be released at launch.
-                </p>
-              </div>
-
-              <div className={styles.accessModalPoint}>
-                <div className={styles.accessModalPointIcon}>
-                  <Peoples />
-                </div>
-
-                <p className={styles.accessModalPointText}>
-                  After that, new members can join only through referrals from
-                  the initial 100 users.
-                </p>
-              </div>
-
-              <div className={styles.accessModalPoint}>
-                <div className={styles.accessModalPointIcon}>
-                  <Blank />
-                </div>
-
-                <p className={styles.accessModalPointText}>
-                  Think of it as a whitelist.
-                </p>
-              </div>
-            </div>
-
-            <p className={styles.accessModalSubtext}>
-              Once they&rsquo;re gone, the only way in is through someone who
-              already got one.
-            </p>
-
-            <button
-              className={styles.accessModalLink}
-              onClick={() => {
-                setAccessModal(false);
-                window.localStorage.setItem("accessModal", "true");
-              }}
-            >
-              Be one of the first. Start the ripple.
-            </button>
-          </div>
-        </Modal>
-      )}
     </div>
   );
 }
