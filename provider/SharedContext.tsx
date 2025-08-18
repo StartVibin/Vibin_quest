@@ -34,7 +34,6 @@ export const SharedProvider = ({ children }: { children: ReactNode }) => {
         });
     }, []);
 
-    console.log("sharedValue ", sharedValue);
 
     // Optional: keep localStorage updated when sharedValue changes
     useEffect(() => {

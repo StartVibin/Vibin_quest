@@ -15,8 +15,6 @@ export async function POST(req: Request) {
       );
     }
     
-    console.log("🚀 ~ POST ~ Email:", email);
-    console.log("🚀 ~ POST ~ Index:", index);
     
     const SPOTIFY_CLIENT_ID = process.env[`SPOTIFY_CLIENT_ID_${index}`];
     const SPOTIFY_CLIENT_SECRET = process.env[`SPOTIFY_CLIENT_SECRET_${index}`];
@@ -34,15 +32,9 @@ export async function POST(req: Request) {
     // Store email and index in SERVER-SIDE session store using state as key
     sessionStore.set(state, email, index);
     
-    console.log("🚀 ~ POST ~ Stored in session store - State:", state);
-    console.log("🚀 ~ POST ~ Stored in session store - Email:", email);
-    console.log("🚀 ~ POST ~ Stored in session store - Index:", index);
-    
     // Log session store stats
     const stats = sessionStore.getStats();
-    console.log("📊 Session store stats after storing:", stats);
 
-    //console.log("spotify clientId no 1==============================", clientId);
     const spotifyAuthUrl = new URL('https://accounts.spotify.com/authorize');
     spotifyAuthUrl.searchParams.append('client_id', SPOTIFY_CLIENT_ID!);
     spotifyAuthUrl.searchParams.append('response_type', 'code');

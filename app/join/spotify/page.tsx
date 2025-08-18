@@ -33,7 +33,6 @@ function SpotifyLoginContent() {
       const spotifyAccessToken = localStorage.getItem('spotify_access_token');
 
       if (invitationCode == "" || spotifyEmail == "") {
-        console.log("HERERERER");
 
         toast.error('Missing registration data. Please start over.');
         router.push('/join');
@@ -47,10 +46,8 @@ function SpotifyLoginContent() {
         spotifyAccessToken: spotifyAccessToken,
       };
 
-      console.log('Registration data:', registrationData);
 
       await new Promise(resolve => setTimeout(resolve, 1000));
-
 
       toast.success('Spotify connected successfully!');
 
@@ -73,9 +70,6 @@ function SpotifyLoginContent() {
     const urlParams = new URLSearchParams(window.location.search);
     const success = urlParams.get('success');
     const error = urlParams.get('error');
-
-    console.log(urlParams);
-
 
     if (success === 'true') {
       const spotifyId = urlParams.get('spotify_id');

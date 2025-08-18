@@ -16,12 +16,7 @@ function GoogleCallbackContent() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    console.log("🔄 [Google Callback] Component mounted");
-    console.log("🔄 [Google Callback] Window opener exists:", !!window.opener);
-    console.log("🔄 [Google Callback] Window location:", window.location.href);
-    console.log("🔄 [Google Callback] Callback page loaded");
-    console.log("🔍 [Google Callback] Search params:", Object.fromEntries(searchParams.entries()));
-    console.log("🔍 [Google Callback] Raw URL:", window.location.href);
+
     
     const code = searchParams.get('code');
     const state = searchParams.get('state');

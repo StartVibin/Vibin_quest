@@ -79,10 +79,6 @@ function DashboardContent() {
     }
   }, [signer]);
 
-  console.log("Spotify data:", data);
-  console.log("Invite code:", inviteCode);
-  console.log("Loading:", isLoading);
-  console.log("Error:", error);
   
   // const handleManualRefetch = () => {
   //   console.log(`[${new Date().toISOString()}] Manual refetch triggered`);

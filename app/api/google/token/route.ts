@@ -2,10 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
-    console.log('🔄 [Google Token API] Request received');
     
     const { code } = await request.json();
-    console.log('📋 [Google Token API] Code received:', !!code);
 
     if (!code) {
       console.error('❌ [Google Token API] No authorization code provided');

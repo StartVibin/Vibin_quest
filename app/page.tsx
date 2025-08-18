@@ -13,6 +13,7 @@ import { useSharedContext } from '@/provider/SharedContext';
 export default function Home() {
   const { sharedValue, setSharedValue } = useSharedContext();
   const { isConnected } = useAccount();
+  console.log(isConnected);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [invitationCode, setInvitationCode] = useState(''); // Local state for input

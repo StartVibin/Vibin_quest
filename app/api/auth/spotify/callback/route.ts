@@ -22,28 +22,18 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(new URL('/join/spotify?error=missing_state', request.url));
     }
 
-    // Get email and index from SERVER-SIDE session store using state
-    console.log("🔍 ~ GET ~ Looking for session with state:", state);
-    
+   
     // Log session store stats before getting
     const statsBefore = sessionStore.getStats();
-    console.log("📊 Session store stats before getting:", statsBefore);
     
     const sessionData = sessionStore.get(state);
     if (!sessionData) {
-      console.log("❌ ~ GET ~ Session not found or expired for state:", state);
       return NextResponse.redirect(new URL('/join/spotify?error=session_expired', request.url));
     }
 
     const { email: sessionEmail, index } = sessionData;
     const SPOTIFY_CLIENT_ID = process.env[`SPOTIFY_CLIENT_ID_${index}`];
     const SPOTIFY_CLIENT_SECRET = process.env[`SPOTIFY_CLIENT_SECRET_${index}`];
-    
-    console.log("🚀 ~ GET ~ SPOTIFY_CLIENT_ID in callback:", SPOTIFY_CLIENT_ID);
-    console.log("🚀 ~ GET ~ SPOTIFY_CLIENT_SECRET in callback:", SPOTIFY_CLIENT_SECRET);
-    console.log("🚀 ~ GET ~ Email from session:", sessionEmail);
-    console.log("🚀 ~ GET ~ Index from session:", index);
-
     const tokenResponse = await fetch('https://accounts.spotify.com/api/token', {
       method: 'POST',
       headers: {
@@ -57,8 +47,6 @@ export async function GET(request: NextRequest) {
       })
     });
 
-    console.log(tokenResponse);
-
     if (!tokenResponse.ok) {
       console.error('Token exchange failed:', await tokenResponse.text());
       return NextResponse.redirect(new URL('/join/spotify?error=token_exchange_failed', request.url));
@@ -66,7 +54,6 @@ export async function GET(request: NextRequest) {
 
     const tokenData = await tokenResponse.json();
     const { access_token, refresh_token, expires_in } = tokenData;
-
     const profileResponse = await fetch('https://api.spotify.com/v1/me', {
       headers: {
         'Authorization': `Bearer ${access_token}`
@@ -80,7 +67,6 @@ export async function GET(request: NextRequest) {
 
     const profileData = await profileResponse.json();
     const { id, email, display_name } = profileData;
-
     const successUrl = new URL('/join/spotify', request.url);
     successUrl.searchParams.set('success', 'true');
     successUrl.searchParams.set('spotify_id', id);
