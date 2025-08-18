@@ -5,6 +5,7 @@ import cn from "classnames";
 
 import styles from "./page.module.css";
 import base from "@/shared/styles/base.module.css";
+import AuthGuard from "@/components/AuthGuard";
 
 import {
   Close,
@@ -56,7 +57,7 @@ function formatMsToHrMin(ms: number): string {
   return `${minutes}min`;
 }
 
-export default function Home() {
+function DashboardContent() {
   const [shareModal, setShareModal] = React.useState(false);
   const [claimModal, setClaimModal] = React.useState(false);
   const toast = useToast();
@@ -920,5 +921,13 @@ export default function Home() {
         </div>
       </Modal>
     </>
+  );
+}
+
+export default function DashboardPage() {
+  return (
+    <AuthGuard requireFullAuth={true}>
+      <DashboardContent />
+    </AuthGuard>
   );
 }

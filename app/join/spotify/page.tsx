@@ -5,13 +5,14 @@ import { useRouter } from 'next/navigation';
 
 import { toast } from 'react-toastify';
 import styles from '../page.module.css';
+import AuthGuard from '@/components/AuthGuard';
 
 import LeftHalfModal from '@/components/LeftHalfModal';
 import SpotifyOAuthModal from '@/components/SpotifyOAuthModal';
 import { useSharedContext } from '@/provider/SharedContext';
 import { getIndexOfEmail } from '@/lib/api/getIndexOfEmail';
 
-export default function SpotifyLoginPage() {
+function SpotifyLoginContent() {
 
   const { sharedValue, setSharedValue } = useSharedContext()
   const router = useRouter();
@@ -42,7 +43,6 @@ export default function SpotifyLoginPage() {
       const registrationData = {
         invitationCode: invitationCode,
         spotifyId: spotifyId,
-        spotifyEmail: spotifyEmail,
         spotifyName: spotifyName,
         spotifyAccessToken: spotifyAccessToken,
       };
@@ -89,6 +89,11 @@ export default function SpotifyLoginPage() {
       localStorage.setItem('spotify_refresh_token', refreshToken || '');
       localStorage.setItem('spotify_expires_in', expiresIn || '');
       localStorage.setItem('spotify_token_expiry', (Date.now() + (parseInt(expiresIn || '0') * 1000)).toString());
+
+      // Also store in cookies for middleware access
+      document.cookie = `spotify_id=${spotifyId || ''}; path=/; max-age=86400`;
+      document.cookie = `spotify_email=${spotifyEmail || ''}; path=/; max-age=86400`;
+      document.cookie = `spotify_access_token=${accessToken || ''}; path=/; max-age=86400`;
 
       handleSpotifyOAuthSuccess();
 
@@ -195,5 +200,13 @@ export default function SpotifyLoginPage() {
         index={index}
       />
     </div>
+  );
+}
+
+export default function SpotifyLoginPage() {
+  return (
+    <AuthGuard requireFullAuth={false}>
+      <SpotifyLoginContent />
+    </AuthGuard>
   );
 } 

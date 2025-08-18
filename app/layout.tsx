@@ -10,10 +10,10 @@ import { Header } from "@/widgets/Header";
 import { SharedProvider } from "@/provider/SharedContext";
 
 export const metadata: Metadata = {
-  title: "Vibin' Quest",
-  description: "Participate in Vibin' Quests",
+  title: "Vibin' App",
+  description: "🎧Listen. Vibe. Own your music data. Powered by Spotify + Ethereum.",
   icons: {
-    icon: '/img/icon.svg',
+    icon: '/img/favicon.png',
   },
   viewport: {
     width: 'device-width',

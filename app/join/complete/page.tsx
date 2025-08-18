@@ -4,10 +4,11 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import styles from '../page.module.css';
+import AuthGuard from '@/components/AuthGuard';
 
 import LeftHalfModal from '@/components/LeftHalfModal';
 
-export default function CompletionPage() {
+function CompletionContent() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -131,6 +132,14 @@ export default function CompletionPage() {
         </div>
       </LeftHalfModal>
     </div>
+  );
+}
+
+export default function CompletionPage() {
+  return (
+    <AuthGuard requireFullAuth={false}>
+      <CompletionContent />
+    </AuthGuard>
   );
 }
 

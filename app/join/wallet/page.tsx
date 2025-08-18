@@ -5,10 +5,11 @@ import { useRouter } from 'next/navigation';
 import { useAccount, useConnect } from 'wagmi';
 import { toast } from 'react-toastify';
 import styles from '../page.module.css';
+import AuthGuard from '@/components/AuthGuard';
 
 import LeftHalfModal from '@/components/LeftHalfModal';
 
-export default function WalletConnectionPage() {
+function WalletConnectionContent() {
   const router = useRouter();
   const { address, isConnected } = useAccount();
   const { connect, connectors } = useConnect();
@@ -176,5 +177,13 @@ export default function WalletConnectionPage() {
         </div>
       </LeftHalfModal>
     </div>
+  );
+}
+
+export default function WalletConnectionPage() {
+  return (
+    <AuthGuard requireFullAuth={false}>
+      <WalletConnectionContent />
+    </AuthGuard>
   );
 }
