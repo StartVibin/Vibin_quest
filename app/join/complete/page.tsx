@@ -45,7 +45,7 @@ function CompletionContent() {
       
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      localStorage.removeItem('invitation_code');
+      // localStorage.removeItem('invitation_code');
       localStorage.removeItem('walletAddress');
       localStorage.removeItem('spotify_oauth_state');
       // Don't remove spotifyEmail - it's needed for AuthGuard

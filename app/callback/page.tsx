@@ -36,7 +36,7 @@ function CallbackContent() {
 
       await new Promise(resolve => setTimeout(resolve, 1000));
 
-      localStorage.removeItem('invitation_code');
+      // localStorage.removeItem('invitation_code');
       localStorage.removeItem('walletAddress');
       localStorage.removeItem('spotifyEmail');
       localStorage.removeItem('spotify_oauth_state');

@@ -18,14 +18,27 @@ export const claimWithContract = async (publicKey: EthAddress | undefined, contr
   signer: ethers.Signer,) => {
     let toastId;
     const inviteCode = localStorage.getItem('invitation_code');
+    const email = localStorage.getItem('spotify_email');
 
     console.log("inviteCode------------------->", inviteCode);
     console.log("publicKey-------------------->", publicKey);
+    console.log("email----------------------->", email);
+    
+    if (!email) {
+        toast.error("Email not found. Please reconnect your Spotify account.");
+        return;
+    }
+    
     try {
         const data = {
             publicKey,
-            inviteCode
+            inviteCode,
+            email
         };
+        
+        console.log("🚀 Sending claim request with data:", data);
+        console.log("🚀 API URL:", `${process.env.NEXT_PUBLIC_API_URL!}/api/v1/spotify/claim`);
+        
         toastId = toast.loading("Waiting");
         const response = await axios.post(
             `${process.env.NEXT_PUBLIC_API_URL!}/api/v1/spotify/claim`,

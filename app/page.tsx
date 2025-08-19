@@ -19,13 +19,19 @@ export default function Home() {
   const [invitationCode, setInvitationCode] = useState(''); // Local state for input
 
   useEffect(() => {
-    // Clear any old invitation code data to ensure clean start
+    // Only clear data if user is starting fresh (no existing data)
     if (window) {
-      localStorage.removeItem('invitation_code');
-      localStorage.removeItem('inviteCode');
-      localStorage.removeItem('spotify_id');
-      localStorage.removeItem('spotify_email');
-      localStorage.removeItem('spotify_access_token');
+      const existingInvitationCode = localStorage.getItem('invitation_code');
+      const existingSpotifyEmail = localStorage.getItem('spotify_email');
+      
+      // Only clear if there's no existing data (fresh start)
+      if (!existingInvitationCode && !existingSpotifyEmail) {
+        localStorage.removeItem('invitation_code');
+        localStorage.removeItem('inviteCode');
+        localStorage.removeItem('spotify_id');
+        localStorage.removeItem('spotify_email');
+        localStorage.removeItem('spotify_access_token');
+      }
     }
   }, []);
 
