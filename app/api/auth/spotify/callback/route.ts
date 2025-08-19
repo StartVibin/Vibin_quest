@@ -25,15 +25,18 @@ export async function GET(request: NextRequest) {
    
     // Log session store stats before getting
     const statsBefore = sessionStore.getStats();
+    console.log("statsBefore", statsBefore);
     
     const sessionData = sessionStore.get(state);
     if (!sessionData) {
       return NextResponse.redirect(new URL('/join/spotify?error=session_expired', request.url));
     }
 
-    const { email: sessionEmail, index } = sessionData;
+    const { email: index } = sessionData;
     const SPOTIFY_CLIENT_ID = process.env[`SPOTIFY_CLIENT_ID_${index}`];
     const SPOTIFY_CLIENT_SECRET = process.env[`SPOTIFY_CLIENT_SECRET_${index}`];
+
+    
     const tokenResponse = await fetch('https://accounts.spotify.com/api/token', {
       method: 'POST',
       headers: {

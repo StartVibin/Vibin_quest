@@ -32,7 +32,7 @@ function SpotifyLoginContent() {
       const spotifyName = localStorage.getItem('spotify_name');
       const spotifyAccessToken = localStorage.getItem('spotify_access_token');
 
-      if (invitationCode == "" || spotifyEmail == "") {
+      if (invitationCode == "" || spotifyEmail == "" || spotifyAccessToken == "") {
 
         toast.error('Missing registration data. Please start over.');
         router.push('/join');
@@ -42,10 +42,12 @@ function SpotifyLoginContent() {
       const registrationData = {
         invitationCode: invitationCode,
         spotifyId: spotifyId,
+        spotifyEmail: spotifyEmail,
         spotifyName: spotifyName,
         spotifyAccessToken: spotifyAccessToken,
       };
 
+      console.log("registrationData", registrationData);
 
       await new Promise(resolve => setTimeout(resolve, 1000));
 
@@ -61,7 +63,7 @@ function SpotifyLoginContent() {
   useEffect(() => {
     // Get invitation code from shared context or localStorage as fallback
     const code = invitationCode || localStorage.getItem('invitation_code');
-    
+   
     if (!code) {
       router.push('/');
       return;
@@ -70,6 +72,7 @@ function SpotifyLoginContent() {
     const urlParams = new URLSearchParams(window.location.search);
     const success = urlParams.get('success');
     const error = urlParams.get('error');
+
 
     if (success === 'true') {
       const spotifyId = urlParams.get('spotify_id');
@@ -90,8 +93,8 @@ function SpotifyLoginContent() {
       // Also store in cookies for middleware access
       document.cookie = `spotify_id=${spotifyId || ''}; path=/; max-age=86400`;
       document.cookie = `spotify_email=${spotifyEmail || ''}; path=/; max-age=86400`;
-      document.cookie = `spotify_access_token=${accessToken || ''}; path=/; max-age=86400`;
-
+      // document.cookie = `spotify_access_token=${accessToken || ''}; path=/; max-age=86400`;
+      
       handleSpotifyOAuthSuccess();
 
       window.history.replaceState({}, document.title, window.location.pathname);
@@ -105,6 +108,8 @@ function SpotifyLoginContent() {
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    console.log("spotifyEmail", spotifyEmail);
 
     if (!spotifyEmail.trim()) {
       toast.error('Please enter your Spotify email');

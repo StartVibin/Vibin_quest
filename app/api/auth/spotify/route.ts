@@ -15,7 +15,6 @@ export async function POST(req: Request) {
       );
     }
     
-    
     const SPOTIFY_CLIENT_ID = process.env[`SPOTIFY_CLIENT_ID_${index}`];
     const SPOTIFY_CLIENT_SECRET = process.env[`SPOTIFY_CLIENT_SECRET_${index}`];
     
@@ -34,6 +33,7 @@ export async function POST(req: Request) {
     
     // Log session store stats
     const stats = sessionStore.getStats();
+    console.log("stats", stats);
 
     const spotifyAuthUrl = new URL('https://accounts.spotify.com/authorize');
     spotifyAuthUrl.searchParams.append('client_id', SPOTIFY_CLIENT_ID!);

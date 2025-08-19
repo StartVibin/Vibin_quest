@@ -1,0 +1,2602 @@
+[
+  {
+    "rank": 1,
+    "_id": {
+      "$oid": "688084e82d73714b6737f09b"
+    },
+    "walletAddress": "0x6de70e92e70d713fc174b04d06f9add4c566157f",
+    "emailConnected": true,
+    "telegramId": "6568410710",
+    "telegramUsername": "planner_63",
+    "telegramFirstName": "Planner",
+    "telegramLastName": "Ephraim ⚡VIA",
+    "email": "atabin646@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "DUSPOSP2",
+    "gamePoints": 119973,
+    "referralPoints": 500,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-23T06:44:56.160Z"
+    },
+    "totalPoints": 120473,
+    "originalIndex": 396
+  },
+  {
+    "rank": 2,
+    "_id": {
+      "$oid": "6880c27e2d73714b6738a37f"
+    },
+    "walletAddress": "0x29c7325d5e8176dcabe97d96c6347b4a49fb1c42",
+    "emailConnected": true,
+    "telegramId": "7143382274",
+    "telegramUsername": "khvl33l",
+    "telegramFirstName": "Khvlee",
+    "telegramLastName": "",
+    "email": "ibrahimyusuf757@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "BH2DFY2H",
+    "gamePoints": 55150,
+    "referralPoints": 0,
+    "socialPoints": 1400,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-23T11:07:42.768Z"
+    },
+    "totalPoints": 55150,
+    "originalIndex": 431
+  },
+  {
+    "rank": 3,
+    "_id": {
+      "$oid": "687f48503d18b6efa4bcc9ac"
+    },
+    "walletAddress": "0x7672878a4ee27a278adebf123c9adb1b84c7f917",
+    "emailConnected": false,
+    "telegramId": "2117195336",
+    "telegramUsername": "Crypto_Maliel1",
+    "telegramFirstName": "CryptoMaliel ▪️",
+    "telegramLastName": "",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "OBDLPJXE",
+    "gamePoints": 9,
+    "referralPoints": 42500,
+    "socialPoints": 500,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 1,
+    "createdAt": {
+      "$date": "2025-07-22T08:14:08.799Z"
+    },
+    "totalPoints": 42509,
+    "originalIndex": 42
+  },
+  {
+    "rank": 4,
+    "_id": {
+      "$oid": "688053322d73714b673747ac"
+    },
+    "walletAddress": "0x615838e8981b582930682d17fe509d244f858940",
+    "emailConnected": true,
+    "telegramId": "5602743240",
+    "telegramUsername": "Richmond467",
+    "telegramFirstName": "Richmond💠🍅🐾",
+    "telegramLastName": "",
+    "email": "richycryptic@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "LWRGEZA0",
+    "gamePoints": 39215,
+    "referralPoints": 0,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-23T03:12:50.399Z"
+    },
+    "totalPoints": 39215,
+    "originalIndex": 370
+  },
+  {
+    "rank": 5,
+    "_id": {
+      "$oid": "687f8ef33d18b6efa4bd81dd"
+    },
+    "walletAddress": "0x9e9a680df522cb301ce3925f9a2e23886751b17d",
+    "emailConnected": true,
+    "telegramId": "5208297645",
+    "telegramUsername": "influenceofweb",
+    "telegramFirstName": "INFLUENCESENSEI",
+    "telegramLastName": "",
+    "email": "influencesensei@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "ZEJ700SW",
+    "gamePoints": 10307,
+    "referralPoints": 4000,
+    "socialPoints": 700,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T13:15:31.158Z"
+    },
+    "totalPoints": 14307,
+    "originalIndex": 102
+  },
+  {
+    "rank": 6,
+    "_id": {
+      "$oid": "687ff6a82d73714b6735ed92"
+    },
+    "walletAddress": "0x3e771ebd8ee4fffea8fea400737b040ae6aeff20",
+    "emailConnected": false,
+    "telegramId": "7221187948",
+    "telegramUsername": "Jamesarinze208",
+    "telegramFirstName": "James",
+    "telegramLastName": "FX",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "5UTLPY6B",
+    "gamePoints": 11732,
+    "referralPoints": 0,
+    "socialPoints": 1200,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T20:38:00.561Z"
+    },
+    "totalPoints": 11732,
+    "originalIndex": 312
+  },
+  {
+    "rank": 7,
+    "_id": {
+      "$oid": "687f76893d18b6efa4bce35c"
+    },
+    "walletAddress": "0x5010eada6c0d6ac87d638e587cca80b5132d15b8",
+    "emailConnected": true,
+    "telegramId": "1163349079",
+    "telegramUsername": "Jay_Barney",
+    "telegramFirstName": "Jay Barney",
+    "telegramLastName": "",
+    "email": "jozesjackbarney@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "LWRGEZA0",
+    "gamePoints": 8977,
+    "referralPoints": 1000,
+    "socialPoints": 700,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T11:31:21.785Z"
+    },
+    "totalPoints": 9977,
+    "originalIndex": 46
+  },
+  {
+    "rank": 8,
+    "_id": {
+      "$oid": "687fca2c2d73714b67349fb9"
+    },
+    "walletAddress": "0x93dee912c143bf35a5def5de487055b78dc58ab7",
+    "emailConnected": false,
+    "telegramId": "6152088896",
+    "telegramUsername": "emmah_eu",
+    "telegramFirstName": "Joel",
+    "telegramLastName": "💠🐾️",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "URZUVZLM",
+    "gamePoints": 8312,
+    "referralPoints": 0,
+    "socialPoints": 1200,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T17:28:12.369Z"
+    },
+    "totalPoints": 8312,
+    "originalIndex": 223
+  },
+  {
+    "rank": 9,
+    "_id": {
+      "$oid": "6880cbe52d73714b6738d347"
+    },
+    "walletAddress": "0x3f52835101d77a19c8091635b83877b1337ae620",
+    "emailConnected": true,
+    "telegramId": "6577995099",
+    "telegramUsername": "",
+    "telegramFirstName": "Damian",
+    "telegramLastName": "Mathias",
+    "email": "mathias.m2201079@st.futminna.edu.ng",
+    "spotifyEmail": "",
+    "referralCode": "HRUBC8QY",
+    "gamePoints": 8102,
+    "referralPoints": 0,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-23T11:47:49.277Z"
+    },
+    "totalPoints": 8102,
+    "originalIndex": 443
+  },
+  {
+    "rank": 10,
+    "_id": {
+      "$oid": "687ff7f72d73714b6735f62f"
+    },
+    "walletAddress": "0x293d7debb165ddbe0cadc3a986b464222c84b256",
+    "emailConnected": true,
+    "telegramId": "5564272646",
+    "telegramUsername": "Ceenuel",
+    "telegramFirstName": "CEENUEL 🍀⚡",
+    "telegramLastName": "",
+    "email": "manleke7@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "Q33GMCQF",
+    "gamePoints": 5072,
+    "referralPoints": 3000,
+    "socialPoints": 1400,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T20:43:35.012Z"
+    },
+    "totalPoints": 8072,
+    "originalIndex": 313
+  },
+  {
+    "rank": 11,
+    "_id": {
+      "$oid": "687e6ae90222c0ef9b238d84"
+    },
+    "walletAddress": "0xd9c3903c9c4f603536a50dc46bc7fbaf7377a2d3",
+    "emailConnected": true,
+    "telegramId": "5187205126",
+    "telegramUsername": "OxCharles0",
+    "telegramFirstName": "OxCharles",
+    "telegramLastName": "",
+    "email": "charlesezenwa112@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "",
+    "gamePoints": 7822,
+    "referralPoints": 0,
+    "socialPoints": 1200,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-21T16:29:29.453Z"
+    },
+    "totalPoints": 7822,
+    "originalIndex": 33
+  },
+  {
+    "rank": 12,
+    "_id": {
+      "$oid": "687f79223d18b6efa4bce84d"
+    },
+    "walletAddress": "0xb62061fa7c102a8085a5cdeb8d7ccefb015c3452",
+    "emailConnected": true,
+    "telegramId": "1364006422",
+    "telegramUsername": "Mis_Aura",
+    "telegramFirstName": "Aura 🌱SEED 🍅 🐱CATGOLD ☮️🥝🐾",
+    "telegramLastName": "",
+    "email": "itsaurajazz@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "S9D43O3T",
+    "gamePoints": 3764,
+    "referralPoints": 4000,
+    "socialPoints": 800,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T11:42:26.009Z"
+    },
+    "totalPoints": 7764,
+    "originalIndex": 50
+  },
+  {
+    "rank": 13,
+    "_id": {
+      "$oid": "688060182d73714b673777f1"
+    },
+    "walletAddress": "0x2b1d13f03a8df3559501edd4aee1c3fcd6ab7488",
+    "emailConnected": true,
+    "telegramId": "6134125427",
+    "telegramUsername": "BuYang_Bitcoin",
+    "telegramFirstName": "Bu",
+    "telegramLastName": "Yang",
+    "email": "jihuibu2000@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "LWRGEZA0",
+    "gamePoints": 7592,
+    "referralPoints": 0,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-23T04:07:52.191Z"
+    },
+    "totalPoints": 7592,
+    "originalIndex": 383
+  },
+  {
+    "rank": 14,
+    "_id": {
+      "$oid": "687fed182d73714b6735a91b"
+    },
+    "walletAddress": "0xe3078225bf19c71c437edadf4f4b1bc55cff25f3",
+    "emailConnected": true,
+    "telegramId": "8070047305",
+    "telegramUsername": "JustMeJam3s",
+    "telegramFirstName": "James, Tower🏰",
+    "telegramLastName": "",
+    "email": "miller.jamesian@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "XCSJ9C4P",
+    "gamePoints": 6032,
+    "referralPoints": 1000,
+    "socialPoints": 2000,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T19:57:12.681Z"
+    },
+    "totalPoints": 7032,
+    "originalIndex": 299
+  },
+  {
+    "rank": 15,
+    "_id": {
+      "$oid": "687ed2d53d18b6efa4bca5fc"
+    },
+    "walletAddress": "0xba5f4ef63c7e111f95875159563d12828b25955d",
+    "emailConnected": true,
+    "telegramId": "6819170538",
+    "telegramUsername": "k_darrell0x1",
+    "telegramFirstName": "Darrell ⚜️",
+    "telegramLastName": "",
+    "email": "amaefulep60@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "93ZRKJH8",
+    "gamePoints": 7,
+    "referralPoints": 7000,
+    "socialPoints": 300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-21T23:52:53.915Z"
+    },
+    "totalPoints": 7007,
+    "originalIndex": 37
+  },
+  {
+    "rank": 16,
+    "_id": {
+      "$oid": "687fa66d3d18b6efa4be310d"
+    },
+    "walletAddress": "0xf9c5acce9d9d43573527279e2ad3abc6b77f046b",
+    "emailConnected": true,
+    "telegramId": "6610388702",
+    "telegramUsername": "Smith_Crypt0",
+    "telegramFirstName": "Smith_Crypt",
+    "telegramLastName": "",
+    "email": "uchendu731@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "XCSJ9C4P",
+    "gamePoints": 5961,
+    "referralPoints": 1000,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T14:55:41.999Z"
+    },
+    "totalPoints": 6961,
+    "originalIndex": 155
+  },
+  {
+    "rank": 17,
+    "_id": {
+      "$oid": "6880532d2d73714b67374792"
+    },
+    "walletAddress": "0x79a4cf8d0ef6b93219dc0b99a03d5e356d2e733f",
+    "emailConnected": false,
+    "telegramId": "2145441563",
+    "telegramUsername": "BJl0011",
+    "telegramFirstName": "Ayeni$X🥠🐾📦 Bums♥️🐍",
+    "telegramLastName": "BJI SPARK CHAIN AI",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "LWRGEZA0",
+    "gamePoints": 4822,
+    "referralPoints": 2000,
+    "socialPoints": 1200,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-23T03:12:45.472Z"
+    },
+    "totalPoints": 6822,
+    "originalIndex": 369
+  },
+  {
+    "rank": 18,
+    "_id": {
+      "$oid": "6880828f2d73714b6737e82b"
+    },
+    "walletAddress": "0x0f8bb8f401838d1e19fa53d239a5087810b60495",
+    "emailConnected": true,
+    "telegramId": "5130313816",
+    "telegramUsername": "clementrojaa",
+    "telegramFirstName": "Aina Clement",
+    "telegramLastName": "⚡",
+    "email": "clementrojaa@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "RHMSFCXI",
+    "gamePoints": 6776,
+    "referralPoints": 0,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-23T06:34:55.180Z"
+    },
+    "totalPoints": 6776,
+    "originalIndex": 395
+  },
+  {
+    "rank": 19,
+    "_id": {
+      "$oid": "687fd7432d73714b6735154d"
+    },
+    "walletAddress": "0x9d1cc096dce6dc0ed181095a35b8576dd00240ce",
+    "emailConnected": false,
+    "telegramId": "6406317137",
+    "telegramUsername": "Daverin0698",
+    "telegramFirstName": "Daverin0698",
+    "telegramLastName": "",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "LIAJ9QVW",
+    "gamePoints": 6766,
+    "referralPoints": 0,
+    "socialPoints": 1200,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T18:24:03.103Z"
+    },
+    "totalPoints": 6766,
+    "originalIndex": 256
+  },
+  {
+    "rank": 20,
+    "_id": {
+      "$oid": "687f7b683d18b6efa4bcfab9"
+    },
+    "walletAddress": "0x8f8bb2e951a250b3280cfb77afffc130bc0e1cf1",
+    "emailConnected": true,
+    "telegramId": "5451218670",
+    "telegramUsername": "Its_arike",
+    "telegramFirstName": "Arike Baby 🦋💕",
+    "telegramLastName": "",
+    "email": "businesstwitter1000@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "LWRGEZA0",
+    "gamePoints": 5435,
+    "referralPoints": 1000,
+    "socialPoints": 700,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T11:52:08.508Z"
+    },
+    "totalPoints": 6435,
+    "originalIndex": 63
+  },
+  {
+    "rank": 21,
+    "_id": {
+      "$oid": "687fab9e3d18b6efa4be5484"
+    },
+    "walletAddress": "0x600c7c7933ccf5728f74ccb171d8e2a1fcc53bee",
+    "emailConnected": true,
+    "telegramId": "550588771",
+    "telegramUsername": "Hameedexhub",
+    "telegramFirstName": "Okunlola",
+    "telegramLastName": "Olawale ⚡VIA",
+    "email": "oliverjoe430@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "5LJMPHU5",
+    "gamePoints": 6073,
+    "referralPoints": 0,
+    "socialPoints": 700,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T15:17:50.493Z"
+    },
+    "totalPoints": 6073,
+    "originalIndex": 169
+  },
+  {
+    "rank": 22,
+    "_id": {
+      "$oid": "68821dcfb253329dd7a653dc"
+    },
+    "walletAddress": "0x27b65c886683205a404583bbd86e439fc2569256",
+    "emailConnected": true,
+    "telegramId": "5419189607",
+    "telegramUsername": "Austinfwesh_21",
+    "telegramFirstName": "Augustine",
+    "telegramLastName": "Chukwu 🐾",
+    "email": "webaustin7@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "HRUBC8QY",
+    "gamePoints": 5950,
+    "referralPoints": 0,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-24T11:49:35.216Z"
+    },
+    "totalPoints": 5950,
+    "originalIndex": 495
+  },
+  {
+    "rank": 23,
+    "_id": {
+      "$oid": "687fcca92d73714b6734b0ad"
+    },
+    "walletAddress": "0x369b8fde27ffd95ed78f2fe544bf02816aab576b",
+    "emailConnected": true,
+    "telegramId": "2089471684",
+    "telegramUsername": "Web3booi",
+    "telegramFirstName": "Web3booi",
+    "telegramLastName": "",
+    "email": "mbaogucallistus@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "B3U639D2",
+    "gamePoints": 5089,
+    "referralPoints": 500,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T17:38:49.912Z"
+    },
+    "totalPoints": 5589,
+    "originalIndex": 225
+  },
+  {
+    "rank": 24,
+    "_id": {
+      "$oid": "688115592d73714b67396aeb"
+    },
+    "walletAddress": "0xe2a584190b72aa69890abd574efbe97a67ceda34",
+    "emailConnected": true,
+    "telegramId": "6261204018",
+    "telegramUsername": "Web3Launcherr",
+    "telegramFirstName": "Ogar",
+    "telegramLastName": "Emma 💠",
+    "email": "emmawills725@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "LWRGEZA0",
+    "gamePoints": 5315,
+    "referralPoints": 0,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-23T17:01:13.608Z"
+    },
+    "totalPoints": 5315,
+    "originalIndex": 465
+  },
+  {
+    "rank": 25,
+    "_id": {
+      "$oid": "6880099e2d73714b67364ba1"
+    },
+    "walletAddress": "0x6b82f93251958c2d3995146b1847b25fdc21edaa",
+    "emailConnected": true,
+    "telegramId": "7141829283",
+    "telegramUsername": "Awwal_013",
+    "telegramFirstName": "Awwal",
+    "telegramLastName": "Wonder🍅🍅",
+    "email": "awwalwonderaliyu@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "6YKO59Y4",
+    "gamePoints": 5212,
+    "referralPoints": 0,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T21:58:54.803Z"
+    },
+    "totalPoints": 5212,
+    "originalIndex": 326
+  },
+  {
+    "rank": 26,
+    "_id": {
+      "$oid": "6884aa605f83e03565d8cfa7"
+    },
+    "walletAddress": "0xe11d59aadc08fe605487fb2ea761881df636b699",
+    "emailConnected": true,
+    "telegramId": "6734457895",
+    "telegramUsername": "Kashyyxx",
+    "telegramFirstName": "LANZEMA",
+    "telegramLastName": "",
+    "email": "davidmats176@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "37K9SHY1",
+    "gamePoints": 4324,
+    "referralPoints": 0,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-26T10:13:52.837Z"
+    },
+    "totalPoints": 4324,
+    "originalIndex": 538
+  },
+  {
+    "rank": 27,
+    "_id": {
+      "$oid": "688183db0d9e7203b9b67e6f"
+    },
+    "walletAddress": "0xc24a36505cd53a4ddc4dc3f158bea73cfbea42a2",
+    "emailConnected": true,
+    "telegramId": "7613753636",
+    "telegramUsername": "rapraplangto",
+    "telegramFirstName": "SR",
+    "telegramLastName": "",
+    "email": "raprapkukushibo@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "G95WM2PU",
+    "gamePoints": 3939,
+    "referralPoints": 0,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-24T00:52:43.503Z"
+    },
+    "totalPoints": 3939,
+    "originalIndex": 481
+  },
+  {
+    "rank": 28,
+    "_id": {
+      "$oid": "687feae42d73714b67359601"
+    },
+    "walletAddress": "0x9e25cf622050655d5d97c193ebf67b991c8d18de",
+    "emailConnected": true,
+    "telegramId": "6585833454",
+    "telegramUsername": "tseyiatsi",
+    "telegramFirstName": "Tseyi",
+    "telegramLastName": "Atsiangbe",
+    "email": "atsiangbetseyi@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "OLDBRTJF",
+    "gamePoints": 3236,
+    "referralPoints": 500,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T19:47:48.491Z"
+    },
+    "totalPoints": 3736,
+    "originalIndex": 293
+  },
+  {
+    "rank": 29,
+    "_id": {
+      "$oid": "687f86163d18b6efa4bd473c"
+    },
+    "walletAddress": "0xd8eb6f746451c4396f0a353dcb2e21c149fe8372",
+    "emailConnected": true,
+    "telegramId": "5963240152",
+    "telegramUsername": "eelagicipokan",
+    "telegramFirstName": "eelagi",
+    "telegramLastName": "cipokan ၊||၊ DeSpeed ၊||၊",
+    "email": "erbarung@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "Z2THY228",
+    "gamePoints": 159,
+    "referralPoints": 3500,
+    "socialPoints": 700,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T12:37:42.983Z"
+    },
+    "totalPoints": 3659,
+    "originalIndex": 85
+  },
+  {
+    "rank": 30,
+    "_id": {
+      "$oid": "687fa2ad3d18b6efa4be11e1"
+    },
+    "walletAddress": "0x0bdeae284caafb2f0fed1dfc148596a4483989a0",
+    "emailConnected": true,
+    "telegramId": "808197996",
+    "telegramUsername": "Kaushal027",
+    "telegramFirstName": "Shubham",
+    "telegramLastName": "",
+    "email": "jromnom@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "5T97C9ZJ",
+    "gamePoints": 3485,
+    "referralPoints": 0,
+    "socialPoints": 700,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T14:39:41.646Z"
+    },
+    "totalPoints": 3485,
+    "originalIndex": 150
+  },
+  {
+    "rank": 31,
+    "_id": {
+      "$oid": "687faf732df65c26e79cbb2c"
+    },
+    "walletAddress": "0xb706d080d895114690d237437a1b675f5c967ce4",
+    "emailConnected": true,
+    "telegramId": "7031905135",
+    "telegramUsername": "Divinevinc07",
+    "telegramFirstName": "Divine07",
+    "telegramLastName": "",
+    "email": "divinearojuoga006@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "HRUBC8QY",
+    "gamePoints": 3411,
+    "referralPoints": 0,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T15:34:11.090Z"
+    },
+    "totalPoints": 3411,
+    "originalIndex": 176
+  },
+  {
+    "rank": 32,
+    "_id": {
+      "$oid": "688e54065f83e03565dd020c"
+    },
+    "walletAddress": "0x103d6c7b485e8f61795f7b9accb1f746a72bfcc3",
+    "emailConnected": false,
+    "telegramId": "1538301598",
+    "telegramUsername": "Papanadine13",
+    "telegramFirstName": "Hati AI Putra29♻️",
+    "telegramLastName": "",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "Z9XZZO3X",
+    "gamePoints": 3391,
+    "referralPoints": 0,
+    "socialPoints": 300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-08-02T18:08:06.022Z"
+    },
+    "totalPoints": 3391,
+    "originalIndex": 601
+  },
+  {
+    "rank": 33,
+    "_id": {
+      "$oid": "687f7a513d18b6efa4bcf1d2"
+    },
+    "walletAddress": "0x38dbd549e4539b0ff09996f7f7f1dd103b3d3b93",
+    "emailConnected": false,
+    "telegramId": null,
+    "telegramUsername": "",
+    "telegramFirstName": "",
+    "telegramLastName": "",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "F1YO2W38",
+    "gamePoints": 5,
+    "referralPoints": 3000,
+    "socialPoints": 100,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 2,
+    "createdAt": {
+      "$date": "2025-07-22T11:47:29.867Z"
+    },
+    "totalPoints": 3005,
+    "originalIndex": 57
+  },
+  {
+    "rank": 34,
+    "_id": {
+      "$oid": "68808a422d73714b67380107"
+    },
+    "walletAddress": "0xb608f7bf59d57d5fc91581241de8642050d70ed1",
+    "emailConnected": true,
+    "telegramId": "5107342648",
+    "telegramUsername": "DeFi_Meds",
+    "telegramFirstName": "𝕯𝖊𝕱𝖎",
+    "telegramLastName": "𝕸𝖊𝖉𝖘",
+    "email": "wisdomemekachukwuma@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "LWRGEZA0",
+    "gamePoints": 241,
+    "referralPoints": 2500,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-23T07:07:46.247Z"
+    },
+    "totalPoints": 2741,
+    "originalIndex": 400
+  },
+  {
+    "rank": 35,
+    "_id": {
+      "$oid": "6880c5892d73714b6738b088"
+    },
+    "walletAddress": "0x171a37d1b8651d2bff20c60b81569b30530ce928",
+    "emailConnected": true,
+    "telegramId": "6426809459",
+    "telegramUsername": "Juiceofweb3",
+    "telegramFirstName": "Juice of Web3.0",
+    "telegramLastName": "",
+    "email": "youngjuiceae@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "3SBNL2CA",
+    "gamePoints": 2220,
+    "referralPoints": 500,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-23T11:20:41.433Z"
+    },
+    "totalPoints": 2720,
+    "originalIndex": 437
+  },
+  {
+    "rank": 36,
+    "_id": {
+      "$oid": "687f79e53d18b6efa4bcee18"
+    },
+    "walletAddress": "0x6a7e6880305ab03738fba4aa26a002142829ca1a",
+    "emailConnected": true,
+    "telegramId": "6887579499",
+    "telegramUsername": "Jamesjamesjamesjamesja",
+    "telegramFirstName": "James Meschain.Ai",
+    "telegramLastName": "",
+    "email": "eweredanielebube@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "LWRGEZA0",
+    "gamePoints": 1568,
+    "referralPoints": 1000,
+    "socialPoints": 800,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T11:45:41.741Z"
+    },
+    "totalPoints": 2568,
+    "originalIndex": 54
+  },
+  {
+    "rank": 37,
+    "_id": {
+      "$oid": "687f82503d18b6efa4bd33e0"
+    },
+    "walletAddress": "0x0ed76ef246a4edccf733d706d60fc137e0f6ba7d",
+    "emailConnected": true,
+    "telegramId": "1423584767",
+    "telegramUsername": "Pablo_huncho0",
+    "telegramFirstName": "👑",
+    "telegramLastName": "",
+    "email": "rolandowatkinsloud@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "LWRGEZA0",
+    "gamePoints": 2297,
+    "referralPoints": 0,
+    "socialPoints": 700,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T12:21:36.128Z"
+    },
+    "totalPoints": 2297,
+    "originalIndex": 80
+  },
+  {
+    "rank": 38,
+    "_id": {
+      "$oid": "688088792d73714b6737fa2f"
+    },
+    "walletAddress": "0xf641ea34ab21773c150e10b2e88dc3178046dcdd",
+    "emailConnected": false,
+    "telegramId": "2127145892",
+    "telegramUsername": "geeboss007",
+    "telegramFirstName": "Oluwatoki",
+    "telegramLastName": "gbenga",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "8NRU2GBR",
+    "gamePoints": 2270,
+    "referralPoints": 0,
+    "socialPoints": 1200,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-23T07:00:09.376Z"
+    },
+    "totalPoints": 2270,
+    "originalIndex": 398
+  },
+  {
+    "rank": 39,
+    "_id": {
+      "$oid": "687fc8aa2d73714b673495f5"
+    },
+    "walletAddress": "0x26b6fcacd7464be1c472fb024b7c44ec36f37f1e",
+    "emailConnected": true,
+    "telegramId": "1836706432",
+    "telegramUsername": "Emerald_231",
+    "telegramFirstName": "Samuel",
+    "telegramLastName": "",
+    "email": "emeraldsam30@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "GHUMGH9Y",
+    "gamePoints": 2237,
+    "referralPoints": 0,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T17:21:46.982Z"
+    },
+    "totalPoints": 2237,
+    "originalIndex": 220
+  },
+  {
+    "rank": 40,
+    "_id": {
+      "$oid": "687f7d863d18b6efa4bd13dc"
+    },
+    "walletAddress": "0x8b591c1a8d895afb7a5a1221703c7e354c959376",
+    "emailConnected": true,
+    "telegramId": "5170844079",
+    "telegramUsername": "haise_57",
+    "telegramFirstName": "Haise",
+    "telegramLastName": "",
+    "email": "owolabiplentywealth72@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "LWRGEZA0",
+    "gamePoints": 707,
+    "referralPoints": 1500,
+    "socialPoints": 700,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 1,
+    "createdAt": {
+      "$date": "2025-07-22T12:01:10.777Z"
+    },
+    "totalPoints": 2207,
+    "originalIndex": 69
+  },
+  {
+    "rank": 41,
+    "_id": {
+      "$oid": "6883dc295f83e03565d8398a"
+    },
+    "walletAddress": "0x39fff00fc4ac412bd3d28965c11e0d52e947c9de",
+    "emailConnected": true,
+    "telegramId": "2141202260",
+    "telegramUsername": "Princerikky",
+    "telegramFirstName": "prince",
+    "telegramLastName": "rikky Hivera ☮️🥝🐾",
+    "email": "brownsrikky@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "K6R1JQNH",
+    "gamePoints": 188,
+    "referralPoints": 2000,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-25T19:34:01.776Z"
+    },
+    "totalPoints": 2188,
+    "originalIndex": 522
+  },
+  {
+    "rank": 42,
+    "_id": {
+      "$oid": "688044132d73714b67370bfe"
+    },
+    "walletAddress": "0xb4873651d40b814b5d5275730e762484f683e2e3",
+    "emailConnected": true,
+    "telegramId": "1162613244",
+    "telegramUsername": "Thimmylee",
+    "telegramFirstName": "Timmy🆙 UXUY",
+    "telegramLastName": "Tech 🆓 Gra-Gra nexyai.io $IFR🔜",
+    "email": "timileyinfalope@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "LWRGEZA0",
+    "gamePoints": 2078,
+    "referralPoints": 0,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-23T02:08:19.253Z"
+    },
+    "totalPoints": 2078,
+    "originalIndex": 355
+  },
+  {
+    "rank": 43,
+    "_id": {
+      "$oid": "688133027edf0e66b7d6c674"
+    },
+    "walletAddress": "0x06c3f059cdb859bc9e3e96a0533de3db92445729",
+    "emailConnected": true,
+    "telegramId": "6519121025",
+    "telegramUsername": "dhaking001",
+    "telegramFirstName": "HIM",
+    "telegramLastName": "",
+    "email": "princeokojevoh@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "LWRGEZA0",
+    "gamePoints": 1527,
+    "referralPoints": 500,
+    "socialPoints": 500,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 4,
+    "createdAt": {
+      "$date": "2025-07-23T19:07:46.766Z"
+    },
+    "totalPoints": 2027,
+    "originalIndex": 471
+  },
+  {
+    "rank": 44,
+    "_id": {
+      "$oid": "687f999b3d18b6efa4bdbb6d"
+    },
+    "walletAddress": "0xcdae1ab4eecbef152c1bcfab8217b181083ae651",
+    "emailConnected": true,
+    "telegramId": "6080361563",
+    "telegramUsername": "stanlee01",
+    "telegramFirstName": "Stanley🐾",
+    "telegramLastName": "",
+    "email": "stanleyezeanyim123@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "LWRGEZA0",
+    "gamePoints": 1487,
+    "referralPoints": 500,
+    "socialPoints": 700,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T14:00:59.568Z"
+    },
+    "totalPoints": 1987,
+    "originalIndex": 120
+  },
+  {
+    "rank": 45,
+    "_id": {
+      "$oid": "6884a20d5f83e03565d8c13c"
+    },
+    "walletAddress": "0x8fe27de726b6d6cf147863a54458eb0178b56991",
+    "emailConnected": false,
+    "telegramId": "6607849804",
+    "telegramUsername": "Jacobmason098765",
+    "telegramFirstName": "Jacob",
+    "telegramLastName": "Mason",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "IBAK9FJW",
+    "gamePoints": 1958,
+    "referralPoints": 0,
+    "socialPoints": 1200,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 4,
+    "createdAt": {
+      "$date": "2025-07-26T09:38:21.275Z"
+    },
+    "totalPoints": 1958,
+    "originalIndex": 537
+  },
+  {
+    "rank": 46,
+    "_id": {
+      "$oid": "68804b0f2d73714b673725e1"
+    },
+    "walletAddress": "0xb32e445bfb47ec08f305cb0c6f39053144591097",
+    "emailConnected": true,
+    "telegramId": "7853914593",
+    "telegramUsername": "reymonddax",
+    "telegramFirstName": "P",
+    "telegramLastName": "Dax",
+    "email": "landrykhan06@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "LWRGEZA0",
+    "gamePoints": 1938,
+    "referralPoints": 0,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-23T02:38:07.072Z"
+    },
+    "totalPoints": 1938,
+    "originalIndex": 361
+  },
+  {
+    "rank": 47,
+    "_id": {
+      "$oid": "688022fa2d73714b6736b175"
+    },
+    "walletAddress": "0x250fae3deb307bc1e8c62cf1d952c59554127722",
+    "emailConnected": true,
+    "telegramId": "7564872090",
+    "telegramUsername": "Lingenuvoltaire",
+    "telegramFirstName": "Lingenu",
+    "telegramLastName": "Voltaire",
+    "email": "s35393670@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "LWRGEZA0",
+    "gamePoints": 1908,
+    "referralPoints": 0,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T23:47:06.183Z"
+    },
+    "totalPoints": 1908,
+    "originalIndex": 335
+  },
+  {
+    "rank": 48,
+    "_id": {
+      "$oid": "687f1a5e3d18b6efa4bcb88c"
+    },
+    "walletAddress": "0x4945b6ebf1d5fc09233487fefe7ebfaae6d9f1bb",
+    "emailConnected": false,
+    "telegramId": "5631450283",
+    "telegramUsername": "Toby2107",
+    "telegramFirstName": "Toby",
+    "telegramLastName": "",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "URZUVZLM",
+    "gamePoints": 729,
+    "referralPoints": 1000,
+    "socialPoints": 1200,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T04:58:06.469Z"
+    },
+    "totalPoints": 1729,
+    "originalIndex": 40
+  },
+  {
+    "rank": 49,
+    "_id": {
+      "$oid": "6881e91470caae9f68683970"
+    },
+    "walletAddress": "0x91675c94d5ca43e4e1ad816b116ca6f8fc15a151",
+    "emailConnected": false,
+    "telegramId": "7109185325",
+    "telegramUsername": "Gerard_butler_NSB",
+    "telegramFirstName": "Gerard Butler",
+    "telegramLastName": "",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "W35PG6F5",
+    "gamePoints": 1725,
+    "referralPoints": 0,
+    "socialPoints": 1200,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-24T08:04:36.687Z"
+    },
+    "totalPoints": 1725,
+    "originalIndex": 489
+  },
+  {
+    "rank": 50,
+    "_id": {
+      "$oid": "6880ed2c2d73714b67392a3d"
+    },
+    "walletAddress": "0xad1d6c6a88bfab99b175df9b50f579e73eef4ad1",
+    "emailConnected": true,
+    "telegramId": null,
+    "telegramUsername": "",
+    "telegramFirstName": "",
+    "telegramLastName": "",
+    "email": "saburiadigun@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "74P0JHVS",
+    "gamePoints": 1649,
+    "referralPoints": 0,
+    "socialPoints": 1000,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 4,
+    "createdAt": {
+      "$date": "2025-07-23T14:09:48.591Z"
+    },
+    "totalPoints": 1649,
+    "originalIndex": 457
+  },
+  {
+    "rank": 51,
+    "_id": {
+      "$oid": "687e67ac0222c0ef9b2389ba"
+    },
+    "walletAddress": "0x1782fb4a81ad9c13a7d7809ac7f0726dc916ad6c",
+    "emailConnected": true,
+    "telegramId": "6527909325",
+    "telegramUsername": "okujerryy",
+    "telegramFirstName": "Oku",
+    "telegramLastName": "Jerry",
+    "email": "www.okujerry@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "N2MC19DN",
+    "gamePoints": 628,
+    "referralPoints": 1000,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-21T16:15:40.174Z"
+    },
+    "totalPoints": 1628,
+    "originalIndex": 32
+  },
+  {
+    "rank": 52,
+    "_id": {
+      "$oid": "687fe2742d73714b673554c0"
+    },
+    "walletAddress": "0x568ad6fb44f3ee5904ff84d6e4d0a2679207d8b2",
+    "emailConnected": true,
+    "telegramId": "5720600006",
+    "telegramUsername": "tmd_wrld",
+    "telegramFirstName": "TMD 🔥",
+    "telegramLastName": "",
+    "email": "ayotomidealfred@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "URZUVZLM",
+    "gamePoints": 17,
+    "referralPoints": 1500,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T19:11:48.218Z"
+    },
+    "totalPoints": 1517,
+    "originalIndex": 276
+  },
+  {
+    "rank": 53,
+    "_id": {
+      "$oid": "687fe26c2d73714b6735548b"
+    },
+    "walletAddress": "0x7e7b2cfceb5308205f015e9d83e87ecaf3852fb1",
+    "emailConnected": true,
+    "telegramId": "6490760685",
+    "telegramUsername": "Ochai18",
+    "telegramFirstName": "divine",
+    "telegramLastName": "",
+    "email": "ochaivincent60@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "HRUBC8QY",
+    "gamePoints": 1485,
+    "referralPoints": 0,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T19:11:40.958Z"
+    },
+    "totalPoints": 1485,
+    "originalIndex": 275
+  },
+  {
+    "rank": 54,
+    "_id": {
+      "$oid": "687fbf549a7130b4a702beaf"
+    },
+    "walletAddress": "0x0bd7a4e3ec38bf8ff5a04fe4bd739c6e1dd4a1ae",
+    "emailConnected": true,
+    "telegramId": "6696135880",
+    "telegramUsername": "Richardo61",
+    "telegramFirstName": "Richarrd",
+    "telegramLastName": "Etim🦴🐾Σ",
+    "email": "richardetim40@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "LWRGEZA0",
+    "gamePoints": 938,
+    "referralPoints": 500,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T16:41:56.795Z"
+    },
+    "totalPoints": 1438,
+    "originalIndex": 206
+  },
+  {
+    "rank": 55,
+    "_id": {
+      "$oid": "68849e325f83e03565d8bb21"
+    },
+    "walletAddress": "0x0778b82f51963d351f49135fcb687fd830e5b454",
+    "emailConnected": false,
+    "telegramId": null,
+    "telegramUsername": "",
+    "telegramFirstName": "",
+    "telegramLastName": "",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "CHKNFIK3",
+    "gamePoints": 1431,
+    "referralPoints": 0,
+    "socialPoints": 100,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-26T09:21:54.230Z"
+    },
+    "totalPoints": 1431,
+    "originalIndex": 536
+  },
+  {
+    "rank": 56,
+    "_id": {
+      "$oid": "687f9d183d18b6efa4bdde0e"
+    },
+    "walletAddress": "0x3cd6b8d6e71e90b4c321a0a1de6ad61e25d1289a",
+    "emailConnected": true,
+    "telegramId": "5685282948",
+    "telegramUsername": "Tenson9",
+    "telegramFirstName": "Tenson.",
+    "telegramLastName": "",
+    "email": "tensonizevbigie0@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "XCSJ9C4P",
+    "gamePoints": 1385,
+    "referralPoints": 0,
+    "socialPoints": 700,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T14:15:52.584Z"
+    },
+    "totalPoints": 1385,
+    "originalIndex": 129
+  },
+  {
+    "rank": 57,
+    "_id": {
+      "$oid": "68829b862c7b0ac24941c17c"
+    },
+    "walletAddress": "0xc726cd03f73e37f0f28d412f39e5a53162e6316c",
+    "emailConnected": true,
+    "telegramId": "6492686305",
+    "telegramUsername": "Savvyjr01",
+    "telegramFirstName": "Savvy JR",
+    "telegramLastName": "",
+    "email": "savvyjr6@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "M1CPDO50",
+    "gamePoints": 1314,
+    "referralPoints": 0,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-24T20:45:58.310Z"
+    },
+    "totalPoints": 1314,
+    "originalIndex": 504
+  },
+  {
+    "rank": 58,
+    "_id": {
+      "$oid": "687fa1fc3d18b6efa4be0930"
+    },
+    "walletAddress": "0xfe952371bc1fb5b973b99538e9e7243bcf6bd8ff",
+    "emailConnected": true,
+    "telegramId": "5167085078",
+    "telegramUsername": "Famousthe01",
+    "telegramFirstName": "Heis",
+    "telegramLastName": "LAHAOLA🐾",
+    "email": "lawalfaruqadebayo@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "LWRGEZA0",
+    "gamePoints": 225,
+    "referralPoints": 1000,
+    "socialPoints": 700,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T14:36:44.616Z"
+    },
+    "totalPoints": 1225,
+    "originalIndex": 149
+  },
+  {
+    "rank": 59,
+    "_id": {
+      "$oid": "68807a5d2d73714b6737c9a3"
+    },
+    "walletAddress": "0xb0dbc735281a244091abd7ff5b7c01fd47426bf7",
+    "emailConnected": true,
+    "telegramId": "2075030610",
+    "telegramUsername": "Abdulfatai2003",
+    "telegramFirstName": "Imran",
+    "telegramLastName": "Adebare",
+    "email": "imranadebare9@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "LZUOBJQO",
+    "gamePoints": 1178,
+    "referralPoints": 0,
+    "socialPoints": 700,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-23T05:59:57.776Z"
+    },
+    "totalPoints": 1178,
+    "originalIndex": 391
+  },
+  {
+    "rank": 60,
+    "_id": {
+      "$oid": "687fc5e09a7130b4a702f395"
+    },
+    "walletAddress": "0x7f3ce150774a438c384847a4a07f5fb115f72735",
+    "emailConnected": true,
+    "telegramId": "7633288303",
+    "telegramUsername": "jewelkilcher2",
+    "telegramFirstName": "jewel",
+    "telegramLastName": "Kilcher",
+    "email": "iyanu4615@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "QWQHH3NU",
+    "gamePoints": 1167,
+    "referralPoints": 0,
+    "socialPoints": 700,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T17:09:52.351Z"
+    },
+    "totalPoints": 1167,
+    "originalIndex": 214
+  },
+  {
+    "rank": 61,
+    "_id": {
+      "$oid": "687fe3952d73714b67355dff"
+    },
+    "walletAddress": "0xf24abd509f2c3f33f317c117937eb2707f20d26a",
+    "emailConnected": true,
+    "telegramId": null,
+    "telegramUsername": "",
+    "telegramFirstName": "",
+    "telegramLastName": "",
+    "email": "hamzeey69@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "HRUBC8QY",
+    "gamePoints": 1057,
+    "referralPoints": 0,
+    "socialPoints": 1000,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T19:16:37.765Z"
+    },
+    "totalPoints": 1057,
+    "originalIndex": 278
+  },
+  {
+    "rank": 62,
+    "_id": {
+      "$oid": "687f7b5d3d18b6efa4bcfa48"
+    },
+    "walletAddress": "0x6b7ef7e966ee4e49481cfe590ad873c87379723e",
+    "emailConnected": true,
+    "telegramId": "5954101086",
+    "telegramUsername": "KhingGodswill",
+    "telegramFirstName": "khing 🐾🐾🐾",
+    "telegramLastName": "",
+    "email": "khinggodswill@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "LWRGEZA0",
+    "gamePoints": 14,
+    "referralPoints": 1000,
+    "socialPoints": 700,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T11:51:57.602Z"
+    },
+    "totalPoints": 1014,
+    "originalIndex": 62
+  },
+  {
+    "rank": 63,
+    "_id": {
+      "$oid": "687fc55d9a7130b4a702f013"
+    },
+    "walletAddress": "0x094ba0c69540b40d1048c8f080d34b6a34a771af",
+    "emailConnected": false,
+    "telegramId": "1601253279",
+    "telegramUsername": "AlahjiOfCrypto0",
+    "telegramFirstName": "AlahjiOfCrypto0",
+    "telegramLastName": "",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "D43YSB1R",
+    "gamePoints": 0,
+    "referralPoints": 1000,
+    "socialPoints": 1200,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 0,
+    "createdAt": {
+      "$date": "2025-07-22T17:07:41.013Z"
+    },
+    "totalPoints": 1000,
+    "originalIndex": 213
+  },
+  {
+    "rank": 64,
+    "_id": {
+      "$oid": "6883f6255f83e03565d852d4"
+    },
+    "walletAddress": "0x8bbca8e7d817a6fe5e577be32e63b4372c48f663",
+    "emailConnected": false,
+    "telegramId": null,
+    "telegramUsername": "",
+    "telegramFirstName": "",
+    "telegramLastName": "",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "L8RFB1WM",
+    "gamePoints": 0,
+    "referralPoints": 1000,
+    "socialPoints": 0,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 0,
+    "createdAt": {
+      "$date": "2025-07-25T21:24:53.802Z"
+    },
+    "totalPoints": 1000,
+    "originalIndex": 526
+  },
+  {
+    "rank": 65,
+    "_id": {
+      "$oid": "687f7ebf3d18b6efa4bd1ca3"
+    },
+    "walletAddress": "0x6966e431b7e31493b5a46f7126ee0b94794194e9",
+    "emailConnected": false,
+    "telegramId": "6280135586",
+    "telegramUsername": "Tomo_da_ichi",
+    "telegramFirstName": "Victor🐾",
+    "telegramLastName": "",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "LWRGEZA0",
+    "gamePoints": 477,
+    "referralPoints": 500,
+    "socialPoints": 700,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T12:06:23.878Z"
+    },
+    "totalPoints": 977,
+    "originalIndex": 74
+  },
+  {
+    "rank": 66,
+    "_id": {
+      "$oid": "6882ff3a5f83e03565d76f0e"
+    },
+    "walletAddress": "0xd567e11ff6c6184174bbdbe87314f1ac9b1afe00",
+    "emailConnected": true,
+    "telegramId": "5646139880",
+    "telegramUsername": "Kin_Isma",
+    "telegramFirstName": "Ismail🌱SEED🐾🐶✌️Yescoiner ၊||၊ DeSpeed ၊||၊",
+    "telegramLastName": "Oyebode",
+    "email": "oyebodeismail2004@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "1K3CSXV2",
+    "gamePoints": 961,
+    "referralPoints": 0,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-25T03:51:22.333Z"
+    },
+    "totalPoints": 961,
+    "originalIndex": 511
+  },
+  {
+    "rank": 67,
+    "_id": {
+      "$oid": "6880a1af2d73714b67383cf1"
+    },
+    "walletAddress": "0x1c44611e137926eb89bd0befd7061e9d8c0673c5",
+    "emailConnected": true,
+    "telegramId": "5463539825",
+    "telegramUsername": "Ayoola5555",
+    "telegramFirstName": "Ayoola",
+    "telegramLastName": "",
+    "email": "harm08064460374@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "LWRGEZA0",
+    "gamePoints": 918,
+    "referralPoints": 0,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-23T08:47:43.186Z"
+    },
+    "totalPoints": 918,
+    "originalIndex": 411
+  },
+  {
+    "rank": 68,
+    "_id": {
+      "$oid": "687f7c153d18b6efa4bd0413"
+    },
+    "walletAddress": "0x3b91dfd3f94d3593d380b4db3b289a6c6e7a1d0e",
+    "emailConnected": true,
+    "telegramId": "1500028950",
+    "telegramUsername": "danfx25",
+    "telegramFirstName": "Danfx25",
+    "telegramLastName": "",
+    "email": "danielseze163@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "LWRGEZA0",
+    "gamePoints": 904,
+    "referralPoints": 0,
+    "socialPoints": 700,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T11:55:01.906Z"
+    },
+    "totalPoints": 904,
+    "originalIndex": 66
+  },
+  {
+    "rank": 69,
+    "_id": {
+      "$oid": "687f88f23d18b6efa4bd5aa8"
+    },
+    "walletAddress": "0x4785bfa8efc8c7f1a67b341ffbb51decfe23be4a",
+    "emailConnected": true,
+    "telegramId": "840361415",
+    "telegramUsername": "Johnsonamos",
+    "telegramFirstName": "Engr",
+    "telegramLastName": "Johnson",
+    "email": "johnsonamos639@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "LWRGEZA0",
+    "gamePoints": 864,
+    "referralPoints": 0,
+    "socialPoints": 700,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T12:49:54.131Z"
+    },
+    "totalPoints": 864,
+    "originalIndex": 92
+  },
+  {
+    "rank": 70,
+    "_id": {
+      "$oid": "688117482d73714b67396dd3"
+    },
+    "walletAddress": "0x77f779ab2bdcd641eda87c66f6bb6dde44d449f1",
+    "emailConnected": false,
+    "telegramId": null,
+    "telegramUsername": "",
+    "telegramFirstName": "",
+    "telegramLastName": "",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "2PC40LVY",
+    "gamePoints": 818,
+    "referralPoints": 0,
+    "socialPoints": 900,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-23T17:09:28.293Z"
+    },
+    "totalPoints": 818,
+    "originalIndex": 466
+  },
+  {
+    "rank": 71,
+    "_id": {
+      "$oid": "687e627ba6b5c00f0f4a98e8"
+    },
+    "walletAddress": "0x5a56139dd355001e158f3b7916ee5294e335c0d3",
+    "emailConnected": false,
+    "telegramId": null,
+    "telegramUsername": "",
+    "telegramFirstName": "",
+    "telegramLastName": "",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "",
+    "gamePoints": 287,
+    "referralPoints": 500,
+    "socialPoints": 900,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 0,
+    "createdAt": {
+      "$date": "2025-07-21T15:53:31.849Z"
+    },
+    "totalPoints": 787,
+    "originalIndex": 6
+  },
+  {
+    "rank": 72,
+    "_id": {
+      "$oid": "687e627ba6b5c00f0f4a98fe"
+    },
+    "walletAddress": "0x8835f141d4e023f630897fffeb08324a74b1fda2",
+    "emailConnected": false,
+    "telegramId": null,
+    "telegramUsername": "",
+    "telegramFirstName": "",
+    "telegramLastName": "",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "",
+    "gamePoints": 280,
+    "referralPoints": 500,
+    "socialPoints": 100,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 0,
+    "createdAt": {
+      "$date": "2025-07-21T15:53:31.851Z"
+    },
+    "totalPoints": 780,
+    "originalIndex": 28
+  },
+  {
+    "rank": 73,
+    "_id": {
+      "$oid": "68803c1b2d73714b6736f259"
+    },
+    "walletAddress": "0x4f91d2ef4c23185791f0860ecdd5a563788e38e7",
+    "emailConnected": true,
+    "telegramId": "5348985788",
+    "telegramUsername": "Jouddis1",
+    "telegramFirstName": "Caleb",
+    "telegramLastName": "Peter",
+    "email": "petercaleb974@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "LWRGEZA0",
+    "gamePoints": 267,
+    "referralPoints": 500,
+    "socialPoints": 500,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-23T01:34:19.842Z"
+    },
+    "totalPoints": 767,
+    "originalIndex": 348
+  },
+  {
+    "rank": 74,
+    "_id": {
+      "$oid": "688245f2b253329dd7a697ea"
+    },
+    "walletAddress": "0x3d8f732f7e5ccdede5047c5daad91f51db9e3a7d",
+    "emailConnected": true,
+    "telegramId": "5883938808",
+    "telegramUsername": "SPIRITDeity",
+    "telegramFirstName": "SPIRIT",
+    "telegramLastName": "Deity🌱SEED🐍",
+    "email": "godswillkennedy91@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "HRUBC8QY",
+    "gamePoints": 753,
+    "referralPoints": 0,
+    "socialPoints": 500,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-24T14:40:50.386Z"
+    },
+    "totalPoints": 753,
+    "originalIndex": 500
+  },
+  {
+    "rank": 75,
+    "_id": {
+      "$oid": "687e627ba6b5c00f0f4a98ec"
+    },
+    "walletAddress": "0xb5ea93683f816c6e7a1a9191efbea86032a7af85",
+    "emailConnected": false,
+    "telegramId": null,
+    "telegramUsername": "",
+    "telegramFirstName": "",
+    "telegramLastName": "",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "",
+    "gamePoints": 245,
+    "referralPoints": 500,
+    "socialPoints": 0,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 0,
+    "createdAt": {
+      "$date": "2025-07-21T15:53:31.849Z"
+    },
+    "totalPoints": 745,
+    "originalIndex": 10
+  },
+  {
+    "rank": 76,
+    "_id": {
+      "$oid": "687fe52c2d73714b67356d47"
+    },
+    "walletAddress": "0x5c404759d0a3d19192c8ca0ce9c00128deb32185",
+    "emailConnected": true,
+    "telegramId": "6575225944",
+    "telegramUsername": "yummtyy",
+    "telegramFirstName": "Olanrewaju 🚀",
+    "telegramLastName": "",
+    "email": "jamiulanre3@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "URZUVZLM",
+    "gamePoints": 212,
+    "referralPoints": 500,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T19:23:24.353Z"
+    },
+    "totalPoints": 712,
+    "originalIndex": 283
+  },
+  {
+    "rank": 77,
+    "_id": {
+      "$oid": "6880471d2d73714b673716fb"
+    },
+    "walletAddress": "0x176ace2b48e73d4bf0c580d7a9aed42eb6e5b408",
+    "emailConnected": true,
+    "telegramId": "7013299141",
+    "telegramUsername": "Bolaji2025",
+    "telegramFirstName": "Afeez",
+    "telegramLastName": "Musbaudeen",
+    "email": "afeez3044@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "LWRGEZA0",
+    "gamePoints": 212,
+    "referralPoints": 500,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-23T02:21:17.601Z"
+    },
+    "totalPoints": 712,
+    "originalIndex": 358
+  },
+  {
+    "rank": 78,
+    "_id": {
+      "$oid": "687e627ba6b5c00f0f4a98f6"
+    },
+    "walletAddress": "0x19e5038a346f89e55afffeaab58dd54a8764816b",
+    "emailConnected": false,
+    "telegramId": null,
+    "telegramUsername": "",
+    "telegramFirstName": "",
+    "telegramLastName": "",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "",
+    "gamePoints": 189,
+    "referralPoints": 500,
+    "socialPoints": 300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 0,
+    "createdAt": {
+      "$date": "2025-07-21T15:53:31.850Z"
+    },
+    "totalPoints": 689,
+    "originalIndex": 20
+  },
+  {
+    "rank": 79,
+    "_id": {
+      "$oid": "687f9af43d18b6efa4bdc7a4"
+    },
+    "walletAddress": "0xdcf7e21300304377eacc36a2144ba9a9658f2d7c",
+    "emailConnected": false,
+    "telegramId": "6920260467",
+    "telegramUsername": "Drey_defi",
+    "telegramFirstName": "Drey🦇",
+    "telegramLastName": "",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "LWRGEZA0",
+    "gamePoints": 188,
+    "referralPoints": 500,
+    "socialPoints": 700,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T14:06:44.772Z"
+    },
+    "totalPoints": 688,
+    "originalIndex": 123
+  },
+  {
+    "rank": 80,
+    "_id": {
+      "$oid": "687e627ba6b5c00f0f4a98e7"
+    },
+    "walletAddress": "0x67d5b3e2012c24d1f2c070b7668a97440f932662",
+    "emailConnected": false,
+    "telegramId": null,
+    "telegramUsername": "",
+    "telegramFirstName": "",
+    "telegramLastName": "",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "",
+    "gamePoints": 185,
+    "referralPoints": 500,
+    "socialPoints": 300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 0,
+    "createdAt": {
+      "$date": "2025-07-21T15:53:31.849Z"
+    },
+    "totalPoints": 685,
+    "originalIndex": 5
+  },
+  {
+    "rank": 81,
+    "_id": {
+      "$oid": "687e627ba6b5c00f0f4a98f7"
+    },
+    "walletAddress": "0xf80c019ba2cf95857cb48dc856805a68f2149824",
+    "emailConnected": false,
+    "telegramId": null,
+    "telegramUsername": "",
+    "telegramFirstName": "",
+    "telegramLastName": "",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "",
+    "gamePoints": 167,
+    "referralPoints": 500,
+    "socialPoints": 500,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 0,
+    "createdAt": {
+      "$date": "2025-07-21T15:53:31.850Z"
+    },
+    "totalPoints": 667,
+    "originalIndex": 21
+  },
+  {
+    "rank": 82,
+    "_id": {
+      "$oid": "6880cbdd2d73714b6738d31f"
+    },
+    "walletAddress": "0x6d57e4ec748988f898afc7b6c9df804e8e02a11a",
+    "emailConnected": false,
+    "telegramId": "5695177500",
+    "telegramUsername": "Hor_lah",
+    "telegramFirstName": "Code__kairos 🎧💺",
+    "telegramLastName": "",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "K6R1JQNH",
+    "gamePoints": 165,
+    "referralPoints": 500,
+    "socialPoints": 1200,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-23T11:47:41.610Z"
+    },
+    "totalPoints": 665,
+    "originalIndex": 442
+  },
+  {
+    "rank": 83,
+    "_id": {
+      "$oid": "687e627ba6b5c00f0f4a98ff"
+    },
+    "walletAddress": "0x2baf6c8345df8f566a80acc9006bfa0d5d061d34",
+    "emailConnected": false,
+    "telegramId": null,
+    "telegramUsername": "",
+    "telegramFirstName": "",
+    "telegramLastName": "",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "",
+    "gamePoints": 163,
+    "referralPoints": 500,
+    "socialPoints": 500,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 0,
+    "createdAt": {
+      "$date": "2025-07-21T15:53:31.851Z"
+    },
+    "totalPoints": 663,
+    "originalIndex": 29
+  },
+  {
+    "rank": 84,
+    "_id": {
+      "$oid": "6880536b2d73714b673748fa"
+    },
+    "walletAddress": "0xc7d3948108f79bb05b8e225f2bcdbbe34d39b5fe",
+    "emailConnected": true,
+    "telegramId": "7141699521",
+    "telegramUsername": "AminaAyo",
+    "telegramFirstName": "Amina MyGate Network",
+    "telegramLastName": "Ibrahim🌱SEED🐾⚡VIA",
+    "email": "aminaibrahimonabola@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "LWRGEZA0",
+    "gamePoints": 657,
+    "referralPoints": 0,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-23T03:13:47.068Z"
+    },
+    "totalPoints": 657,
+    "originalIndex": 372
+  },
+  {
+    "rank": 85,
+    "_id": {
+      "$oid": "687e627ba6b5c00f0f4a98ea"
+    },
+    "walletAddress": "0x580a1886d958106b65a836814b3384020e029c18",
+    "emailConnected": false,
+    "telegramId": null,
+    "telegramUsername": "",
+    "telegramFirstName": "",
+    "telegramLastName": "",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "",
+    "gamePoints": 144,
+    "referralPoints": 500,
+    "socialPoints": 0,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 0,
+    "createdAt": {
+      "$date": "2025-07-21T15:53:31.849Z"
+    },
+    "totalPoints": 644,
+    "originalIndex": 8
+  },
+  {
+    "rank": 86,
+    "_id": {
+      "$oid": "687e627ba6b5c00f0f4a98e3"
+    },
+    "walletAddress": "0x2ed3de8f6e50b624ebba155f60f4863f2212086b",
+    "emailConnected": false,
+    "telegramId": null,
+    "telegramUsername": "",
+    "telegramFirstName": "",
+    "telegramLastName": "",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "",
+    "gamePoints": 140,
+    "referralPoints": 500,
+    "socialPoints": 300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 0,
+    "createdAt": {
+      "$date": "2025-07-21T15:53:31.848Z"
+    },
+    "totalPoints": 640,
+    "originalIndex": 1
+  },
+  {
+    "rank": 87,
+    "_id": {
+      "$oid": "687e627ba6b5c00f0f4a98fc"
+    },
+    "walletAddress": "0x3ec11f3b453fd5df31475e378efd87055b39244a",
+    "emailConnected": false,
+    "telegramId": null,
+    "telegramUsername": "",
+    "telegramFirstName": "",
+    "telegramLastName": "",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "",
+    "gamePoints": 140,
+    "referralPoints": 500,
+    "socialPoints": 0,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 0,
+    "createdAt": {
+      "$date": "2025-07-21T15:53:31.850Z"
+    },
+    "totalPoints": 640,
+    "originalIndex": 26
+  },
+  {
+    "rank": 88,
+    "_id": {
+      "$oid": "68835b115f83e03565d79faa"
+    },
+    "walletAddress": "0xc3307180ef4439e444930ec5f32747c9c0ddb96a",
+    "emailConnected": true,
+    "telegramId": "5989070059",
+    "telegramUsername": "theogold",
+    "telegramFirstName": "Theo",
+    "telegramLastName": "Gold DUCKS 🦆 💠",
+    "email": "agbogunleyeodunmolorun@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "K6R1JQNH",
+    "gamePoints": 132,
+    "referralPoints": 500,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-25T10:23:13.732Z"
+    },
+    "totalPoints": 632,
+    "originalIndex": 515
+  },
+  {
+    "rank": 89,
+    "_id": {
+      "$oid": "687e627ba6b5c00f0f4a98e4"
+    },
+    "walletAddress": "0x55557ebacbd82d77b0abf38cb07c4cd225497fbe",
+    "emailConnected": false,
+    "telegramId": null,
+    "telegramUsername": "",
+    "telegramFirstName": "",
+    "telegramLastName": "",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "",
+    "gamePoints": 108,
+    "referralPoints": 500,
+    "socialPoints": 300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 0,
+    "createdAt": {
+      "$date": "2025-07-21T15:53:31.849Z"
+    },
+    "totalPoints": 608,
+    "originalIndex": 2
+  },
+  {
+    "rank": 90,
+    "_id": {
+      "$oid": "687e627ba6b5c00f0f4a98e9"
+    },
+    "walletAddress": "0x2e8e476390e2af316edf6f80e782d4b002956ce7",
+    "emailConnected": false,
+    "telegramId": null,
+    "telegramUsername": "",
+    "telegramFirstName": "",
+    "telegramLastName": "",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "",
+    "gamePoints": 104,
+    "referralPoints": 500,
+    "socialPoints": 900,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 0,
+    "createdAt": {
+      "$date": "2025-07-21T15:53:31.849Z"
+    },
+    "totalPoints": 604,
+    "originalIndex": 7
+  },
+  {
+    "rank": 91,
+    "_id": {
+      "$oid": "687f7f5e3d18b6efa4bd1f68"
+    },
+    "walletAddress": "0xb6c85e50ba93d44dd721a05f84e1a729abe88175",
+    "emailConnected": true,
+    "telegramId": "5614681570",
+    "telegramUsername": "Dev_Oluwapelumi",
+    "telegramFirstName": "Victor🐾",
+    "telegramLastName": "Oluwapelumi1",
+    "email": "victoroluwadarasimi16@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "LWRGEZA0",
+    "gamePoints": 95,
+    "referralPoints": 500,
+    "socialPoints": 700,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 2,
+    "createdAt": {
+      "$date": "2025-07-22T12:09:02.479Z"
+    },
+    "totalPoints": 595,
+    "originalIndex": 75
+  },
+  {
+    "rank": 92,
+    "_id": {
+      "$oid": "687f9daa3d18b6efa4bde380"
+    },
+    "walletAddress": "0xe3f7ee54ff003683015305d1e4c8985b88725187",
+    "emailConnected": true,
+    "telegramId": "7212337197",
+    "telegramUsername": "The0neab0ve",
+    "telegramFirstName": "TheOneAboveAll ⚡️",
+    "telegramLastName": "",
+    "email": "rapidalexakin@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "XCSJ9C4P",
+    "gamePoints": 90,
+    "referralPoints": 500,
+    "socialPoints": 700,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T14:18:18.397Z"
+    },
+    "totalPoints": 590,
+    "originalIndex": 131
+  },
+  {
+    "rank": 93,
+    "_id": {
+      "$oid": "688002362d73714b67362996"
+    },
+    "walletAddress": "0x5c973b5d6c1bb2fec700e2d7fa64cfac4c75e21a",
+    "emailConnected": true,
+    "telegramId": "7463502283",
+    "telegramUsername": "franklins_tg",
+    "telegramFirstName": "Franklin \"Meshchain.Ai\" 🌱 MyGate Network",
+    "telegramLastName": "",
+    "email": "franklinezirim10@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "LWRGEZA0",
+    "gamePoints": 583,
+    "referralPoints": 0,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T21:27:18.088Z"
+    },
+    "totalPoints": 583,
+    "originalIndex": 321
+  },
+  {
+    "rank": 94,
+    "_id": {
+      "$oid": "687e627ba6b5c00f0f4a9900"
+    },
+    "walletAddress": "0xed4841a3393f3d1da7f40e3146f3e976128a6f39",
+    "emailConnected": false,
+    "telegramId": null,
+    "telegramUsername": "",
+    "telegramFirstName": "",
+    "telegramLastName": "",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "",
+    "gamePoints": 73,
+    "referralPoints": 500,
+    "socialPoints": 500,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 0,
+    "createdAt": {
+      "$date": "2025-07-21T15:53:31.851Z"
+    },
+    "totalPoints": 573,
+    "originalIndex": 30
+  },
+  {
+    "rank": 95,
+    "_id": {
+      "$oid": "687f984d3d18b6efa4bdb2a6"
+    },
+    "walletAddress": "0x423eb05c817800be6f28188e7ca9bf306ef56053",
+    "emailConnected": false,
+    "telegramId": "6397736951",
+    "telegramUsername": "caexxy_2",
+    "telegramFirstName": "Divine.x",
+    "telegramLastName": "",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "LWRGEZA0",
+    "gamePoints": 72,
+    "referralPoints": 500,
+    "socialPoints": 600,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T13:55:25.120Z"
+    },
+    "totalPoints": 572,
+    "originalIndex": 115
+  },
+  {
+    "rank": 96,
+    "_id": {
+      "$oid": "687fe48a2d73714b6735679a"
+    },
+    "walletAddress": "0xbabd0b3de8480a65d0fb74c80e152c152d9d1631",
+    "emailConnected": true,
+    "telegramId": "1569843095",
+    "telegramUsername": "LEDGEEND",
+    "telegramFirstName": "LEDGEND🌊",
+    "telegramLastName": "",
+    "email": "kingofwardavid9@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "URZUVZLM",
+    "gamePoints": 72,
+    "referralPoints": 500,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T19:20:42.847Z"
+    },
+    "totalPoints": 572,
+    "originalIndex": 281
+  },
+  {
+    "rank": 97,
+    "_id": {
+      "$oid": "687fca1a2d73714b67349f40"
+    },
+    "walletAddress": "0x746881e4e2b3aa44eafbb28fc955fc3ee055a29e",
+    "emailConnected": true,
+    "telegramId": "7541740470",
+    "telegramUsername": "Covenant0x",
+    "telegramFirstName": "Covenant™️",
+    "telegramLastName": "",
+    "email": "effanganeo@gmail.com",
+    "spotifyEmail": "",
+    "referralCode": "3SBNL2CA",
+    "gamePoints": 542,
+    "referralPoints": 0,
+    "socialPoints": 1300,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-22T17:27:54.201Z"
+    },
+    "totalPoints": 542,
+    "originalIndex": 222
+  },
+  {
+    "rank": 98,
+    "_id": {
+      "$oid": "68863a675f83e03565d99185"
+    },
+    "walletAddress": "0x8ddf796d677b7ed9842288f45c312f3a14641b2b",
+    "emailConnected": false,
+    "telegramId": null,
+    "telegramUsername": "",
+    "telegramFirstName": "",
+    "telegramLastName": "",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "DO2CIBO7",
+    "gamePoints": 538,
+    "referralPoints": 0,
+    "socialPoints": 0,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 5,
+    "createdAt": {
+      "$date": "2025-07-27T14:40:39.138Z"
+    },
+    "totalPoints": 538,
+    "originalIndex": 551
+  },
+  {
+    "rank": 99,
+    "_id": {
+      "$oid": "687e627ba6b5c00f0f4a98fb"
+    },
+    "walletAddress": "0x87ce550b50e59f27e572cdc87cfdad1df8977931",
+    "emailConnected": false,
+    "telegramId": null,
+    "telegramUsername": "",
+    "telegramFirstName": "",
+    "telegramLastName": "",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "",
+    "gamePoints": 28,
+    "referralPoints": 500,
+    "socialPoints": 500,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 0,
+    "createdAt": {
+      "$date": "2025-07-21T15:53:31.850Z"
+    },
+    "totalPoints": 528,
+    "originalIndex": 25
+  },
+  {
+    "rank": 100,
+    "_id": {
+      "$oid": "6880418f2d73714b673701cb"
+    },
+    "walletAddress": "0x4d4e9389b3b15919b8ba5086e2a8dcad830fedc7",
+    "emailConnected": false,
+    "telegramId": "6941399215",
+    "telegramUsername": "Washly007",
+    "telegramFirstName": "007",
+    "telegramLastName": "",
+    "email": null,
+    "spotifyEmail": "",
+    "referralCode": "LWRGEZA0",
+    "gamePoints": 28,
+    "referralPoints": 500,
+    "socialPoints": 1000,
+    "isWhitelist": false,
+    "airdroped": 0,
+    "dailyGamesPlayed": 1,
+    "createdAt": {
+      "$date": "2025-07-23T01:57:35.312Z"
+    },
+    "totalPoints": 528,
+    "originalIndex": 353
+  }
+]

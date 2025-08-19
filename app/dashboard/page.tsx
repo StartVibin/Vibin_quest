@@ -64,7 +64,7 @@ function DashboardContent() {
   
   // Get invite code from localStorage
   const inviteCode = typeof window !== 'undefined' ? localStorage.getItem('spotify_id') || '' : '';
-  const { data, isLoading, error } = useSpotifyData(inviteCode);
+  const { data } = useSpotifyData(inviteCode);
   
   const { address } = useAccount();
   const signer = useEthersSigner();
