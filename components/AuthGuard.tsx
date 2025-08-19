@@ -23,20 +23,17 @@ export default function AuthGuard({ children, requireFullAuth = true }: AuthGuar
   const checkAuthenticationStatus = () => {
     try {
       // Check if user has completed the full authentication flow
-      const invitationCode = localStorage.getItem('invitation_code');
       const spotifyId = localStorage.getItem('spotify_id');
       const spotifyEmail = localStorage.getItem('spotify_email');
       const spotifyAccessToken = localStorage.getItem('spotify_access_token');
       
       // For full authentication, we need all these items
       if (requireFullAuth) {
-        const hasFullAuth = invitationCode && spotifyId && spotifyEmail && spotifyAccessToken && isConnected;
+        const hasFullAuth = spotifyId && spotifyEmail && spotifyAccessToken && isConnected;
         
         if (!hasFullAuth) {
           // Redirect to appropriate step based on what's missing
-          if (!invitationCode) {
-            router.push('/');
-          } else if (!spotifyId || !spotifyEmail || !spotifyAccessToken) {
+          if (!spotifyId || !spotifyEmail || !spotifyAccessToken) {
             router.push('/join/spotify');
           } else if (!isConnected) {
             router.push('/join/wallet');
@@ -46,15 +43,10 @@ export default function AuthGuard({ children, requireFullAuth = true }: AuthGuar
           setIsAuthenticated(true);
         }
       } else {
-        // For partial auth (like join pages), just check invitation code
-        if (!invitationCode) {
-          router.push('/');
-          setIsAuthenticated(false);
-        } else {
           setIsAuthenticated(true);
-        }
       }
     } catch (error) {
+      console.log('Auth check error:', error);
       console.error('Auth check error:', error);
       toast.error('Authentication check failed. Please try again.');
       router.push('/');

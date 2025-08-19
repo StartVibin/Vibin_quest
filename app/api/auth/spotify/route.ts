@@ -17,6 +17,9 @@ export async function POST(req: Request) {
     
     const SPOTIFY_CLIENT_ID = process.env[`SPOTIFY_CLIENT_ID_${index}`];
     const SPOTIFY_CLIENT_SECRET = process.env[`SPOTIFY_CLIENT_SECRET_${index}`];
+
+    console.log("spotify client id", SPOTIFY_CLIENT_ID);
+    console.log("spotify client secret", SPOTIFY_CLIENT_SECRET);
     
     if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET) {
       return NextResponse.json(

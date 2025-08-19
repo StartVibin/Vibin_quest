@@ -22,21 +22,23 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(new URL('/join/spotify?error=missing_state', request.url));
     }
 
-   
-    // Log session store stats before getting
-    const statsBefore = sessionStore.getStats();
-    console.log("statsBefore", statsBefore);
-    
     const sessionData = sessionStore.get(state);
+    console.log("Session data retrieved:", sessionData);
+    
     if (!sessionData) {
+      console.error("No session data found for state:", state);
       return NextResponse.redirect(new URL('/join/spotify?error=session_expired', request.url));
     }
 
-    const { email: index } = sessionData;
+    const { index } = sessionData;
+    console.log("Using index for credentials:", index);
+    
     const SPOTIFY_CLIENT_ID = process.env[`SPOTIFY_CLIENT_ID_${index}`];
     const SPOTIFY_CLIENT_SECRET = process.env[`SPOTIFY_CLIENT_SECRET_${index}`];
 
-    
+    console.log("spotify client id", SPOTIFY_CLIENT_ID);
+    console.log("spotify client secret", SPOTIFY_CLIENT_SECRET);
+
     const tokenResponse = await fetch('https://accounts.spotify.com/api/token', {
       method: 'POST',
       headers: {
@@ -49,6 +51,8 @@ export async function GET(request: NextRequest) {
         redirect_uri: SPOTIFY_REDIRECT_URI
       })
     });
+
+    console.log("tokenResponse", tokenResponse);
 
     if (!tokenResponse.ok) {
       console.error('Token exchange failed:', await tokenResponse.text());

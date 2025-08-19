@@ -13,13 +13,13 @@ function CompletionContent() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const storedCode = localStorage.getItem('invitation_code');
     const spotifyEmail = localStorage.getItem('spotify_email');
-    // const walletAddress = localStorage.getItem('walletAddress');
+    const spotifyId = localStorage.getItem('spotify_id');
+    const spotifyAccessToken = localStorage.getItem('spotify_access_token');
     
-    if (!storedCode || !spotifyEmail) {
-      toast.error('Missing registration data. Please start over.');
-      router.push('/join');
+    if (!spotifyEmail || !spotifyId || !spotifyAccessToken) {
+      toast.error('Missing Spotify data. Please connect Spotify first.');
+      router.push('/join/spotify');
       return;
     }
   }, [router]);
@@ -47,12 +47,34 @@ function CompletionContent() {
       
       localStorage.removeItem('invitation_code');
       localStorage.removeItem('walletAddress');
-      localStorage.removeItem('spotifyEmail');
       localStorage.removeItem('spotify_oauth_state');
+      // Don't remove spotifyEmail - it's needed for AuthGuard
+      
+      // Set cookies for middleware access
+      document.cookie = `spotify_id=${spotifyId}; path=/; max-age=86400`;
+      document.cookie = `spotify_email=${spotifyEmail}; path=/; max-age=86400`;
+      document.cookie = `spotify_access_token=${spotifyAccessToken}; path=/; max-age=86400`;
       
       toast.success('Registration completed successfully!');
       
-      router.push('/dashboard');
+      console.log('Redirecting to dashboard...');
+      console.log('Current localStorage:', {
+        spotifyId: localStorage.getItem('spotify_id'),
+        spotifyEmail: localStorage.getItem('spotify_email'),
+        spotifyAccessToken: localStorage.getItem('spotify_access_token')
+      });
+      
+      console.log('Current cookies:', {
+        spotifyId: document.cookie.includes('spotify_id'),
+        spotifyEmail: document.cookie.includes('spotify_email'),
+        spotifyAccessToken: document.cookie.includes('spotify_access_token')
+      });
+      
+      // Add a small delay to ensure the toast is visible and localStorage is updated
+      setTimeout(() => {
+        console.log('Executing router.push to dashboard...');
+        router.push('/dashboard');
+      }, 1000);
     } catch (error) {
       console.error('Registration error:', error);
       toast.error('Failed to complete registration. Please try again.');

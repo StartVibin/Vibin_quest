@@ -73,7 +73,7 @@ function SpotifyLoginContent() {
     const success = urlParams.get('success');
     const error = urlParams.get('error');
 
-
+    console.log("success??", success);
     if (success === 'true') {
       const spotifyId = urlParams.get('spotify_id');
       const spotifyEmail = urlParams.get('spotify_email');
@@ -90,6 +90,13 @@ function SpotifyLoginContent() {
       localStorage.setItem('spotify_expires_in', expiresIn || '');
       localStorage.setItem('spotify_token_expiry', (Date.now() + (parseInt(expiresIn || '0') * 1000)).toString());
 
+      // Store invitation code if it exists
+      const existingInvitationCode = localStorage.getItem('invitation_code');
+      if (existingInvitationCode) {
+        localStorage.setItem('invitation_code', existingInvitationCode);
+      }
+
+      console.log("existingInvitationCode", existingInvitationCode);
       // Also store in cookies for middleware access
       document.cookie = `spotify_id=${spotifyId || ''}; path=/; max-age=86400`;
       document.cookie = `spotify_email=${spotifyEmail || ''}; path=/; max-age=86400`;
@@ -99,7 +106,7 @@ function SpotifyLoginContent() {
 
       window.history.replaceState({}, document.title, window.location.pathname);
     } else if (error) {
-      toast.error(`Spotify connection failed: ${error}`);
+      toast.error(`Spotify connection fai444led: ${error}`);
       setShowSpotifyModal(false);
 
       window.history.replaceState({}, document.title, window.location.pathname);

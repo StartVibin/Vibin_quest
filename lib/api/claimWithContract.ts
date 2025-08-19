@@ -17,13 +17,15 @@ const CLAIM_CONTRACT_ABI = [
 export const claimWithContract = async (publicKey: EthAddress | undefined, contractAddress: string,
   signer: ethers.Signer,) => {
     let toastId;
-    const inviteCode = localStorage.getItem('inviteCode');
+    const inviteCode = localStorage.getItem('invitation_code');
+
+    console.log("inviteCode------------------->", inviteCode);
+    console.log("publicKey-------------------->", publicKey);
     try {
         const data = {
             publicKey,
             inviteCode
         };
-        console.log("🚀 ~ claim ~ data.publicKey:", data.publicKey)
         toastId = toast.loading("Waiting");
         const response = await axios.post(
             `${process.env.NEXT_PUBLIC_API_URL!}/api/v1/spotify/claim`,

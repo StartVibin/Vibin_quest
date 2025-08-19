@@ -32,15 +32,18 @@ export const Leaderboard: React.FC = () => {
       setLoading(true)
       setError(null)
       
+      console.log('Fetching leaderboard data...')
       const response = await getLeaderboard()
+      console.log('Leaderboard response:', response)
       
       if (response.success && response.data) {
         setLeaderboardData(response.data)
       } else {
+        console.error('Leaderboard API error:', response)
         setError('Failed to fetch leaderboard data')
       }
     } catch (err) {
-      //console.error('Error fetching leaderboard:', err)
+      console.error('Error fetching leaderboard:', err)
       setError(err instanceof Error ? err.message : 'Failed to fetch leaderboard')
     } finally {
       setLoading(false)

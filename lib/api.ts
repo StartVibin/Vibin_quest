@@ -341,7 +341,10 @@ export const getUserProfile = async (walletAddress: string): Promise<UserProfile
 
 export const getLeaderboard = async (): Promise<LeaderboardResponse> => {
   try {
-    return await createApiRequest<LeaderboardResponse>(API_ENDPOINTS.LEADERBOARD)
+    console.log('Making leaderboard API call to:', API_ENDPOINTS.LEADERBOARD)
+    const response = await createApiRequest<LeaderboardResponse>(API_ENDPOINTS.LEADERBOARD)
+    console.log('Leaderboard API response:', response)
+    return response
   } catch (error) {
     console.error('Error fetching leaderboard:', error)
     return { 

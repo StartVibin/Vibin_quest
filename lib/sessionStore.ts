@@ -48,9 +48,9 @@ class SessionStore {
       return null;
     }
     
-    // Delete session after use (one-time use)
-    this.sessions.delete(state);
-    console.log(`✅ Session retrieved and deleted for state: ${state}, Email: ${session.email}, Index: ${session.index}`);
+    // Don't delete session immediately to handle potential multiple callback calls
+    // Session will be cleaned up by the cleanup method after expiry
+    console.log(`✅ Session retrieved for state: ${state}, Email: ${session.email}, Index: ${session.index}`);
     
     return {
       email: session.email,
