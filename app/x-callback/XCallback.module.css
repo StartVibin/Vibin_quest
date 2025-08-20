@@ -1,0 +1,185 @@
+.XCallbackContainer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F4F5FF;
+  font-family: 'Ruberoid', sans-serif;
+  position: relative;
+}
+
+.XCallbackContainer:before {
+  content: "";
+  display: block;
+  width: 800px;
+  max-width: 100%;
+  height: 700px;
+  border-radius: 50%;
+  background: #8F95CA;
+  position: absolute;
+  top: 50px;
+  left: -350px;
+  filter: blur(300px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.XCallbackContent {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  border: 1px solid #E5E7EB;
+}
+
+/* Loading State */
+.loadingSpinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #F3F4F6;
+  border-top: 4px solid #3B82F6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+.loadingTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.5rem;
+  font-family: 'Ruberoid', sans-serif;
+}
+
+.loadingMessage {
+  color: #6B7280;
+  font-family: 'Ruberoid', sans-serif;
+}
+
+/* Success State */
+.successIcon {
+  font-size: 3rem;
+  color: #10B981;
+  margin-bottom: 1rem;
+}
+
+.successTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 0.5rem;
+  font-family: 'Ruberoid', sans-serif;
+}
+
+.successMessage {
+  color: #6B7280;
+  margin-bottom: 0.5rem;
+  font-family: 'Ruberoid', sans-serif;
+}
+
+.successRedirect {
+  font-size: 0.875rem;
+  color: #9CA3AF;
+  font-family: 'Ruberoid', sans-serif;
+}
+
+/* Error State */
+.errorIcon {
+  font-size: 3rem;
+  color: #EF4444;
+  margin-bottom: 1rem;
+}
+
+.errorTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #DC2626;
+  margin-bottom: 0.75rem;
+  font-family: 'Ruberoid', sans-serif;
+}
+
+.errorMessage {
+  color: #B91C1C;
+  margin-bottom: 1.5rem;
+  font-family: 'Ruberoid', sans-serif;
+}
+
+.errorButton {
+  padding: 0.75rem 1.5rem;
+  background: #3B82F6;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Ruberoid', sans-serif;
+  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.2);
+}
+
+.errorButton:hover {
+  background: #2563EB;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .XCallbackContainer {
+    padding: 1rem;
+  }
+  
+  .XCallbackContent {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+  
+  .loadingTitle,
+  .successTitle,
+  .errorTitle {
+    font-size: 1.125rem;
+  }
+  
+  .loadingSpinner {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .XCallbackContainer {
+    padding: 0.5rem;
+  }
+  
+  .XCallbackContent {
+    padding: 1rem;
+    margin: 0.5rem;
+  }
+  
+  .loadingTitle,
+  .successTitle,
+  .errorTitle {
+    font-size: 1rem;
+  }
+  
+  .loadingSpinner {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .successIcon,
+  .errorIcon {
+    font-size: 2.5rem;
+  }
+}

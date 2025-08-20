@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAccount } from 'wagmi';
+import styles from './XCallback.module.css'
 
 function XCallback() {
   const router = useRouter();
@@ -120,33 +121,33 @@ function XCallback() {
   }, [searchParams, router, isConnected, address]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8 text-center">
+    <div className={styles.XCallbackContainer}>
+      <div className={styles.XCallbackContent}>
         {status === 'loading' && (
           <div>
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <h2 className="text-xl font-semibold text-gray-800 mb-2">Connecting to X</h2>
-            <p className="text-gray-600">{message}</p>
+            <div className={styles.loadingSpinner}></div>
+            <h2 className={styles.loadingTitle}>Connecting to X</h2>
+            <p className={styles.loadingMessage}>{message}</p>
           </div>
         )}
 
         {status === 'success' && (
           <div>
-            <div className="text-green-500 text-4xl mb-4">✓</div>
-            <h2 className="text-xl font-semibold text-gray-800 mb-2">Success!</h2>
-            <p className="text-gray-600">{message}</p>
-            <p className="text-sm text-gray-500 mt-2">Redirecting back to app...</p>
+            <div className={styles.successIcon}>✓</div>
+            <h2 className={styles.successTitle}>Success!</h2>
+            <p className={styles.successMessage}>{message}</p>
+            <p className={styles.successRedirect}>Redirecting back to app...</p>
           </div>
         )}
 
         {status === 'error' && (
           <div>
-            <div className="text-red-500 text-4xl mb-4">✗</div>
-            <h2 className="text-xl font-semibold text-gray-800 mb-2">Connection Failed</h2>
-            <p className="text-gray-600">{message}</p>
+            <div className={styles.errorIcon}>✗</div>
+            <h2 className={styles.errorTitle}>Connection Failed</h2>
+            <p className={styles.errorMessage}>{message}</p>
             <button
               onClick={() => router.push('/dashboard')}
-              className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+              className={styles.errorButton}
             >
               Return to Dashboard
             </button>
