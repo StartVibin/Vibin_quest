@@ -107,7 +107,7 @@ function XCallback() {
         setStatus('success');
 
         setTimeout(() => {
-          router.push('/');
+          router.push('/dashboard');
         }, 2000);
       } catch (error) {
         console.error('X callback processing failed:', error);
@@ -145,10 +145,10 @@ function XCallback() {
             <h2 className="text-xl font-semibold text-gray-800 mb-2">Connection Failed</h2>
             <p className="text-gray-600">{message}</p>
             <button
-              onClick={() => router.push('/')}
+              onClick={() => router.push('/dashboard')}
               className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
             >
-              Return to App
+              Return to Dashboard
             </button>
           </div>
         )}
