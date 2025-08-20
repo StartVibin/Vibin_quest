@@ -16,6 +16,7 @@ import {
   Info,
   Link2,
   Logo2,
+  Mask,
   Note,
   Play,
   Share,
@@ -835,7 +836,7 @@ function DashboardContent() {
                   />
 
                   <div className={styles.statsItemIcon}>
-                    <History />
+                    <Mask />
                   </div>
 
                   <p className={styles.statsItemValue}>
