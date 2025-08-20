@@ -37,7 +37,7 @@ export const API_ENDPOINTS = {
   GAME_RECORD_PLAY: `${API_BASE_URL}/game/record-play`,
   
   // Leaderboard endpoints
-  LEADERBOARD: `${API_BASE_URL}/leaderboard`,
+  LEADERBOARD: `${API_BASE_URL}/api/v1/leaderboard`,
   
   // Config endpoints
   GET_X_POST_ID: `${API_BASE_URL}/config/x-post-id`,

@@ -64,7 +64,7 @@ function DashboardContent() {
   
   // Get invite code from localStorage
   const inviteCode = typeof window !== 'undefined' ? localStorage.getItem('spotify_id') || '' : '';
-  const { data } = useSpotifyData(inviteCode);
+  const { data, isLoading, error } = useSpotifyData(inviteCode);
   
   const { address } = useAccount();
   const signer = useEthersSigner();
@@ -80,6 +80,21 @@ function DashboardContent() {
   }, [signer]);
 
   
+  // Debug logging for Spotify data
+  React.useEffect(() => {
+    console.log('🎵 Dashboard - Spotify Data:', {
+      data,
+      isLoading,
+      error,
+      inviteCode,
+      hasData: !!data,
+      topTracksCount: data?.topTracks?.length || 0,
+      totalTracksPlayed: data?.totalTracksPlayed,
+      uniqueArtistsCount: data?.uniqueArtistsCount,
+      totalListeningTimeMs: data?.totalListeningTimeMs
+    });
+  }, [data, isLoading, error, inviteCode]);
+
   // const handleManualRefetch = () => {
   //   console.log(`[${new Date().toISOString()}] Manual refetch triggered`);
   //   refetch();
@@ -104,6 +119,31 @@ function DashboardContent() {
                 <p className={styles.dashboardTitle}>Your Musical</p>
 
                 <p className={styles.dashboardText}>Identity Revealed</p>
+                
+                {/* Data loading indicator */}
+                {isLoading && (
+                  <div style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: '8px', 
+                    marginTop: '10px',
+                    fontSize: '14px',
+                    color: '#1DB954'
+                  }}>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>
+                    Loading Spotify data...
+                  </div>
+                )}
+                
+                {error && (
+                  <div style={{ 
+                    marginTop: '10px',
+                    fontSize: '14px',
+                    color: '#ff6b6b'
+                  }}>
+                    ⚠️ Error loading data. Your spotify token is expired.
+                  </div>
+                )}
               </div>
 
               <div className={styles.dashboardScreens}>
@@ -158,8 +198,16 @@ function DashboardContent() {
                     </p>
 
                     <div className={styles.dashboardScreenRewardValue}>
-                      123.02
-                      <Logo2 />
+                      {isLoading ? (
+                        <span>Loading...</span>
+                      ) : error ? (
+                        <span>Spotify token expired</span>
+                      ) : (
+                        <>
+                          {data?.totalTracksPlayed ? `${data.totalTracksPlayed} pts` : '0 pts'}
+                          <Logo2 />
+                        </>
+                      )}
                     </div>
                   </div>
 
@@ -190,7 +238,15 @@ function DashboardContent() {
                     <div className={styles.dashboardScreenLvl}>
                       <p className={styles.dashboardScreenLvlText}>your LVL:</p>
 
-                      <p className={styles.dashboardScreenLvlValue}>23</p>
+                      <p className={styles.dashboardScreenLvlValue}>
+                        {isLoading ? (
+                          <span>Loading...</span>
+                        ) : error ? (
+                          <span>--</span>
+                        ) : (
+                          data?.uniqueArtistsCount ? Math.floor(data.uniqueArtistsCount / 10) + 1 : 1
+                        )}
+                      </p>
 
                       <div className={styles.dashboardScreenLvlChart}>
                         <div
@@ -573,7 +629,9 @@ function DashboardContent() {
                         </p>
                       </div>
 
-                      <p className={styles.statsBlockElemValue}>125</p>
+                      <p className={styles.statsBlockElemValue}>
+                        {isLoading ? '--' : data?.totalTracksPlayed || 0}
+                      </p>
                     </div>
 
                     <div className={styles.statsBlockElem}>
@@ -588,7 +646,9 @@ function DashboardContent() {
                         </p>
                       </div>
 
-                      <p className={styles.statsBlockElemValue}>125</p>
+                      <p className={styles.statsBlockElemValue}>
+                        {isLoading ? '--' : data?.uniqueArtistsCount || 0}
+                      </p>
                     </div>
 
                     <div className={styles.statsBlockElem}>
@@ -603,7 +663,9 @@ function DashboardContent() {
                         </p>
                       </div>
 
-                      <p className={styles.statsBlockElemValue}>125</p>
+                      <p className={styles.statsBlockElemValue}>
+                        {isLoading ? '--' : data?.totalListeningTimeMs ? Math.floor(data.totalListeningTimeMs / 60000) : 0}
+                      </p>
                     </div>
 
                     <div className={styles.statsBlockElem}>
@@ -618,7 +680,9 @@ function DashboardContent() {
                         </p>
                       </div>
 
-                      <p className={styles.statsBlockElemValue}>125</p>
+                      <p className={styles.statsBlockElemValue}>
+                        {isLoading ? '--' : data?.anonymousTrackCount || 0}
+                      </p>
                     </div>
 
                     <div className={styles.statsBlockElem}>
@@ -629,7 +693,9 @@ function DashboardContent() {
                         </div>
                       </div>
 
-                      <p className={styles.statsBlockElemValue}>789</p>
+                      <p className={styles.statsBlockElemValue}>
+                        {isLoading ? '--' : (data?.totalTracksPlayed || 0) + (data?.uniqueArtistsCount || 0)}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -718,7 +784,7 @@ function DashboardContent() {
                     {data?.anonymousTrackCount}
                   </p>
 
-                  <p className={styles.statsItemText}>Tracks Played</p>
+                  <p className={styles.statsItemText}>Anonymous Tracks</p>
                 </div>
               </div>
             </div>
@@ -831,7 +897,7 @@ function DashboardContent() {
                       <p>Earned:</p>
 
                       <div className={styles.shareModalBannerStatsEarnValue}>
-                        123.02
+                        {isLoading ? 'Loading...' : data?.totalTracksPlayed ? `${data.totalTracksPlayed} pts` : '0 pts'}
                         <Logo2 />
                       </div>
                     </div>
