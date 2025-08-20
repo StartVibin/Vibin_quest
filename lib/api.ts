@@ -198,6 +198,8 @@ const handleApiResponse = async <T>(response: Response): Promise<T> => {
   return response.json()
 }
 
+
+
 const createApiRequest = async <T>(
   url: string, 
   options: RequestInit = {}
@@ -256,6 +258,24 @@ export const verifyQuestWithBackend = async (
     }
   }
 }
+
+// ============================================================================
+// SPOTIFY API FUNCTIONS
+export const getClaimStatus = async (email: string) => {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/spotify/claim-status`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email }),
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to get claim status');
+  }
+
+  return response.json();
+};
+
+
 
 export const verifyXTask = async (walletAddress: string): Promise<XTaskResponse> => {
   try {

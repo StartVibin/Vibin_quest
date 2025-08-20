@@ -59,11 +59,13 @@ export interface SpotifyUserData {
 export interface SpotifyTopTrackInfo {
   name: string;
   artist: string;
+  imageUrl?: string; // Add image URL for track artwork
 }
 
 export interface SpotifyTopArtistInfo {
   name: string;
   trackCount: number;
+  imageUrl?: string; // Add image URL for artist image
 }
 
 export interface SpotifyListeningStats {
@@ -230,7 +232,6 @@ export const spotifyAPI = {
 
   // Get comprehensive user data (profile + music data)
   getComprehensiveUserData: async (accessToken: string, refreshToken: string): Promise<SpotifyUserData> => {
-    //console.log('🎵 Frontend: Getting comprehensive user data...');
     
     try {
       const [profile, topTracks, recentlyPlayed, playlists] = await Promise.all([
@@ -286,25 +287,33 @@ export const spotifyAPI = {
   getTopTracksInfo: (topTracks: SpotifyTopTrack[], limit: number = 5): SpotifyTopTrackInfo[] => {
     return topTracks.slice(0, limit).map(track => ({
       name: track.name,
-      artist: track.artists[0]?.name || 'Unknown Artist'
+      artist: track.artists[0]?.name || 'Unknown Artist',
+      imageUrl: track.album.images[0]?.url || undefined // Preserve album image
     }));
   },
 
   // Extract top 5 artists with track count
   getTopArtistsInfo: (topTracks: SpotifyTopTrack[], limit: number = 5): SpotifyTopArtistInfo[] => {
-    const artistCounts: { [key: string]: number } = {};
+    const artistCounts: { [key: string]: { trackCount: number; imageUrl?: string } } = {};
     
-    // Count tracks per artist
+    // Count tracks per artist and collect image URLs
     topTracks.forEach(track => {
       track.artists.forEach(artist => {
-        artistCounts[artist.name] = (artistCounts[artist.name] || 0) + 1;
+        if (!artistCounts[artist.name]) {
+          artistCounts[artist.name] = { 
+            trackCount: 0, 
+            imageUrl: track.album.images[0]?.url || undefined 
+          };
+        }
+        artistCounts[artist.name].trackCount += 1;
       });
     });
     
     // Convert to array and sort by track count
-    const artistArray = Object.entries(artistCounts).map(([name, trackCount]) => ({
+    const artistArray = Object.entries(artistCounts).map(([name, data]) => ({
       name,
-      trackCount
+      trackCount: data.trackCount,
+      imageUrl: data.imageUrl
     }));
     
     // Sort by track count (descending) and take top 5

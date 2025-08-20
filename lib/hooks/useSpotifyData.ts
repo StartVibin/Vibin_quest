@@ -76,7 +76,6 @@ export function useSpotifyData(inviteCode?: string) {
 
   // Fetch Spotify data using tokens from localStorage
   const fetchSpotifyData = async () => {
-    console.log(`[${new Date().toISOString()}] [fetchSpotifyData] Refreshing spotify data of user`);
     
     if (!accessToken || !refreshToken) {
       throw new Error('No access token or refresh token found');
@@ -91,10 +90,10 @@ export function useSpotifyData(inviteCode?: string) {
     try {
       // Fetch comprehensive user data using the access token
       const userData = await spotifyAPI.getComprehensiveUserData(accessToken, refreshToken);
-      
+      console.log("userData------------->", userData)
       // Extract required stats
       const stats = spotifyAPI.getListeningStats(userData);
-      
+      console.log("stats------------->", stats)
       const statsWithEmail = {
         listeningTime: stats.totalListeningTimeMs,
         uniqueArtistCount: stats.uniqueArtistsCount,

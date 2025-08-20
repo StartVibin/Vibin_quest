@@ -60,7 +60,6 @@ export const claimWithContract = async (publicKey: EthAddress | undefined, contr
 
         );
 
-       
         toast.dismiss(toastId);
         toast.success("Success");
          return claimResult;

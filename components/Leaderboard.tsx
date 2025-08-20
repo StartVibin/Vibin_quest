@@ -4,10 +4,12 @@ import styles from './Leaderboard.module.css'
 
 interface LeaderboardUser {
   walletAddress: string
-  totalPoints: number
-  gamePoints: number
-  referralPoints: number
-  socialPoints: number
+  spotifyEmail: string
+  tracksPlayedCount: number
+  diversityScore: number
+  historyScore: number
+  referralScore: number
+  totalBasePoints: number
   rank: number
 }
 
@@ -19,6 +21,22 @@ interface LeaderboardData {
     total: number
     totalPages: number
   }
+}
+
+interface BackendUserData {
+  walletAddress?: string;
+  spotifyEmail?: string;
+  tracksPlayedCount?: number;
+  diversityScore?: number;
+  historyScore?: number;
+  referralScore?: number;
+  totalBasePoints?: number;
+  // Legacy fields for backward compatibility
+  totalPoints?: number;
+  gamePoints?: number;
+  referralPoints?: number;
+  socialPoints?: number;
+  rank: number;
 }
 
 export const Leaderboard: React.FC = () => {
@@ -38,7 +56,21 @@ export const Leaderboard: React.FC = () => {
       console.log('Leaderboard response:', response)
       
       if (response.success && response.data) {
-        setLeaderboardData(response.data)
+        // Transform the data to match the new scoring system
+        const transformedData = {
+          ...response.data,
+          users: response.data.users.map((user: BackendUserData) => ({
+            walletAddress: user.walletAddress || 'Unknown',
+            spotifyEmail: user.spotifyEmail || '',
+            tracksPlayedCount: user.tracksPlayedCount || user.totalPoints || 0,
+            diversityScore: user.diversityScore || user.gamePoints || 0,
+            historyScore: user.historyScore || user.referralPoints || 0,
+            referralScore: user.referralScore || user.socialPoints || 0,
+            totalBasePoints: user.totalBasePoints || (user.tracksPlayedCount || user.totalPoints || 0) + (user.diversityScore || user.gamePoints || 0) + (user.historyScore || user.referralPoints || 0) + (user.referralScore || user.socialPoints || 0),
+            rank: user.rank
+          }))
+        };
+        setLeaderboardData(transformedData);
       } else {
         console.error('Leaderboard API error:', response)
         setError('Failed to fetch leaderboard data')
@@ -143,10 +175,11 @@ export const Leaderboard: React.FC = () => {
                   <tr>
                     <th>Rank</th>
                     <th>Wallet Address</th>
-                    <th className={styles.textRight}>Total Points</th>
-                    <th className={styles.textRight}>Game</th>
-                    <th className={styles.textRight}>Referral</th>
-                    <th className={styles.textRight}>Social</th>
+                    <th className={styles.textRight}>Quantity Score</th>
+                    <th className={styles.textRight}>Diversity Score</th>
+                    <th className={styles.textRight}>History Score</th>
+                    <th className={styles.textRight}>Referral Score</th>
+                    <th className={styles.textRight}>Total Base Points</th>
                   </tr>
                 </thead>
                 <tbody className={styles.tableBody}>
@@ -167,22 +200,27 @@ export const Leaderboard: React.FC = () => {
                       </td>
                       <td className={styles.textRight}>
                         <span className={styles.totalPoints}>
-                          {user.totalPoints.toLocaleString()}
+                          {(user.tracksPlayedCount || 0).toLocaleString()}
                         </span>
                       </td>
                       <td className={styles.textRight}>
                         <span className={`${styles.pointBadge} ${styles.gamePoints}`}>
-                          {user.gamePoints.toLocaleString()}
+                          {(user.diversityScore || 0).toLocaleString()}
                         </span>
                       </td>
                       <td className={styles.textRight}>
                         <span className={`${styles.pointBadge} ${styles.referralPoints}`}>
-                          {user.referralPoints.toLocaleString()}
+                          {(user.historyScore || 0).toLocaleString()}
                         </span>
                       </td>
                       <td className={styles.textRight}>
                         <span className={`${styles.pointBadge} ${styles.socialPoints}`}>
-                          {user.socialPoints.toLocaleString()}
+                          {(user.referralScore || 0).toLocaleString()}
+                        </span>
+                      </td>
+                      <td className={styles.textRight}>
+                        <span className={`${styles.pointBadge} ${styles.totalBasePoints}`}>
+                          {(user.totalBasePoints || 0).toLocaleString()}
                         </span>
                       </td>
                     </tr>
@@ -240,14 +278,14 @@ export const Leaderboard: React.FC = () => {
           
           <div className={`${styles.statCard} ${styles.green}`}>
             <div className={styles.statValue}>
-              {leaderboardData.users.length > 0 ? leaderboardData.users[0].totalPoints.toLocaleString() : '0'}
+              {leaderboardData.users.length > 0 ? (leaderboardData.users[0]?.totalBasePoints || 0).toLocaleString() : '0'}
             </div>
             <div className={styles.statLabel}>Top Score</div>
           </div>
           
           <div className={`${styles.statCard} ${styles.purple}`}>
             <div className={styles.statValue}>
-              {leaderboardData.users.length > 0 ? Math.round(leaderboardData.users.reduce((sum, user) => sum + user.totalPoints, 0) / leaderboardData.users.length).toLocaleString() : '0'}
+              {leaderboardData.users.length > 0 ? Math.round(leaderboardData.users.reduce((sum, user) => sum + (user.totalBasePoints || 0), 0) / leaderboardData.users.length).toLocaleString() : '0'}
             </div>
             <div className={styles.statLabel}>Average Score</div>
           </div>

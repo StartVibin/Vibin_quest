@@ -6,6 +6,7 @@ import cn from "classnames";
 import styles from "./page.module.css";
 import base from "@/shared/styles/base.module.css";
 import AuthGuard from "@/components/AuthGuard";
+import { useClaimStatus } from "@/lib/hooks/useClaimStatus";
 
 import {
   Close,
@@ -35,6 +36,7 @@ import { claimWithContract } from "@/lib/api/claimWithContract";
 import { useAccount, useWalletClient } from "wagmi";
 import { BrowserProvider, JsonRpcSigner } from "ethers";
 import { ToastInstance } from "@/lib/types";
+import { useUserDatabaseData } from '@/lib/hooks/useUserDatabaseData'
 
 // Custom hook to convert wagmi wallet client to ethers signer
 function useEthersSigner() {
@@ -59,12 +61,12 @@ function formatMsToHrMin(ms: number): string {
 
 function DashboardContent() {
   const [shareModal, setShareModal] = React.useState(false);
-  const [claimModal, setClaimModal] = React.useState(false);
   const toast = useToast();
   
   // Get invite code from localStorage
   const inviteCode = typeof window !== 'undefined' ? localStorage.getItem('spotify_id') || '' : '';
-  const { data, isLoading, error } = useSpotifyData(inviteCode);
+  const { data, isLoading, error } = useSpotifyData()
+  const { data: userData, isLoading: userDataLoading, error: userDataError } = useUserDatabaseData()
   
   const { address } = useAccount();
   const signer = useEthersSigner();
@@ -105,7 +107,9 @@ function DashboardContent() {
     // Add your X connection logic here
   };
 
-  // const handleClaimReward = () => {
+  const { claimStatus, loading: claimStatusLoading} = useClaimStatus(
+    typeof window !== 'undefined' ? localStorage.getItem('spotify_email') : null
+  )
   //   toast.success("Reward claimed successfully!");
   //   // Add your claim logic here
   // };
@@ -116,9 +120,9 @@ function DashboardContent() {
           <div className={styles.dashboardInner}>
             <div className={styles.dashboardOverlay}>
               <div className={styles.dashboardTitleInner}>
-                <p className={styles.dashboardTitle}>Your Musical</p>
+                <p className={styles.dashboardTitle}>You Vibed. You Earned</p>
 
-                <p className={styles.dashboardText}>Identity Revealed</p>
+                <p className={styles.dashboardText}>Own Your Music Data</p>
                 
                 {/* Data loading indicator */}
                 {isLoading && (
@@ -162,7 +166,24 @@ function DashboardContent() {
 
                     <div className={styles.dashboardScreenClaimTextBlock}>
                       <p>Next claim:</p>
-                      <p>23:02:13</p>
+                      {claimStatusLoading ? (
+                        <p>Loading...</p>
+                      ) : claimStatus ? (
+                        claimStatus.canClaim ? (
+                          <p style={{ color: '#10B981' }}>Ready to claim!</p>
+                        ) : (
+                          <p>
+                            {claimStatus.daysUntilNextClaim > 0 
+                              ? `${claimStatus.daysUntilNextClaim}d ${claimStatus.hoursUntilNextClaim % 24}h`
+                              : claimStatus.hoursUntilNextClaim > 0
+                              ? `${claimStatus.hoursUntilNextClaim}h ${claimStatus.minutesUntilNextClaim % 60}m`
+                              : `${claimStatus.minutesUntilNextClaim}m`
+                            }
+                          </p>
+                        )
+                      ) : (
+                        <p>--</p>
+                      )}
                     </div>
                   </div>
                   <div className={styles.shareBlock}>
@@ -170,7 +191,7 @@ function DashboardContent() {
                       className={styles.dashboardScreenTopShare}
                       onClick={handleXConnectWithWallet}
                     >
-                      connect X
+                      Connect X
                     </button>
                     <button
                       className={styles.dashboardScreenTopShare}
@@ -194,17 +215,17 @@ function DashboardContent() {
                 <div className={styles.dashboardScreenReward}>
                   <div className={styles.dashboardScreenRewardWrap}>
                     <p className={styles.dashboardScreenRewardText}>
-                      Contribute Reward:
+                      Contribution Reward:
                     </p>
 
                     <div className={styles.dashboardScreenRewardValue}>
-                      {isLoading ? (
+                      {userDataLoading ? (
                         <span>Loading...</span>
-                      ) : error ? (
-                        <span>Spotify token expired</span>
+                      ) : userDataError ? (
+                        <span>Error loading data</span>
                       ) : (
                         <>
-                          {data?.totalTracksPlayed ? `${data.totalTracksPlayed} pts` : '0 pts'}
+                          {userData?.totalBasePoints || 0} pts
                           <Logo2 />
                         </>
                       )}
@@ -215,23 +236,32 @@ function DashboardContent() {
                     <button
                       className={styles.dashboardScreenRewardClaimButton}
                       onClick={() =>
-                        claimWithContract(
-                          address,
-                          process.env.NEXT_PUBLIC_CLAIM_CONTRACT!,
-                          ethersSigner!
-                        )
+                        claimStatus?.canClaim 
+                          ? claimWithContract(
+                              address,
+                              process.env.NEXT_PUBLIC_CLAIM_CONTRACT!,
+                              ethersSigner!
+                            )
+                          : toast.error('You can only claim once per week. Please wait until next claim time.')
                       }
+                      disabled={!claimStatus?.canClaim}
+                      style={{ 
+                        opacity: claimStatus?.canClaim ? 1 : 0.5,
+                        cursor: claimStatus?.canClaim ? 'pointer' : 'not-allowed'
+                      }}
                     >
-                      Claim reward
+                      {claimStatus?.canClaim ? 'Claim reward' : 'Claim locked'}
                     </button>
 
-                    <button
+                    <a
+                      href="https://docs.startvibin.io/claiming"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className={styles.dashboardScreenRewardClaimInfo}
-                      onClick={() => setClaimModal(true)}
                     >
                       Eligibility to Claim
                       <Info />
-                    </button>
+                    </a>
                   </div>
 
                   <div className={styles.dashboardScreenLvlInner}>
@@ -416,7 +446,23 @@ function DashboardContent() {
                         <p className={styles.dashboardTableItemPlace}>
                           #{index + 1}
                         </p>
-                        <div className={styles.dashboardTableItemImg}></div>
+                        <div className={styles.dashboardTableItemImg}>
+                          {track.imageUrl ? (
+                            <img 
+                              src={track.imageUrl} 
+                              alt={`${track.name} by ${track.artist}`}
+                              width={34}
+                              height={34}
+                            />
+                          ) : (
+                            <div style={{ 
+                              width: '100%', 
+                              height: '100%', 
+                              background: 'linear-gradient(to right, #000, #E28AFF)',
+                              borderRadius: '50%'
+                            }} />
+                          )}
+                        </div>
 
                         <div className={styles.dashboardTableItemTextBlock}>
                           <p className={styles.dashboardTableItemTitle}>
@@ -577,7 +623,23 @@ function DashboardContent() {
                         <p className={styles.dashboardTableItemPlace}>
                           #{index + 1}
                         </p>
-                        <div className={styles.dashboardTableItemImg}></div>
+                        <div className={styles.dashboardTableItemImg}>
+                          {artist.imageUrl ? (
+                            <img 
+                              src={artist.imageUrl} 
+                              alt={`${artist.name}`}
+                              width={34}
+                              height={34}
+                            />
+                          ) : (
+                            <div style={{ 
+                              width: '100%', 
+                              height: '100%', 
+                              background: 'linear-gradient(to right, #000, #E28AFF)',
+                              borderRadius: '50%'
+                            }} />
+                          )}
+                        </div>
 
                         <div className={styles.dashboardTableItemTextBlock}>
                           <p className={styles.dashboardTableItemTitle}>
@@ -630,7 +692,7 @@ function DashboardContent() {
                       </div>
 
                       <p className={styles.statsBlockElemValue}>
-                        {isLoading ? '--' : data?.totalTracksPlayed || 0}
+                        {userDataLoading ? '--' : userData?.tracksPlayedCount || 0}
                       </p>
                     </div>
 
@@ -647,7 +709,7 @@ function DashboardContent() {
                       </div>
 
                       <p className={styles.statsBlockElemValue}>
-                        {isLoading ? '--' : data?.uniqueArtistsCount || 0}
+                        {userDataLoading ? '--' : userData?.diversityScore || 0}
                       </p>
                     </div>
 
@@ -664,7 +726,7 @@ function DashboardContent() {
                       </div>
 
                       <p className={styles.statsBlockElemValue}>
-                        {isLoading ? '--' : data?.totalListeningTimeMs ? Math.floor(data.totalListeningTimeMs / 60000) : 0}
+                        {userDataLoading ? '--' : userData?.historyScore || 0}
                       </p>
                     </div>
 
@@ -672,7 +734,7 @@ function DashboardContent() {
                       <div className={styles.statsBlockElemWrap}>
                         <div className={styles.statsBlockElemTitle}>
                           <Share2 />
-                          Referal Score
+                          Referral Score
                         </div>
 
                         <p className={styles.statsBlockElemText}>
@@ -681,7 +743,7 @@ function DashboardContent() {
                       </div>
 
                       <p className={styles.statsBlockElemValue}>
-                        {isLoading ? '--' : data?.anonymousTrackCount || 0}
+                        {userDataLoading ? '--' : userData?.referralScore || 0}
                       </p>
                     </div>
 
@@ -694,7 +756,7 @@ function DashboardContent() {
                       </div>
 
                       <p className={styles.statsBlockElemValue}>
-                        {isLoading ? '--' : (data?.totalTracksPlayed || 0) + (data?.uniqueArtistsCount || 0)}
+                        {userDataLoading ? '--' : userData?.totalBasePoints || 0}
                       </p>
                     </div>
                   </div>
@@ -821,33 +883,6 @@ function DashboardContent() {
           </div>
         </div>
       </div>
-
-      <Modal value={claimModal}>
-        <div className={styles.claimModal}>
-          <button
-            onClick={() => setClaimModal(false)}
-            className={styles.claimModalClose}
-          >
-            <Close />
-          </button>
-
-          <div className={styles.claimModalTextBlock}>
-            <p className={styles.claimModalTitle}>Eligibility to Claim</p>
-
-            <p className={styles.claimModalText}>
-              Lorem ipsum, or lipsum as it is sometimes known, is dummy text
-              used in laying out print, graphic or web designs.
-            </p>
-
-            <p className={styles.claimModalText}>
-              The passage is attributed to an unknown typesetter in the 15th
-              century who is thought to have scrambled parts of Cicero&apos;s De
-              Finibus Bonorum et Malorum for use in a type specimen book. It
-              usually begins with:
-            </p>
-          </div>
-        </div>
-      </Modal>
 
       <Modal value={shareModal}>
         <div className={styles.shareModal}>

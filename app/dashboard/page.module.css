@@ -339,7 +339,7 @@
 
 .dashboardTitle{
   color: #000;
-  font-size: 6.4rem;
+  font-size: 5rem;
   font-weight: 500;
 }
 
@@ -649,6 +649,15 @@
   font-weight: 500;
   color: #3E3A49;
   border-bottom: 1px solid #3E3A49;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dashboardScreenRewardClaimInfo:hover{
+  color: #6B46C1;
+  border-bottom-color: #6B46C1;
+  opacity: 0.8;
 }
 
 .dashboardScreenRewardClaimInfo svg{
@@ -916,7 +925,7 @@
   flex-shrink: 0;
 }
 
-.claimModal, .shareModal{
+.shareModal, .shareModal{
   width: 100%;
   background: #111;
   border-radius: 40px;
@@ -925,23 +934,12 @@
   overflow: hidden;
 }
 
-.shareModal{
-  padding: 3rem 5rem 5.7rem 5rem;
-}
-
 @media (max-width: 998px) {
   .shareModal{
       padding: 3rem 3rem 5rem 3rem;
   }
 }
 
-@media (max-width: 768px) {
-  .claimModal{
-      padding: 7rem 2rem 5rem 2rem;
-  }
-}
-
-.claimModal:before, .claimModal:after,
 .shareModal:before, .shareModal:after{
   content: "";
   background: #C98CFF;
@@ -957,36 +955,13 @@
   z-index: 1;
 }
 
-.claimModal:after, .shareModal:after{
+.shareModal:after{
   background: #B9BAD8;
   left: auto;
   top: -100px;
   right: -20px;
   width: 450px;
   height: 200px;
-}
-
-.claimModalTextBlock{
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 12px;
-  position: relative;
-  z-index: 2;
-}
-
-.claimModalTitle{
-  font-size: 2.4rem;
-  color: #fff;
-  font-weight: 500;
-}
-
-.claimModalText{
-  font-weight: 300;
-  font-family: 'Inter', sans-serif;
-  color: #fff;
-  max-width: 640px;
 }
 
 .claimModalClose{

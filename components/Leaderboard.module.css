@@ -232,6 +232,12 @@
   color: #C2410C;
 }
 
+.totalBasePoints {
+  background: #FEF3C7;
+  color: #92400E;
+  font-weight: 600;
+}
+
 .pagination {
   padding: 1.5rem 2rem;
   background: #F9FAFB;
