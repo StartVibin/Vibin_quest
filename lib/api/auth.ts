@@ -1,11 +1,4 @@
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ;
-
-console.log('🌍 Environment check:', {
-  NEXT_PUBLIC_API: process.env.NEXT_PUBLIC_API_URL,
-  API_BASE_URL,
-  NODE_ENV: process.env.NODE_ENV
-});
-
 export interface VerifyCodeRequest {
   code: string;
 }
@@ -22,13 +15,6 @@ export const authAPI = {
     const url = `${API_BASE_URL}/api/v1/auth/verify-code`;
     const payload = { code };
     
-    console.log('🚀 Sending API request:', {
-      url,
-      method: 'POST',
-      payload,
-      headers: { 'Content-Type': 'application/json' }
-    });
-    
     try {
       const response = await fetch(url, {
         method: 'POST',
@@ -38,11 +24,7 @@ export const authAPI = {
         body: JSON.stringify(payload),
       });
 
-      console.log('📡 API Response status:', response.status);
-      console.log('📡 API Response headers:', Object.fromEntries(response.headers.entries()));
-
       const data = await response.json();
-      console.log('📡 API Response data:', data);
 
       if (!response.ok) {
         console.error('❌ API Error:', data);

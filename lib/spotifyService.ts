@@ -62,7 +62,6 @@ export class SpotifyService {
         'Content-Type': 'application/json',
       },
     });
-    console.log(endpoint,"request to the spotify api");
     if (!response.ok) {
       const errorText = await response.text();
       let errorMessage = `Spotify API error: ${response.status} ${response.statusText}`;

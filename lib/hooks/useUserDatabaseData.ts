@@ -8,6 +8,9 @@ interface UserDatabaseData {
   totalBasePoints: number;
   walletAddress: string;
   spotifyEmail: string;
+  playedDays?: number;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 async function fetchUserDatabaseData(email: string): Promise<UserDatabaseData> {
@@ -41,6 +44,9 @@ async function fetchUserDatabaseData(email: string): Promise<UserDatabaseData> {
       totalBasePoints: data.data.totalBasePoints || 0,
       walletAddress: data.data.walletAddress || '',
       spotifyEmail: data.data.spotifyEmail || email,
+      playedDays: data.data.playedDays || 0,
+      createdAt: data.data.createdAt || '',
+      updatedAt: data.data.updatedAt || '',
     };
   } catch (error) {
     console.error('Error fetching user database data:', error);

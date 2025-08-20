@@ -27,21 +27,19 @@ function CompletionContent() {
   const handleCompleteRegistration = async () => {
     setIsLoading(true);
     try {
-      const invitationCode = localStorage.getItem('invitation_code');
+      // const invitationCode = localStorage.getItem('invitation_code');
       const spotifyId = localStorage.getItem('spotify_id');
       const spotifyEmail = localStorage.getItem('spotify_email');
-      const spotifyName = localStorage.getItem('spotify_name');
+      // const spotifyName = localStorage.getItem('spotify_name');
       const spotifyAccessToken = localStorage.getItem('spotify_access_token');
       
-      const registrationData = {
-        invitationCode,
-        spotifyId,
-        spotifyEmail,
-        spotifyName,
-        spotifyAccessToken,
-      };
-      
-      console.log('Final registration data:', registrationData);
+      // const registrationData = {
+      //   invitationCode,
+      //   spotifyId,
+      //   spotifyEmail,
+      //   spotifyName,
+      //   spotifyAccessToken,
+      // };
       
       await new Promise(resolve => setTimeout(resolve, 1000));
       
@@ -57,22 +55,8 @@ function CompletionContent() {
       
       toast.success('Registration completed successfully!');
       
-      console.log('Redirecting to dashboard...');
-      console.log('Current localStorage:', {
-        spotifyId: localStorage.getItem('spotify_id'),
-        spotifyEmail: localStorage.getItem('spotify_email'),
-        spotifyAccessToken: localStorage.getItem('spotify_access_token')
-      });
-      
-      console.log('Current cookies:', {
-        spotifyId: document.cookie.includes('spotify_id'),
-        spotifyEmail: document.cookie.includes('spotify_email'),
-        spotifyAccessToken: document.cookie.includes('spotify_access_token')
-      });
-      
       // Add a small delay to ensure the toast is visible and localStorage is updated
       setTimeout(() => {
-        console.log('Executing router.push to dashboard...');
         router.push('/dashboard');
       }, 1000);
     } catch (error) {

@@ -343,14 +343,11 @@ export const getUserPoints = async (walletAddress: string): Promise<number> => {
 
 export const getUserProfile = async (walletAddress: string): Promise<UserProfile> => {
   const url = `${API_ENDPOINTS.USER_PROFILE}/${walletAddress}`
-  //console.log('🌐 Making API call to:', url)
   
   try {
     const response = await createApiRequest<{ success: boolean; data: UserProfile }>(url)
-    //console.log('✅ API Response data:', response)
     return response.data
   } catch (error) {
-    //console.error('❌ Error fetching user profile:', error)
     throw error
   }
 }
@@ -361,9 +358,7 @@ export const getUserProfile = async (walletAddress: string): Promise<UserProfile
 
 export const getLeaderboard = async (): Promise<LeaderboardResponse> => {
   try {
-    console.log('Making leaderboard API call to:', API_ENDPOINTS.LEADERBOARD)
     const response = await createApiRequest<LeaderboardResponse>(API_ENDPOINTS.LEADERBOARD)
-    console.log('Leaderboard API response:', response)
     return response
   } catch (error) {
     console.error('Error fetching leaderboard:', error)

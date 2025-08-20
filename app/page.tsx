@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAccount } from 'wagmi';
+// import { useAccount } from 'wagmi';
 import { toast } from 'react-toastify';
 
 import styles from "./page.module.css";
@@ -12,8 +12,6 @@ import { useSharedContext } from '@/provider/SharedContext';
 
 export default function Home() {
   const { sharedValue, setSharedValue } = useSharedContext();
-  const { isConnected } = useAccount();
-  console.log(isConnected);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [invitationCode, setInvitationCode] = useState(''); // Local state for input

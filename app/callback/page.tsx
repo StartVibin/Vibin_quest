@@ -13,26 +13,12 @@ function CallbackContent() {
       const invitationCode = localStorage.getItem('invitation_code');
       const walletAddress = localStorage.getItem('walletAddress');
       const spotifyId = localStorage.getItem('spotify_id');
-      const spotifyEmail = localStorage.getItem('spotify_email');
-      const spotifyName = localStorage.getItem('spotify_name');
-      const spotifyAccessToken = localStorage.getItem('spotify_access_token');
       
       if (!invitationCode || !walletAddress || !spotifyId) {
         toast.error('Missing registration data 1. Please start over.');
         router.push('/join');
         return;
       }
-
-      const registrationData = {
-        invitationCode,
-        walletAddress,
-        spotifyId,
-        spotifyEmail,
-        spotifyName,
-        spotifyAccessToken,
-      };
-
-      console.log('Complete registration data:', registrationData);
 
       await new Promise(resolve => setTimeout(resolve, 1000));
 

@@ -16,7 +16,6 @@ import {
   Info,
   Link2,
   Logo2,
-  Mask,
   Note,
   Play,
   Share,
@@ -66,8 +65,10 @@ function DashboardContent() {
   // Get invite code from localStorage
   const inviteCode = typeof window !== 'undefined' ? localStorage.getItem('spotify_id') || '' : '';
   const { data, isLoading, error } = useSpotifyData()
+
+  console.log("data------------->", data)
   const { data: userData, isLoading: userDataLoading, error: userDataError } = useUserDatabaseData()
-  
+  console.log("userData------------->", userData)
   const { address } = useAccount();
   const signer = useEthersSigner();
   const [ethersSigner, setEthersSigner] = React.useState<JsonRpcSigner | null>(
@@ -96,11 +97,6 @@ function DashboardContent() {
       totalListeningTimeMs: data?.totalListeningTimeMs
     });
   }, [data, isLoading, error, inviteCode]);
-
-  // const handleManualRefetch = () => {
-  //   console.log(`[${new Date().toISOString()}] Manual refetch triggered`);
-  //   refetch();
-  // };
 
   const handleXConnectWithWallet = () => {
     handleXConnect(toast as ToastInstance);
@@ -839,14 +835,25 @@ function DashboardContent() {
                   />
 
                   <div className={styles.statsItemIcon}>
-                    <Mask />
+                    <History />
                   </div>
 
                   <p className={styles.statsItemValue}>
-                    {data?.anonymousTrackCount}
+                    {userDataLoading ? '--' : (() => {
+                      // Option 2: Calculate days between first and last activity
+                      if (userData?.createdAt && userData?.updatedAt) {
+                        const createdDate = new Date(userData.createdAt);
+                        const updatedDate = new Date(userData.updatedAt);
+                        const diffTime = Math.abs(updatedDate.getTime() - createdDate.getTime());
+                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        return diffDays;
+                      }
+                      // Fallback: if no dates available, show 0
+                      return 0;
+                    })()}
                   </p>
 
-                  <p className={styles.statsItemText}>Anonymous Tracks</p>
+                  <p className={styles.statsItemText}>Active Days</p>
                 </div>
               </div>
             </div>

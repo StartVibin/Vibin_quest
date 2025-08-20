@@ -33,8 +33,6 @@ export default function GoogleOAuthButton ({
 
   const sendToBackend = async (userData: GoogleUserData) => {
     try {
-      console.log("🚀 [Google OAuth] Starting backend verification process");
-      console.log("📊 [Google OAuth] User data received:", userData);
       
       if (!isConnected) {
         console.warn("⚠️ [Google OAuth] Wallet not connected, showing warning");
@@ -42,21 +40,12 @@ export default function GoogleOAuthButton ({
         return;
       }
       
-      console.log("🔗 [Google OAuth] Wallet connected, address:", address);
-      console.log("📧 [Google OAuth] Verifying email:", userData.email);
-      
       const { verifyEmailConnection } = await import('@/lib/api');
-      console.log("📡 [Google OAuth] Calling verifyEmailConnection API...");
-      
       const verificationResult = await verifyEmailConnection(address!, userData.email, userData);
       
-      console.log("✅ [Google OAuth] Verification successful:", verificationResult);
-      
       if (verificationResult.data && verificationResult.data.pointsAwarded) {
-        console.log("🎉 [Google OAuth] Points awarded:", verificationResult.data.pointsAwarded);
         toast.success(`Email connected successfully! Awarded ${verificationResult.data.pointsAwarded} points!`);
       } else {
-        console.log("✅ [Google OAuth] Email connected successfully");
         toast.success("Email connected successfully!");
       }
       setShowModal(false);
@@ -84,9 +73,6 @@ export default function GoogleOAuthButton ({
    }
 
   const handleGoogleLogin = () => {
-    console.log("🔑 [Google OAuth] Starting Google login process");
-    console.log("🆔 [Google OAuth] Client ID configured:", !!clientId);
-    console.log("🆔 [Google OAuth] Client ID value:", clientId ? `${clientId.substring(0, 10)}...` : 'NOT SET');
     
     if (!clientId || clientId === '') {
       console.error("❌ [Google OAuth] Client ID not configured");
@@ -97,14 +83,8 @@ export default function GoogleOAuthButton ({
     const redirectUri = `${window.location.origin}/google-callback`;
     const scope = 'email profile';
     const responseType = 'code';
-    
-    console.log("🔗 [Google OAuth] Redirect URI:", redirectUri);
-    console.log("📋 [Google OAuth] Scope:", scope);
-    console.log("🌐 [Google OAuth] Origin:", window.location.origin);
-    
     const state = Math.random().toString(36).substring(2, 15);
     localStorage.setItem('google_oauth_state', state);
-    console.log("🔐 [Google OAuth] Generated state:", state);
     
     const authUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth');
     authUrl.searchParams.set('client_id', clientId);
@@ -115,16 +95,12 @@ export default function GoogleOAuthButton ({
     authUrl.searchParams.set('access_type', 'offline');
     authUrl.searchParams.set('prompt', 'consent');
     
-    console.log("🌐 [Google OAuth] Auth URL:", authUrl.toString());
-    
     const popup = window.open(
       authUrl.toString(),
       'google-auth',
       'width=500,height=600,scrollbars=yes,resizable=yes'
     );
 
-    console.log("🪟 [Google OAuth] Popup opened:", !!popup);
-    
     if (!popup) {
       console.error("❌ [Google OAuth] Popup was blocked by browser");
       toast.error("Popup was blocked. Please allow popups for this site and try again.");
@@ -133,7 +109,6 @@ export default function GoogleOAuthButton ({
     
     const checkPopupClosed = setInterval(() => {
       if (popup.closed) {
-        console.log("🪟 [Google OAuth] Popup was closed");
         clearInterval(checkPopupClosed);
         window.removeEventListener('message', handleMessage);
       }
@@ -141,18 +116,6 @@ export default function GoogleOAuthButton ({
 
     const handleMessage = (event: MessageEvent) => {
       const timestamp = new Date().toISOString();
-      console.log(`📨 [Google OAuth] [${timestamp}] Received message:`, event.data);
-      console.log("📨 [Google OAuth] Message structure:", {
-        hasTarget: !!event.data?.target,
-        target: event.data?.target,
-        hasName: !!event.data?.name,
-        name: event.data?.name,
-        hasData: !!event.data?.data,
-        dataType: typeof event.data?.data,
-        hasType: !!event.data?.type,
-        type: event.data?.type,
-        origin: event.origin
-      });
       
       if (event.origin !== window.location.origin) {
         console.warn("⚠️ [Google OAuth] Message from different origin:", event.origin);
@@ -160,7 +123,6 @@ export default function GoogleOAuthButton ({
       }
       
       if (!event.data || typeof event.data !== 'object') {
-        console.log("📨 [Google OAuth] Ignoring non-object message");
         return;
       }
       
@@ -175,11 +137,6 @@ export default function GoogleOAuthButton ({
         (event.data.data && event.data.data.data && event.data.data.data.method?.startsWith('wallet_'));
       
       if (isMetaMaskMessage) {
-        console.log(`📨 [Google OAuth] [${timestamp}] Ignoring MetaMask/wallet message:`, {
-          target: event.data.target || event.data.data?.target,
-          name: event.data.name || event.data.data?.name,
-          method: event.data.data?.data?.method
-        });
         return;
       }
       

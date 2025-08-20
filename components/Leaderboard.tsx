@@ -51,9 +51,7 @@ export const Leaderboard: React.FC = () => {
       setLoading(true)
       setError(null)
       
-      console.log('Fetching leaderboard data...')
       const response = await getLeaderboard()
-      console.log('Leaderboard response:', response)
       
       if (response.success && response.data) {
         // Transform the data to match the new scoring system

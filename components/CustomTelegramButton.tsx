@@ -56,8 +56,6 @@ const CustomTelegramButton = memo(function CustomTelegramButton({
       });
 
       if (authResponse.ok) {
-        const authResult = await authResponse.json();
-        console.log("Telegram auth response:", authResult);
         
         const { verifyTelegramConnection } = await import('@/lib/api');
         const verificationResult = await verifyTelegramConnection(address!, telegramData);

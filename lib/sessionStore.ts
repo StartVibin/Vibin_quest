@@ -24,7 +24,6 @@ class SessionStore {
       index,
       timestamp
     });
-    console.log(`🔐 Session SET - PID: ${this.processId}, State: ${state}, Email: ${email}, Index: ${index}, Timestamp: ${timestamp}, Total Sessions: ${this.sessions.size}`);
     this.cleanup(); // Clean up expired sessions
   }
 
@@ -32,25 +31,17 @@ class SessionStore {
     const session = this.sessions.get(state);
     const now = Date.now();
     
-    console.log(`🔍 Session GET - PID: ${this.processId}, State: ${state}, Found: ${!!session}, Total Sessions: ${this.sessions.size}`);
     
     if (!session) {
-      console.log(`❌ Session not found for state: ${state}`);
       return null;
     }
     
     const age = now - session.timestamp;
-    console.log(`⏰ Session age: ${age}ms, Expiry: ${this.EXPIRY_TIME}ms, Expired: ${age > this.EXPIRY_TIME}`);
     
     if (age > this.EXPIRY_TIME) {
-      console.log(`⏰ Session expired for state: ${state}, Age: ${age}ms`);
       this.sessions.delete(state);
       return null;
     }
-    
-    // Don't delete session immediately to handle potential multiple callback calls
-    // Session will be cleaned up by the cleanup method after expiry
-    console.log(`✅ Session retrieved for state: ${state}, Email: ${session.email}, Index: ${session.index}`);
     
     return {
       email: session.email,
@@ -76,11 +67,10 @@ class SessionStore {
       }
     }
     
-    // Log all active sessions for debugging
-    console.log("📋 All active sessions:");
     for (const [state, session] of this.sessions.entries()) {
       const age = now - session.timestamp;
-      console.log(`  - State: ${state}, Email: ${session.email}, Age: ${age}ms`);
+      console.log("age", age)
+      console.log("state", state)
     }
     
     return {

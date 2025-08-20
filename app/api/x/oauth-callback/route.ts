@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
-    //console.log("🚀 ~ POST ~ request:", request)
-    //console.log("🚀 ~ POST request is calling now")
     const { code, code_verifier, redirect_uri } = await request.json();
     const client_id = process.env.NEXT_PUBLIC_X_CLIENT_ID;
     const client_secret = process.env.X_CLIENT_SECRET;

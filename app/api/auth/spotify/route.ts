@@ -17,9 +17,6 @@ export async function POST(req: Request) {
     
     const SPOTIFY_CLIENT_ID = process.env[`SPOTIFY_CLIENT_ID_${index}`];
     const SPOTIFY_CLIENT_SECRET = process.env[`SPOTIFY_CLIENT_SECRET_${index}`];
-
-    console.log("spotify client id", SPOTIFY_CLIENT_ID);
-    console.log("spotify client secret", SPOTIFY_CLIENT_SECRET);
     
     if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET) {
       return NextResponse.json(
@@ -31,13 +28,9 @@ export async function POST(req: Request) {
     // Generate a unique state parameter
     const state = Math.random().toString(36).substring(7);
     
-    // Store email and index in SERVER-SIDE session store using state as key
     sessionStore.set(state, email, index);
     
     // Log session store stats
-    const stats = sessionStore.getStats();
-    console.log("stats", stats);
-
     const spotifyAuthUrl = new URL('https://accounts.spotify.com/authorize');
     spotifyAuthUrl.searchParams.append('client_id', SPOTIFY_CLIENT_ID!);
     spotifyAuthUrl.searchParams.append('response_type', 'code');

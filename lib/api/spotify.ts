@@ -121,7 +121,6 @@ export const spotifyAPI = {
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error('❌ Frontend: Token exchange failed:', errorData);
       throw new Error(errorData.error || 'Failed to exchange code for token');
     }
 
@@ -148,11 +147,7 @@ export const spotifyAPI = {
       }
     });
 
-    console.log('🎵 Frontend: Spotify API response status:', response.status);
-
     if (!response.ok) {
-      const errorData = await response.text();
-      console.error('❌ Frontend: Failed to get user profile:', errorData);
       throw new Error('Failed to get user profile');
     }
 
@@ -181,12 +176,10 @@ export const spotifyAPI = {
     });
 
     if (!response.ok) {
-      console.error('❌ Frontend: Failed to get top tracks');
       throw new Error('Failed to get top tracks');
     }
 
     const data = await response.json();
-    console.log('✅ Frontend: Got top tracks:', data.items.length);
     return data.items;
   },
 
@@ -201,12 +194,10 @@ export const spotifyAPI = {
     });
 
     if (!response.ok) {
-      console.error('❌ Frontend: Failed to get recently played');
       throw new Error('Failed to get recently played');
     }
 
     const data = await response.json();
-    console.log('✅ Frontend: Got recently played:', data.items.length);
     return data.items;
   },
 
@@ -249,17 +240,8 @@ export const spotifyAPI = {
         refreshToken
       };
 
-      console.log('✅ Frontend: Comprehensive user data collected:', {
-        profile: { id: profile.id, email: profile.email, display_name: profile.display_name },
-        topTracks: topTracks.length,
-        recentlyPlayed: recentlyPlayed.length,
-        playlists: playlists.length,
-        hasRefreshToken: !!refreshToken
-      });
-
       return userData;
     } catch (error) {
-      console.error('❌ Frontend: Failed to get comprehensive user data:', error);
       throw error;
     }
   },
@@ -410,7 +392,6 @@ export const spotifyAPI = {
     }
 
     const result = await response.json();
-    console.log('✅ Frontend: Comprehensive Spotify data submitted successfully');
     return result;
   }
 }; 

@@ -10,35 +10,12 @@ export default function ErrorLogger() {
     // Override fetch to intercept all requests
     window.fetch = async function(...args) {
       const [url, options] = args;
-      const startTime = Date.now();
       
       try {
-        // Log the request
-        // console.log('🌐 Fetch Request:', {
-        //   url,
-        //   method: options?.method || 'GET',
-        //   headers: options?.headers,
-        //   body: options?.body,
-        //   timestamp: new Date().toISOString()
-        // });
-
-        // Make the actual request
         const response = await originalFetch.apply(this, args);
-        const endTime = Date.now();
-        
-        // Log the response
-        console.log('📡 Fetch Response:', {
-          url,
-          status: response.status,
-          statusText: response.statusText,
-          headers: Object.fromEntries(response.headers.entries()),
-          duration: `${endTime - startTime}ms`,
-          timestamp: new Date().toISOString()
-        });
 
-        // If it's a 403 error, log additional details
         if (response.status === 403) {
-          console.error('🚨 403 FORBIDDEN ERROR DETECTED:', {
+          console.error('403 FORBIDDEN ERROR DETECTED:', {
             url,
             method: options?.method || 'GET',
             requestHeaders: options?.headers,

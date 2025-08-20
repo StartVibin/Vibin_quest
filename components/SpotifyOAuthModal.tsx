@@ -20,8 +20,6 @@ export default function SpotifyOAuthModal({ isOpen, onClose, email, index }: Spo
         body: JSON.stringify({ email, index }),
       });
 
-      console.log("response " , response);
-      
       const data = await response.json();
       
       if (data.error) {

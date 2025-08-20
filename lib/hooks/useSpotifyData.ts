@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
 import { spotifyAPI } from '@/lib/api/spotify';
 
 export function useSpotifyData(inviteCode?: string) {
@@ -12,14 +11,6 @@ export function useSpotifyData(inviteCode?: string) {
   const refreshToken = (typeof window !== 'undefined' ? localStorage.getItem('spotify_refresh_token') || '' : '');
   const tokenExpiry = (typeof window !== 'undefined' ? localStorage.getItem('spotify_token_expiry') || '0' : '0');
 
-  console.log(`[${new Date().toISOString()}] [useSpotifyData] Hook initialized:`, { 
-    code: !!code, 
-    mail: !!mail,
-    accessToken: !!accessToken,
-    refreshToken: !!refreshToken,
-    actualCode: code,
-    actualMail: mail 
-  });
 
   // Check if token is expired
   const isTokenExpired = () => {
@@ -90,10 +81,7 @@ export function useSpotifyData(inviteCode?: string) {
     try {
       // Fetch comprehensive user data using the access token
       const userData = await spotifyAPI.getComprehensiveUserData(accessToken, refreshToken);
-      console.log("userData------------->", userData)
-      // Extract required stats
       const stats = spotifyAPI.getListeningStats(userData);
-      console.log("stats------------->", stats)
       const statsWithEmail = {
         listeningTime: stats.totalListeningTimeMs,
         uniqueArtistCount: stats.uniqueArtistsCount,
@@ -152,43 +140,43 @@ export function useSpotifyData(inviteCode?: string) {
   // });
 
   // Monitor hook state changes
-  useEffect(() => {
-    console.log(`[${new Date().toISOString()}] [useSpotifyData] State changed:`, {
-      spotifyData: !!spotifyData,
-      isSpotifyLoading,
-      spotifyError: !!spotifyError,
-      code: !!code,
-      mail: !!mail,
-      accessToken: !!accessToken,
-      refreshToken: !!refreshToken,
-      tokenExpired: isTokenExpired(),
-      enabled: !!(code && mail && accessToken && refreshToken)
-    });
-  }, [spotifyData, isSpotifyLoading, spotifyError, code, mail, accessToken, refreshToken]);
+  // useEffect(() => {
+  //   console.log(`[${new Date().toISOString()}] [useSpotifyData] State changed:`, {
+  //     spotifyData: !!spotifyData,
+  //     isSpotifyLoading,
+  //     spotifyError: !!spotifyError,
+  //     code: !!code,
+  //     mail: !!mail,
+  //     accessToken: !!accessToken,
+  //     refreshToken: !!refreshToken,
+  //     tokenExpired: isTokenExpired(),
+  //     enabled: !!(code && mail && accessToken && refreshToken)
+  //   });
+  // }, [spotifyData, isSpotifyLoading, spotifyError, code, mail, accessToken, refreshToken]);
 
-  // Log when the query is enabled/disabled
-  useEffect(() => {
-    const isEnabled = !!(code && mail && accessToken && refreshToken);
-    console.log(`[${new Date().toISOString()}] [useSpotifyData] Query enabled:`, isEnabled, {
-      hasCode: !!code,
-      hasMail: !!mail,
-      hasAccessToken: !!accessToken,
-      hasRefreshToken: !!refreshToken,
-      tokenExpired: isTokenExpired()
-    });
-  }, [code, mail, accessToken, refreshToken]);
+  // // Log when the query is enabled/disabled
+  // useEffect(() => {
+  //   const isEnabled = !!(code && mail && accessToken && refreshToken);
+  //   console.log(`[${new Date().toISOString()}] [useSpotifyData] Query enabled:`, isEnabled, {
+  //     hasCode: !!code,
+  //     hasMail: !!mail,
+  //     hasAccessToken: !!accessToken,
+  //     hasRefreshToken: !!refreshToken,
+  //     tokenExpired: isTokenExpired()
+  //   });
+  // }, [code, mail, accessToken, refreshToken]);
 
-  // Debug localStorage values
-  useEffect(() => {
-    console.log(`[${new Date().toISOString()}] [useSpotifyData] localStorage values:`, {
-      spotify_id: localStorage.getItem('spotify_id'),
-      spotify_email: localStorage.getItem('spotify_email'),
-      spotify_access_token: localStorage.getItem('spotify_access_token')?.substring(0, 20) + '...',
-      spotify_refresh_token: localStorage.getItem('spotify_refresh_token')?.substring(0, 20) + '...',
-      spotify_token_expiry: localStorage.getItem('spotify_token_expiry'),
-      spotify_expires_in: localStorage.getItem('spotify_expires_in')
-    });
-  }, []);
+  // // Debug localStorage values
+  // useEffect(() => {
+  //   console.log(`[${new Date().toISOString()}] [useSpotifyData] localStorage values:`, {
+  //     spotify_id: localStorage.getItem('spotify_id'),
+  //     spotify_email: localStorage.getItem('spotify_email'),
+  //     spotify_access_token: localStorage.getItem('spotify_access_token')?.substring(0, 20) + '...',
+  //     spotify_refresh_token: localStorage.getItem('spotify_refresh_token')?.substring(0, 20) + '...',
+  //     spotify_token_expiry: localStorage.getItem('spotify_token_expiry'),
+  //     spotify_expires_in: localStorage.getItem('spotify_expires_in')
+  //   });
+  // }, []);
 
   return {
     isLoading: isSpotifyLoading,

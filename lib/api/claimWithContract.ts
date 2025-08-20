@@ -20,10 +20,6 @@ export const claimWithContract = async (publicKey: EthAddress | undefined, contr
     const inviteCode = localStorage.getItem('invitation_code');
     const email = localStorage.getItem('spotify_email');
 
-    console.log("inviteCode------------------->", inviteCode);
-    console.log("publicKey-------------------->", publicKey);
-    console.log("email----------------------->", email);
-    
     if (!email) {
         toast.error("Email not found. Please reconnect your Spotify account.");
         return;
@@ -35,9 +31,6 @@ export const claimWithContract = async (publicKey: EthAddress | undefined, contr
             inviteCode,
             email
         };
-        
-        console.log("🚀 Sending claim request with data:", data);
-        console.log("🚀 API URL:", `${process.env.NEXT_PUBLIC_API_URL!}/api/v1/spotify/claim`);
         
         toastId = toast.loading("Waiting");
         const response = await axios.post(
@@ -51,7 +44,6 @@ export const claimWithContract = async (publicKey: EthAddress | undefined, contr
                 },
             }
         );
-        console.log(response.data.claimData);
         const claimResult = await claimVestingTokens(
             publicKey,
             response.data.claimData,
@@ -64,8 +56,6 @@ export const claimWithContract = async (publicKey: EthAddress | undefined, contr
         toast.success("Success");
          return claimResult;
     } catch (err) {
-        console.log("🚀 ~ claim ~ toastId:", toastId)
-
         toast.dismiss(toastId);
         console.error("Error:", err);
         toast.error("Can't claim");
@@ -82,20 +72,10 @@ export const claimVestingTokens = async (
 ): Promise<{ success: boolean; txHash?: string; error?: string; amount?: string }> => {
     
     try {
-        console.log("provider================", signer.provider);
-        console.log("signer=====", signer);
-        console.log("🔄 Claiming vesting tokens...");
-        console.log("📋 Claim data:", claimData);
-        const provider = signer.provider;
-        console.log("🚀 ~ provider:", provider)
-        // Create contract instance
+        // const provider = signer.provider;
         const contract = new ethers.Contract(contractAddress, CLAIM_CONTRACT_ABI, signer);
-
-        // Get user address
-        const userAddress = address;
-        console.log("👤 User address:", userAddress);
-
-        // Optional: Verify signature before claiming
+        // const userAddress = address;
+        // console.log("User address:", userAddress);
         // try {
         //     const isValidSignature = await contract.verifySignature(
         //         userAddress,
