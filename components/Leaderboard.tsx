@@ -46,6 +46,8 @@ export const Leaderboard: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [limit, setLimit] = useState(100)
 
+  console.log(setLimit);
+
   const fetchLeaderboard = async () => {
     try {
       setLoading(true)
@@ -90,20 +92,6 @@ export const Leaderboard: React.FC = () => {
     return `${address.slice(0, 6)}...${address.slice(-4)}`
   }
 
-  const getRankBadge = (rank: number) => {
-    if (rank === 1) return '🥇'
-    if (rank === 2) return '🥈'
-    if (rank === 3) return '🥉'
-    return `#${rank}`
-  }
-
-  const getRankColor = (rank: number) => {
-    if (rank === 1) return 'bg-yellow-100 border-yellow-300 text-yellow-800'
-    if (rank === 2) return 'bg-gray-100 border-gray-300 text-gray-800'
-    if (rank === 3) return 'bg-orange-100 border-orange-300 text-orange-800'
-    return 'bg-white border-gray-200 text-gray-700'
-  }
-
   if (loading && !leaderboardData) {
     return (
       <div className={styles.loadingContainer}>
@@ -135,35 +123,12 @@ export const Leaderboard: React.FC = () => {
     <div className={styles.leaderboardContainer}>
       {/* Header Section */}
       <div className={styles.headerSection}>
-        <h1 className={styles.title}>Vibin Leaderboard</h1>
-        <p className={styles.subtitle}>Compete with the best Vibin users worldwide</p>
+        <h1 className={styles.title}>Leaderboard</h1>
+        <p className={styles.subtitle}>Identity Revealed</p>
       </div>
 
       {/* Main Content Card */}
       <div className={styles.mainCard}>
-        {/* Controls Header */}
-        <div className={styles.controlsHeader}>
-          <h2 className={styles.controlsTitle}>Top Users</h2>
-          <div className={styles.controlsGroup}>
-            <select 
-              value={limit} 
-              onChange={(e) => setLimit(Number(e.target.value))}
-              className={styles.select}
-            >
-              <option value={10}>Top 10</option>
-              <option value={20}>Top 20</option>
-              <option value={50}>Top 50</option>
-              <option value={100}>Top 100</option>
-            </select>
-            <button 
-              onClick={() => fetchLeaderboard()}
-              className={styles.refreshButton}
-            >
-              🔄 Refresh
-            </button>
-          </div>
-        </div>
-
         {/* Table Content */}
         {leaderboardData && leaderboardData.users.length > 0 ? (
           <>
@@ -173,22 +138,19 @@ export const Leaderboard: React.FC = () => {
                   <tr>
                     <th>Rank</th>
                     <th>Wallet Address</th>
-                    <th className={styles.textRight}>Quantity Score</th>
-                    <th className={styles.textRight}>Diversity Score</th>
-                    <th className={styles.textRight}>History Score</th>
-                    <th className={styles.textRight}>Referral Score</th>
-                    <th className={styles.textRight}>Total Base Points</th>
+                    <th>Quantity Score</th>
+                    <th>Diversity Score</th>
+                    <th>History Score</th>
+                    <th>Referral Score</th>
+                    <th>Total Base Points</th>
                   </tr>
                 </thead>
                 <tbody className={styles.tableBody}>
                   {leaderboardData.users.slice(0, limit).map((user) => (
-                    <tr 
-                      key={user.walletAddress} 
-                      className={`${getRankColor(user.rank)}`}
-                    >
+                    <tr key={user.walletAddress} className={styles.tableRow}>
                       <td>
                         <span className={styles.rankBadge}>
-                          {getRankBadge(user.rank)}
+                          #{user.rank}
                         </span>
                       </td>
                       <td>
@@ -196,29 +158,29 @@ export const Leaderboard: React.FC = () => {
                           {formatWalletAddress(user.walletAddress)}
                         </span>
                       </td>
-                      <td className={styles.textRight}>
-                        <span className={styles.totalPoints}>
-                          {(user.tracksPlayedCount || 0).toLocaleString()}
+                      <td>
+                        <span className={styles.scoreValue}>
+                          {user.tracksPlayedCount}
                         </span>
                       </td>
-                      <td className={styles.textRight}>
-                        <span className={`${styles.pointBadge} ${styles.gamePoints}`}>
-                          {(user.diversityScore || 0).toLocaleString()}
+                      <td>
+                        <span className={styles.scoreValue}>
+                          {user.diversityScore}
                         </span>
                       </td>
-                      <td className={styles.textRight}>
-                        <span className={`${styles.pointBadge} ${styles.referralPoints}`}>
-                          {(user.historyScore || 0).toLocaleString()}
+                      <td>
+                        <span className={styles.scoreValue}>
+                          {user.historyScore}
                         </span>
                       </td>
-                      <td className={styles.textRight}>
-                        <span className={`${styles.pointBadge} ${styles.socialPoints}`}>
-                          {(user.referralScore || 0).toLocaleString()}
+                      <td>
+                        <span className={styles.scoreValue}>
+                          {user.referralScore}
                         </span>
                       </td>
-                      <td className={styles.textRight}>
-                        <span className={`${styles.pointBadge} ${styles.totalBasePoints}`}>
-                          {(user.totalBasePoints || 0).toLocaleString()}
+                      <td>
+                        <span className={styles.scoreValue}>
+                          {user.totalBasePoints}
                         </span>
                       </td>
                     </tr>
@@ -228,32 +190,44 @@ export const Leaderboard: React.FC = () => {
             </div>
 
             {/* Pagination */}
-            {leaderboardData.pagination.totalPages > 1 && (
+            {leaderboardData.pagination.totalPages > 0 && (
               <div className={styles.pagination}>
-                <div className={styles.paginationInfo}>
-                  Showing <span>{((currentPage - 1) * limit) + 1}</span> to{' '}
-                  <span>{Math.min(currentPage * limit, leaderboardData.pagination.total)}</span> of{' '}
-                  <span>{leaderboardData.pagination.total}</span> users
+                <button
+                  onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                  disabled={currentPage === 1}
+                  className={styles.paginationButton}
+                >
+                  Prev
+                </button>
+                
+                <div className={styles.paginationNumbers}>
+                  {Array.from({ length: Math.min(5, leaderboardData.pagination.totalPages) }, (_, i) => {
+                    const pageNum = i + 1
+                    if (pageNum === 1 || pageNum === leaderboardData.pagination.totalPages || 
+                        (pageNum >= currentPage - 1 && pageNum <= currentPage + 1)) {
+                      return (
+                        <button
+                          key={pageNum}
+                          onClick={() => setCurrentPage(pageNum)}
+                          className={`${styles.pageNumber} ${currentPage === pageNum ? styles.activePage : ''}`}
+                        >
+                          {pageNum}
+                        </button>
+                      )
+                    } else if (pageNum === currentPage - 2 || pageNum === currentPage + 2) {
+                      return <span key={pageNum} className={styles.ellipsis}>...</span>
+                    }
+                    return null
+                  })}
                 </div>
-                <div className={styles.paginationControls}>
-                  <button
-                    onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
-                    disabled={currentPage === 1}
-                    className={styles.paginationButton}
-                  >
-                    ← Previous
-                  </button>
-                  <span className={styles.paginationPage}>
-                    {currentPage} / {leaderboardData.pagination.totalPages}
-                  </span>
-                  <button
-                    onClick={() => setCurrentPage(Math.min(leaderboardData.pagination.totalPages, currentPage + 1))}
-                    disabled={currentPage === leaderboardData.pagination.totalPages}
-                    className={styles.paginationButton}
-                  >
-                    Next →
-                  </button>
-                </div>
+                
+                <button
+                  onClick={() => setCurrentPage(Math.min(leaderboardData.pagination.totalPages, currentPage + 1))}
+                  disabled={currentPage === leaderboardData.pagination.totalPages}
+                  className={styles.paginationButton}
+                >
+                  Next
+                </button>
               </div>
             )}
           </>
@@ -265,30 +239,6 @@ export const Leaderboard: React.FC = () => {
           </div>
         )}
       </div>
-
-      {/* Stats Summary Cards */}
-      {leaderboardData && (
-        <div className={styles.statsGrid}>
-          <div className={`${styles.statCard} ${styles.blue}`}>
-            <div className={styles.statValue}>{leaderboardData.pagination.total}</div>
-            <div className={styles.statLabel}>Total Users</div>
-          </div>
-          
-          <div className={`${styles.statCard} ${styles.green}`}>
-            <div className={styles.statValue}>
-              {leaderboardData.users.length > 0 ? (leaderboardData.users[0]?.totalBasePoints || 0).toLocaleString() : '0'}
-            </div>
-            <div className={styles.statLabel}>Top Score</div>
-          </div>
-          
-          <div className={`${styles.statCard} ${styles.purple}`}>
-            <div className={styles.statValue}>
-              {leaderboardData.users.length > 0 ? Math.round(leaderboardData.users.reduce((sum, user) => sum + (user.totalBasePoints || 0), 0) / leaderboardData.users.length).toLocaleString() : '0'}
-            </div>
-            <div className={styles.statLabel}>Average Score</div>
-          </div>
-        </div>
-      )}
     </div>
   )
 } 
