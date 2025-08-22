@@ -170,12 +170,7 @@ function DashboardContent() {
                           <p style={{ color: '#10B981' }}>Ready to claim!</p>
                         ) : (
                           <p>
-                            {claimStatus.daysUntilNextClaim > 0 
-                              ? `${claimStatus.daysUntilNextClaim}d ${claimStatus.hoursUntilNextClaim % 24}h`
-                              : claimStatus.hoursUntilNextClaim > 0
-                              ? `${claimStatus.hoursUntilNextClaim}h ${claimStatus.minutesUntilNextClaim % 60}m`
-                              : `${claimStatus.minutesUntilNextClaim}m`
-                            }
+                            `0${claimStatus.daysUntilNextClaim} : ${(claimStatus.hoursUntilNextClaim % 24) > 10 ? claimStatus.hoursUntilNextClaim % 24 : `0${claimStatus.hoursUntilNextClaim % 24}`} : ${(claimStatus.minutesUntilNextClaim % 60) > 10 ? claimStatus.minutesUntilNextClaim % 60 : `0${claimStatus.minutesUntilNextClaim % 60}`} : ${(claimStatus.secondsUntilNextClaim % 60) > 10 ? claimStatus.secondsUntilNextClaim % 60 : `0${claimStatus.secondsUntilNextClaim % 60}`}`
                           </p>
                         )
                       ) : (
@@ -1006,7 +1001,7 @@ function DashboardContent() {
                 </div>
 
                 <a    
-                  href="https://docs.startvibin.io/claiming"
+                  href="https://startvibin.io"
                   target="_blank"
                   rel="noopener noreferrer"
                   className={styles.shareModalBannerStatsText}

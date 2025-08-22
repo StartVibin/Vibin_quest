@@ -9,6 +9,7 @@ interface ClaimStatus {
   daysUntilNextClaim: number;
   hoursUntilNextClaim: number;
   minutesUntilNextClaim: number;
+  secondsUntilNextClaim: number;
 }
 
 export const useClaimStatus = (email: string | null) => {
