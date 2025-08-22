@@ -170,7 +170,7 @@ function DashboardContent() {
                           <p style={{ color: '#10B981' }}>Ready to claim!</p>
                         ) : (
                           <p>
-                            `0${claimStatus.daysUntilNextClaim} : ${(claimStatus.hoursUntilNextClaim % 24) > 10 ? claimStatus.hoursUntilNextClaim % 24 : `0${claimStatus.hoursUntilNextClaim % 24}`} : ${(claimStatus.minutesUntilNextClaim % 60) > 10 ? claimStatus.minutesUntilNextClaim % 60 : `0${claimStatus.minutesUntilNextClaim % 60}`} : ${(claimStatus.secondsUntilNextClaim % 60) > 10 ? claimStatus.secondsUntilNextClaim % 60 : `0${claimStatus.secondsUntilNextClaim % 60}`}`
+                            0{claimStatus.daysUntilNextClaim} : {(claimStatus.hoursUntilNextClaim % 24) > 10 ? claimStatus.hoursUntilNextClaim % 24 : `0${claimStatus.hoursUntilNextClaim % 24}`} : {(claimStatus.minutesUntilNextClaim % 60) > 10 ? claimStatus.minutesUntilNextClaim % 60 : `0${claimStatus.minutesUntilNextClaim % 60}`} : {(claimStatus.secondsUntilNextClaim % 60) > 10 ? claimStatus.secondsUntilNextClaim % 60 : `0${claimStatus.secondsUntilNextClaim % 60}`}
                           </p>
                         )
                       ) : (
