@@ -684,7 +684,7 @@ function DashboardContent() {
                         </div>
 
                         <p className={styles.statsBlockElemText}>
-                          0 (&lt;30 minutes)
+                          Scaled logarithmically
                         </p>
                       </div>
 
@@ -701,7 +701,7 @@ function DashboardContent() {
                         </div>
 
                         <p className={styles.statsBlockElemText}>
-                          0 (&lt;30 artist)
+                          Rewarded propportionally
                         </p>
                       </div>
 
@@ -718,7 +718,7 @@ function DashboardContent() {
                         </div>
 
                         <p className={styles.statsBlockElemText}>
-                          0 (&lt;7 days)
+                          Rewarded with a mulitplier
                         </p>
                       </div>
 
@@ -735,7 +735,7 @@ function DashboardContent() {
                         </div>
 
                         <p className={styles.statsBlockElemText}>
-                          0 (&lt;10 referalls)
+                          Multipler based on sync streak
                         </p>
                       </div>
 
@@ -1005,7 +1005,12 @@ function DashboardContent() {
                   </div>
                 </div>
 
-                <p className={styles.shareModalBannerStatsText}>vibin.io</p>
+                <a    
+                  href="https://docs.startvibin.io/claiming"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.shareModalBannerStatsText}
+                  >startvibin.io</a>
               </div>
             </div>
 
