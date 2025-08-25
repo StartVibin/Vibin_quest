@@ -46,14 +46,9 @@ export default function Home() {
       const result = await verifyReferalCode(invitationCode);
       if (result.success) {
         toast.success("Valid invitation code.");
-        // Store in the correct localStorage key that other pages expect
-        // Note: verifyReferalCode already stores this in localStorage
-        // Also store in cookies for middleware access
         document.cookie = `inviteCode=${invitationCode}; path=/; max-age=86400`; // 24 hours
-        // Update shared context
         setSharedValue({ ...sharedValue, invitationCode: invitationCode, showWallet: false });
         
-        // Redirect to Spotify page after successful verification
         router.push('/join/spotify');
       } else {
         toast.error("Invalid invitation code. Please try again.");
@@ -111,6 +106,20 @@ export default function Home() {
               </div>
             </div>
           </form>
+
+          {/* Already have an account section */}
+          <div className={styles.alreadyHaveAccount}>
+            <p className={styles.alreadyHaveAccountText}>
+              Already have an account?
+            </p>
+            <button
+              onClick={() => router.push('/join/spotify')}
+              className={styles.skipButton}
+              disabled={isLoading}
+            >
+              →
+            </button>
+          </div>
         </div>
       </LeftHalfModal>
     </div>

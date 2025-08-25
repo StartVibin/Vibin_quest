@@ -55,7 +55,12 @@ function SpotifyLoginContent() {
     const code = invitationCode || localStorage.getItem('invitation_code');
    
     if (!code) {
-      router.push('/');
+      // Only redirect if we're not in the middle of a flow
+      // Check if user came from invitation code page
+      const referrer = document.referrer;
+      if (!referrer.includes('/join') && !referrer.includes(window.location.origin)) {
+        router.push('/');
+      }
       return;
     }
 
@@ -92,12 +97,12 @@ function SpotifyLoginContent() {
 
       window.history.replaceState({}, document.title, window.location.pathname);
     } else if (error) {
-      toast.error(`Spotify connection fai444led: ${error}`);
+      toast.error(`Spotify connection failed: ${error}`);
       setShowSpotifyModal(false);
 
       window.history.replaceState({}, document.title, window.location.pathname);
     }
-  }, [router, handleSpotifyOAuthSuccess]);
+  }, [router, handleSpotifyOAuthSuccess, invitationCode]);
 
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
