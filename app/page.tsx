@@ -33,8 +33,17 @@ export default function Home() {
     }
   }, []);
 
+  // Restore invitation code from shared context or localStorage when component mounts
+  useEffect(() => {
+    const storedCode = sharedValue.invitationCode || localStorage.getItem('invitation_code') || '';
+    if (storedCode && storedCode !== invitationCode) {
+      setInvitationCode(storedCode);
+    }
+  }, [sharedValue.invitationCode, invitationCode]);
+
   const handleInvitationCodeSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('Form submitted with code:', invitationCode);
 
     if (!invitationCode?.trim()) {
       toast.error('Please enter an invitation code');
@@ -43,12 +52,23 @@ export default function Home() {
 
     setIsLoading(true);
     try {
+      console.log('Verifying invitation code:', invitationCode);
       const result = await verifyReferalCode(invitationCode);
+      console.log('Verification result:', result);
+      
       if (result.success) {
         toast.success("Valid invitation code.");
+        
+        // Store in localStorage
+        localStorage.setItem('invitation_code', invitationCode);
+        
+        // Store in cookies
         document.cookie = `inviteCode=${invitationCode}; path=/; max-age=86400`; // 24 hours
+        
+        // Update shared context
         setSharedValue({ ...sharedValue, invitationCode: invitationCode, showWallet: false });
         
+        console.log('Redirecting to Spotify page...');
         router.push('/join/spotify');
       } else {
         toast.error("Invalid invitation code. Please try again.");
@@ -87,7 +107,10 @@ export default function Home() {
                   id="invitationCode"
                   type="text"
                   value={invitationCode}
-                  onChange={(e) => setInvitationCode(e.target.value)}
+                  onChange={(e) => {
+                    console.log('Input changed:', e.target.value);
+                    setInvitationCode(e.target.value);
+                  }}
                   placeholder="Enter your invitation code"
                   className={styles.input}
                   disabled={isLoading}
@@ -96,6 +119,7 @@ export default function Home() {
                   type="submit"
                   className={styles.continueButton}
                   disabled={isLoading || !invitationCode?.trim()}
+                  onClick={() => console.log('Continue button clicked')}
                 >
                   {isLoading ? (
                     <div className={styles.loadingSpinner} />
@@ -113,9 +137,14 @@ export default function Home() {
               Already have an account?
             </p>
             <button
-              onClick={() => router.push('/join/spotify')}
+              onClick={() => {
+                console.log('Skip button clicked - redirecting to Spotify page');
+                console.log('Current shared value:', sharedValue);
+                router.push('/join/spotify');
+              }}
               className={styles.skipButton}
               disabled={isLoading}
+              type="button"
             >
               →
             </button>

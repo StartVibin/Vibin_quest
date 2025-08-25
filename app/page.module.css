@@ -1556,18 +1556,21 @@
 .alreadyHaveAccount {
   display: flex;
   align-items: center;
+  justify-content: center;
   width: 100%;
   text-align: center;
   margin-top: 1rem;
   padding-top: 2rem;
   margin-left: 0.5rem;
   border-top: 1px solid rgba(255, 255, 255, 0.2);
+  gap: 1rem;
 }
 
 .alreadyHaveAccountText {
   color: rgba(99, 87, 87, 0.8);
   font-size: 1.4rem;
   font-family: 'Inter', sans-serif;
+  margin: 0;
 }
 
 .skipButton {
@@ -1575,13 +1578,21 @@
   border: 2px solid rgba(19, 13, 13, 0.3);
   color: rgba(9, 24, 11, 0.9);
   margin-left: 1rem;
-  padding: 0.1rem 0.5rem;
+  padding: 0.8rem 1.2rem;
   border-radius: 10px;
   font-size: 1.4rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
   font-family: 'Inter', sans-serif;
+  min-height: 44px; /* Minimum touch target size for mobile */
+  min-width: 44px; /* Minimum touch target size for mobile */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none; /* Prevent text selection on mobile */
+  -webkit-tap-highlight-color: transparent; /* Remove mobile tap highlight */
+  touch-action: manipulation; /* Optimize for touch */
 }
 
 .skipButton:hover {
@@ -1590,7 +1601,32 @@
   color: rgb(133, 125, 125);
 }
 
+.skipButton:active {
+  transform: scale(0.95); /* Visual feedback on touch */
+}
+
 .skipButton:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+/* Mobile-specific improvements */
+@media (max-width: 768px) {
+  .alreadyHaveAccount {
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-left: 0;
+  }
+  
+  .skipButton {
+    margin-left: 0;
+    padding: 1rem 1.5rem;
+    min-height: 48px; /* Larger touch target on mobile */
+    min-width: 48px;
+    font-size: 1.6rem; /* Larger text for mobile */
+  }
+  
+  .alreadyHaveAccountText {
+    font-size: 1.6rem;
+  }
 }
