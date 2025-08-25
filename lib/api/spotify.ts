@@ -227,8 +227,8 @@ export const spotifyAPI = {
     try {
       const [profile, topTracks, recentlyPlayed, playlists] = await Promise.all([
         spotifyAPI.getUserProfile(accessToken),
-        spotifyAPI.getTopTracks(accessToken, 10),
-        spotifyAPI.getRecentlyPlayed(accessToken, 10),
+        spotifyAPI.getTopTracks(accessToken, 50), // Increased from 10 to 50 for better stats
+        spotifyAPI.getRecentlyPlayed(accessToken, 50), // Increased from 10 to 50 for better stats
         spotifyAPI.getPlaylists(accessToken, 10)
       ]);
 
@@ -306,30 +306,41 @@ export const spotifyAPI = {
 
   // Calculate listening statistics
   getListeningStats: (userData: SpotifyUserData): SpotifyListeningStats => {
-    const { topTracks } = userData;
+    const { topTracks, recentlyPlayed } = userData;
     
-    // Get unique artists from top tracks
+    // Extract actual track data from recently played (they have a 'track' property)
+    const recentlyPlayedTracks = recentlyPlayed.map(rp => rp.track);
+    
+    // Combine top tracks and recently played for more comprehensive stats
+    const allTracks = [...topTracks, ...recentlyPlayedTracks];
+    
+    // Remove duplicates based on track ID to avoid double counting
+    const uniqueTracks = allTracks.filter((track, index, self) => 
+      index === self.findIndex(t => t.id === track.id)
+    );
+    
+    // Get unique artists from all tracks
     const uniqueArtists = new Set<string>();
-    topTracks.forEach(track => {
+    uniqueTracks.forEach(track => {
       track.artists.forEach(artist => uniqueArtists.add(artist.name));
     });
     
-    // Calculate total listening time (from top tracks)
-    const totalListeningTimeMs = topTracks.reduce((total, track) => total + track.duration_ms, 0);
+    // Calculate total listening time (from all unique tracks)
+    const totalListeningTimeMs = uniqueTracks.reduce((total, track) => total + track.duration_ms, 0);
     
     // Count anonymous tracks (tracks without proper artist info)
-    const anonymousTrackCount = topTracks.filter(track => 
+    const anonymousTrackCount = uniqueTracks.filter(track => 
       !track.artists.length || track.artists.some(artist => 
         !artist.name || artist.name.toLowerCase().includes('unknown') || artist.name.toLowerCase().includes('anonymous')
       )
     ).length;
     
-    // Get top 5 tracks and artists
+    // Get top 5 tracks and artists from top tracks only (for display purposes)
     const topTracksInfo = spotifyAPI.getTopTracksInfo(topTracks, 5);
     const topArtistsInfo = spotifyAPI.getTopArtistsInfo(topTracks, 5);
     
     const stats: SpotifyListeningStats = {
-      totalTracksPlayed: topTracks.length,
+      totalTracksPlayed: uniqueTracks.length, // Use unique tracks count instead of just top tracks
       uniqueArtistsCount: uniqueArtists.size,
       totalListeningTimeMs,
       anonymousTrackCount,
@@ -337,14 +348,15 @@ export const spotifyAPI = {
       topArtists: topArtistsInfo
     };
     
-    // console.log('📊 Listening stats calculated:', {
-    //   totalTracks: stats.totalTracksPlayed,
-    //   uniqueArtists: stats.uniqueArtistsCount,
-    //   totalTimeMinutes: Math.round(stats.totalListeningTimeMs / 60000),
-    //   anonymousTracks: stats.anonymousTrackCount,
-    //   topTracks: stats.topTracks.length,
-    //   topArtists: stats.topArtists.length
-    // });
+    console.log('📊 Enhanced listening stats calculated:', {
+      totalTracks: stats.totalTracksPlayed,
+      uniqueArtists: stats.uniqueArtistsCount,
+      totalTimeMinutes: Math.round(stats.totalListeningTimeMs / 60000),
+      anonymousTracks: stats.anonymousTrackCount,
+      topTracks: stats.topTracks.length,
+      topArtists: stats.topArtists.length,
+      dataSource: `Top tracks: ${topTracks.length}, Recently played: ${recentlyPlayedTracks.length}, Unique combined: ${uniqueTracks.length}`
+    });
     
     return stats;
   },

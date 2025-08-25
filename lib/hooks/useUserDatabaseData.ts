@@ -61,7 +61,7 @@ export function useUserDatabaseData() {
     queryKey: ['userDatabaseData', email],
     queryFn: () => fetchUserDatabaseData(email!),
     enabled: !!email,
-    refetchInterval: 30000, // Refetch every 30 seconds
-    staleTime: 10000, // Consider data stale after 10 seconds
+    refetchInterval: 60000, // Refetch every 60 seconds - reduced from 30 seconds for stability
+    staleTime: 30000, // Consider data stale after 30 seconds
   });
 }

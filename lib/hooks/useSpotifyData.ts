@@ -82,17 +82,49 @@ export function useSpotifyData(inviteCode?: string) {
       // Fetch comprehensive user data using the access token
       const userData = await spotifyAPI.getComprehensiveUserData(accessToken, refreshToken);
       const stats = spotifyAPI.getListeningStats(userData);
-      const statsWithEmail = {
-        listeningTime: stats.totalListeningTimeMs,
-        uniqueArtistCount: stats.uniqueArtistsCount,
-        tracksPlayedCount: stats.totalTracksPlayed,
-        anonymousTracksPlayedCount: stats.anonymousTrackCount,
+      
+      // Get the last known stats from localStorage to calculate incremental changes
+      const lastKnownStats = JSON.parse(localStorage.getItem('lastKnownSpotifyStats') || '{}');
+      
+      // Calculate incremental changes (new data since last update)
+      const incrementalStats = {
+        listeningTime: Math.max(0, stats.totalListeningTimeMs - (lastKnownStats.listeningTime || 0)),
+        uniqueArtistCount: Math.max(0, stats.uniqueArtistsCount - (lastKnownStats.uniqueArtistsCount || 0)),
+        tracksPlayedCount: Math.max(0, stats.totalTracksPlayed - (lastKnownStats.tracksPlayedCount || 0)),
+        anonymousTracksPlayedCount: Math.max(0, stats.anonymousTrackCount - (lastKnownStats.anonymousTrackCount || 0)),
         spotifyEmail: mail,
       };
-
-      // Send data to backend
-      await sendSpotifyData(statsWithEmail);
-      console.log(`[${new Date().toISOString()}] [fetchSpotifyData] Data fetched and sent successfully`);
+      
+      // Store current stats for next comparison
+      localStorage.setItem('lastKnownSpotifyStats', JSON.stringify({
+        listeningTime: stats.totalListeningTimeMs,
+        uniqueArtistsCount: stats.uniqueArtistsCount,
+        tracksPlayedCount: stats.totalTracksPlayed,
+        anonymousTrackCount: stats.anonymousTrackCount,
+        timestamp: Date.now()
+      }));
+      
+      // Only send data if there are actual changes
+      const hasChanges = Object.values(incrementalStats).some(value => 
+        typeof value === 'number' && value > 0
+      );
+      
+      if (hasChanges) {
+        console.log(`[${new Date().toISOString()}] [fetchSpotifyData] Sending incremental stats:`, incrementalStats);
+        console.log(`[${new Date().toISOString()}] [fetchSpotifyData] Previous stats:`, lastKnownStats);
+        console.log(`[${new Date().toISOString()}] [fetchSpotifyData] Current stats:`, {
+          listeningTime: stats.totalListeningTimeMs,
+          uniqueArtistsCount: stats.uniqueArtistsCount,
+          tracksPlayedCount: stats.totalTracksPlayed,
+          anonymousTrackCount: stats.anonymousTrackCount
+        });
+        await sendSpotifyData(incrementalStats);
+      } else {
+        console.log(`[${new Date().toISOString()}] [fetchSpotifyData] No new data to send`);
+        console.log(`[${new Date().toISOString()}] [fetchSpotifyData] Current stats unchanged from:`, lastKnownStats);
+      }
+      
+      console.log(`[${new Date().toISOString()}] [fetchSpotifyData] Data fetched and processed successfully`);
       
       return {
         topArtists: stats.topArtists.slice(0, 5),
@@ -108,7 +140,7 @@ export function useSpotifyData(inviteCode?: string) {
     }
   };
 
-  // Query for Spotify data, refetch every 6 sec
+  // Query for Spotify data, refetch every 30 seconds
   const {
     data: spotifyData,
     isLoading: isSpotifyLoading,
@@ -118,12 +150,12 @@ export function useSpotifyData(inviteCode?: string) {
     queryKey: ['spotify-data', code, accessToken],
     queryFn: fetchSpotifyData,
     enabled: !!(code && mail && accessToken && refreshToken), // Simplified: just check if we have the basic data
-    refetchInterval: 6000, // 6 seconds
+    refetchInterval: 30000, // 30 seconds - reduced from 6 seconds to prevent overwhelming backend
     refetchIntervalInBackground: true, // Critical: allows refetching when tab is not focused
     refetchOnWindowFocus: true, // Refetch when user returns to tab
     retry: 3, // Retry failed requests
     retryDelay: 1000, // Wait 1 second between retries
-    staleTime: 0, // Data is always considered stale, so it will refetch
+    staleTime: 15000, // Data is considered stale after 15 seconds
     gcTime: 5 * 60 * 1000, // Keep data in cache for 5 minutes
   });
 

@@ -1,12 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
-const SPOTIFY_CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET;
 const SPOTIFY_REDIRECT_URI = process.env.SPOTIFY_REDIRECT_URI || 'http://127.0.0.1:3000/callback';
 
 export async function POST(request: NextRequest) {
   try {
-    const { code } = await request.json();
+    const { code, state } = await request.json();
+    const index = state.index;
+    const env = process?.env ?? {};
+    const SPOTIFY_CLIENT_ID = env[`SPOTIFY_CLIENT_ID_${index}`];
+    const SPOTIFY_CLIENT_SECRET = env[`SPOTIFY_CLIENT_SECRET_${index}`];
+
+    console.log("email index", index);
+    
+    if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET) {
+      return NextResponse.json(
+        { error: `Spotify credentials not found for index ${index}` },
+        { status: 500 }
+      );
+    }
 
     if (!code) {
       return NextResponse.json(

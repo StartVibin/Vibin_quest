@@ -366,6 +366,7 @@ export async function postXStats({
   const accessToken = getAccessToken();
   if (!accessToken) {
     console.error('No X access token found. Please connect X first.');
+    alert('Please connect your X account first to share your stats!');
     return;
   }
 
@@ -393,13 +394,19 @@ export async function postXStats({
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ accessToken, tweet }),
+      body: JSON.stringify({ accessToken, text: tweet }),
     });
     const result = await response.json();
     console.log('✅ [postXStats] Tweet posted:', result);
+    if (result.success) {
+      alert('Successfully shared your stats on X! 🎉');
+    } else {
+      alert('Failed to share on X. Please try again.');
+    }
     return result;
   } catch (error) {
     console.error('❌ [postXStats] Error posting to X:', error);
+    alert('Failed to share on X. Please try again.');
     return null;
   }
 }

@@ -37,6 +37,7 @@ import { useAccount, useWalletClient } from "wagmi";
 import { BrowserProvider, JsonRpcSigner } from "ethers";
 import { ToastInstance } from "@/lib/types";
 import { useUserDatabaseData } from '@/lib/hooks/useUserDatabaseData'
+import { P } from "pino";
 
 // Custom hook to convert wagmi wallet client to ethers signer
 function useEthersSigner() {
@@ -169,13 +170,20 @@ function DashboardContent() {
                         claimStatus.canClaim ? (
                           <p style={{ color: '#10B981' }}>Ready to claim!</p>
                         ) : (
-                          <p>
-                            0{claimStatus.daysUntilNextClaim} : {(claimStatus.hoursUntilNextClaim % 24) > 10 ? claimStatus.hoursUntilNextClaim % 24 : `0${claimStatus.hoursUntilNextClaim % 24}`} : {(claimStatus.minutesUntilNextClaim % 60) > 10 ? claimStatus.minutesUntilNextClaim % 60 : `0${claimStatus.minutesUntilNextClaim % 60}`} : {(claimStatus.secondsUntilNextClaim % 60) > 10 ? claimStatus.secondsUntilNextClaim % 60 : `0${claimStatus.secondsUntilNextClaim % 60}`}
-                          </p>
+                          <p>-- -- -- --</p>
                         )
                       ) : (
-                        <p>--</p>
-                      )}
+                        <p>-- -- -- --</p>
+                      )
+                        // ) : (
+                        //   <p>
+                        //     0{claimStatus.daysUntilNextClaim} : {(claimStatus.hoursUntilNextClaim % 24) > 10 ? claimStatus.hoursUntilNextClaim % 24 : `0${claimStatus.hoursUntilNextClaim % 24}`} : {(claimStatus.minutesUntilNextClaim % 60) > 10 ? claimStatus.minutesUntilNextClaim % 60 : `0${claimStatus.minutesUntilNextClaim % 60}`} : {(claimStatus.secondsUntilNextClaim % 60) > 10 ? claimStatus.secondsUntilNextClaim % 60 : `0${claimStatus.secondsUntilNextClaim % 60}`}
+                        //   </p>
+                        // )
+                        //  (
+                        //   <p>--</p>
+                        // )
+                      }
                     </div>
                   </div>
                   <div className={styles.shareBlock}>
@@ -935,7 +943,7 @@ function DashboardContent() {
                       <p>Earned:</p>
 
                       <div className={styles.shareModalBannerStatsEarnValue}>
-                        {isLoading ? 'Loading...' : data?.totalTracksPlayed ? `${data.totalTracksPlayed} pts` : '0 pts'}
+                        {userDataLoading ? 'Loading...' : userData?.totalBasePoints ? `${userData.totalBasePoints} pts` : '0 pts'}
                         <Logo2 />
                       </div>
                     </div>
@@ -1011,14 +1019,22 @@ function DashboardContent() {
 
             <button
               className={styles.shareModalLink}
-              onClick={() =>
+              onClick={() => {
+                // Check if user has X connected by checking localStorage
+                const hasXAccessToken = typeof window !== 'undefined' && localStorage.getItem('x_access_token');
+                
+                if (!hasXAccessToken) {
+                  alert('Please connect your X account first to share your stats!');
+                  return;
+                }
+                
                 postXStats({
-                  topTracks: data!.topTracks!,
-                  totalListeningTimeMs: data!.totalListeningTimeMs!,
-                  uniqueArtistsCount: data!.uniqueArtistsCount!,
-                  topArtists: data!.topArtists!,
-                })
-              }
+                  topTracks: data?.topTracks || [],
+                  totalListeningTimeMs: data?.totalListeningTimeMs || 0,
+                  uniqueArtistsCount: data?.uniqueArtistsCount || 0,
+                  topArtists: data?.topArtists || [],
+                });
+              }}
             >
               Share on X
             </button>

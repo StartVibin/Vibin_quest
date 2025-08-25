@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
     const code = searchParams.get('code');
     const error = searchParams.get('error');
     const state = searchParams.get('state');
-    
+
     if (error) {
       return NextResponse.redirect(new URL('/join/spotify?error=oauth_failed', request.url));
     }
@@ -23,6 +23,7 @@ export async function GET(request: NextRequest) {
     }
 
     const sessionData = sessionStore.get(state);
+
     
     if (!sessionData) {
       console.error("No session data found for state:", state);
@@ -32,6 +33,7 @@ export async function GET(request: NextRequest) {
     const { index } = sessionData;
     const SPOTIFY_CLIENT_ID = process.env[`SPOTIFY_CLIENT_ID_${index}`];
     const SPOTIFY_CLIENT_SECRET = process.env[`SPOTIFY_CLIENT_SECRET_${index}`];
+
     const tokenResponse = await fetch('https://accounts.spotify.com/api/token', {
       method: 'POST',
       headers: {
@@ -58,6 +60,7 @@ export async function GET(request: NextRequest) {
       }
     });
 
+    console.log("Profile response status:", profileResponse.status);
     if (!profileResponse.ok) {
       console.error('Profile fetch failed:', await profileResponse.text());
       return NextResponse.redirect(new URL('/join/spotify?error=profile_fetch_failed', request.url));
