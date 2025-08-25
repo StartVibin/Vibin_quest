@@ -37,7 +37,6 @@ import { useAccount, useWalletClient } from "wagmi";
 import { BrowserProvider, JsonRpcSigner } from "ethers";
 import { ToastInstance } from "@/lib/types";
 import { useUserDatabaseData } from '@/lib/hooks/useUserDatabaseData'
-import { P } from "pino";
 
 // Custom hook to convert wagmi wallet client to ethers signer
 function useEthersSigner() {
