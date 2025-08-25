@@ -21,7 +21,16 @@ export async function POST(req: NextRequest) {
     if (!response.ok) {
       return NextResponse.json({ error: data.error || data.title || 'Failed to post' }, { status: response.status });
     }
-    return NextResponse.json({ success: true, data });
+    
+    // Return success with tweet ID for redirection
+    return NextResponse.json({ 
+      success: true, 
+      data: {
+        id: data.data?.id,
+        text: data.data?.text,
+        ...data
+      }
+    });
   } catch (error) {
     return NextResponse.json({ error: error instanceof Error ? error.message : 'Unknown error' }, { status: 500 });
   }

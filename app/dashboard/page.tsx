@@ -1018,21 +1018,47 @@ function DashboardContent() {
 
             <button
               className={styles.shareModalLink}
-              onClick={() => {
+              onClick={async () => {
                 // Check if user has X connected by checking localStorage
                 const hasXAccessToken = typeof window !== 'undefined' && localStorage.getItem('x_access_token');
                 
                 if (!hasXAccessToken) {
-                  alert('Please connect your X account first to share your stats!');
+                  toast.error('Please connect your X account first to share your stats!');
                   return;
                 }
                 
-                postXStats({
+                const result = await postXStats({
                   topTracks: data?.topTracks || [],
                   totalListeningTimeMs: data?.totalListeningTimeMs || 0,
                   uniqueArtistsCount: data?.uniqueArtistsCount || 0,
                   topArtists: data?.topArtists || [],
                 });
+
+                // Handle different response cases
+                if (result?.alreadyShared) {
+                  toast.info('Your update already shared on X! 🎉');
+                } else if (result?.success) {
+                  toast.success('Successfully shared your stats on X! 🎉');
+                  
+                  // Try to redirect to X to show the posted tweet
+                  try {
+                    // Get the tweet ID from the response if available
+                    if (result.data?.id) {
+                      const tweetUrl = `https://twitter.com/i/status/${result.data.id}`;
+                      window.open(tweetUrl, '_blank');
+                    } else {
+                      // Fallback: open X profile to see recent tweets
+                      const profileUrl = 'https://twitter.com/home';
+                      window.open(profileUrl, '_blank');
+                    }
+                  } catch (redirectError) {
+                    console.log('Could not redirect to X:', redirectError);
+                  }
+                } else if (result?.success === false) {
+                  toast.error(`Failed to share on X: ${result.error || 'Unknown error'}`);
+                } else {
+                  toast.error('Failed to share on X. Please try again.');
+                }
               }}
             >
               Share on X

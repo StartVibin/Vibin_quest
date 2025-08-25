@@ -366,8 +366,15 @@ export async function postXStats({
   const accessToken = getAccessToken();
   if (!accessToken) {
     console.error('No X access token found. Please connect X first.');
-    alert('Please connect your X account first to share your stats!');
     return;
+  }
+
+  // Check if already posted recently (within last 5 minutes)
+  const lastPostedTime = localStorage.getItem('x_last_posted_time');
+  const now = Date.now();
+  if (lastPostedTime && (now - parseInt(lastPostedTime)) < 5 * 60 * 1000) {
+    // Show "already shared" message
+    return { alreadyShared: true };
   }
 
   // Format listening time
@@ -398,15 +405,16 @@ export async function postXStats({
     });
     const result = await response.json();
     console.log('✅ [postXStats] Tweet posted:', result);
+    
     if (result.success) {
-      alert('Successfully shared your stats on X! 🎉');
+      // Store timestamp of successful post
+      localStorage.setItem('x_last_posted_time', now.toString());
+      return { success: true, data: result.data };
     } else {
-      alert('Failed to share on X. Please try again.');
+      return { success: false, error: result.error };
     }
-    return result;
   } catch (error) {
     console.error('❌ [postXStats] Error posting to X:', error);
-    alert('Failed to share on X. Please try again.');
-    return null;
+    return { success: false, error: 'Network error' };
   }
 }
