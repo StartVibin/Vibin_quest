@@ -32,17 +32,26 @@ export function middleware(request: NextRequest) {
   }
   
   // Check if it's a join route
-  if (joinRoutes.some(route => pathname.startsWith(route))) {
-    // For join routes, check if user has invitation code
-    const invitationCode = request.cookies.get('inviteCode')?.value || 
-                          request.headers.get('x-invite-code') || 
-                          request.nextUrl.searchParams.get('inviteCode');
+  // if (joinRoutes.some(route => pathname.startsWith(route))) {
+  //   // For join routes, check if user has invitation code OR is an existing user
+  //   const invitationCode = request.cookies.get('inviteCode')?.value || 
+  //                         request.headers.get('x-invite-code') || 
+  //                         request.nextUrl.searchParams.get('inviteCode');
     
-    // If no invitation code, redirect to home
-    if (!invitationCode) {
-      return NextResponse.redirect(new URL('/', request.url));
-    }
-  }
+  //   // Check if user is an existing user (has spotify credentials)
+  //   const spotifyId = request.cookies.get('spotify_id')?.value || 
+  //                    request.headers.get('x-spotify-id') || 
+  //                    request.nextUrl.searchParams.get('spotify_id');
+    
+  //   const spotifyEmail = request.cookies.get('spotify_email')?.value || 
+  //                       request.headers.get('x-spotify-email') || 
+  //                       request.nextUrl.searchParams.get('spotify_email');
+    
+  //   // Allow access if user has invitation code OR is an existing user
+  //   if (!invitationCode && !spotifyId && !spotifyEmail) {
+  //     return NextResponse.redirect(new URL('/', request.url));
+  //   }
+  // }
   
   return NextResponse.next();
 }
