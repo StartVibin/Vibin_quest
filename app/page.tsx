@@ -34,12 +34,12 @@ export default function Home() {
   }, []);
 
   // Restore invitation code from shared context or localStorage when component mounts
-  useEffect(() => {
-    const storedCode = sharedValue.invitationCode || localStorage.getItem('invitation_code') || '';
-    if (storedCode && storedCode !== invitationCode) {
-      setInvitationCode(storedCode);
-    }
-  }, [sharedValue.invitationCode, invitationCode]);
+  // useEffect(() => {
+  //   // const storedCode = sharedValue.invitationCode || localStorage.getItem('invitation_code') || '';
+  //   if (storedCode && storedCode !== invitationCode) {
+  //     setInvitationCode(storedCode);
+  //   }
+  // }, [sharedValue.invitationCode, invitationCode]);
 
   const handleInvitationCodeSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -138,6 +138,8 @@ export default function Home() {
             </p>
             <button
               onClick={() => {
+                console.log('Skip button clicked - redirecting to Spotify page');
+                console.log('Current shared value:', sharedValue);
                 router.push('/join/spotify');
               }}
               className={styles.skipButton}

@@ -1189,9 +1189,46 @@
 }
 
 .inputWrapper {
+  position: relative;
   display: flex;
-  gap: 1rem;
-  align-items: flex-end;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.clearButton {
+  position: absolute;
+  right: 120px; /* Position it before the continue button */
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: rgba(0, 0, 0, 0.6);
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  z-index: 5;
+}
+
+.clearButton:hover {
+  background: rgba(255, 255, 255, 0.3);
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.clearButton:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.clearButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 @media (max-width: 480px) {
