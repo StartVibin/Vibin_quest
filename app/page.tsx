@@ -137,37 +137,12 @@ export default function Home() {
               Already have an account?
             </p>
             <button
-              onClick={async () => {
-                console.log('Current shared value:', sharedValue);
-                
-                // Check if user is an existing user
-                const existingSpotifyAccessToken = localStorage.getItem('spotify_access_token');
-                
-                console.log('Existing user data:', {
-                  accessToken: existingSpotifyAccessToken ? 'exists' : 'missing'
-                });
-                
-                let targetPath = '/join/spotify';
-                
-                try {
-                  console.log('Attempting navigation to:', targetPath);
-                  
-                  // Method 1: Try router.push first
-                  try {
-                    await router.push(targetPath);
-                  } catch (routerError) {
-                    window.location.href = targetPath;
-                  }
-                } catch (error) {
-                  console.error('All navigation methods failed:', error);
-                  toast.error('Navigation failed. Please try again.');
-                }
+              onClick={() => {
+                router.push('/join/spotify');
               }}
               className={styles.skipButton}
               disabled={isLoading}
               type="button"
-              aria-label="Skip invitation code and go to email input"
-              data-testid="skip-button"
             >
               →
             </button>
