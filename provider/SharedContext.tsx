@@ -35,11 +35,8 @@ export const SharedProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
 
-    // Optional: keep localStorage updated when sharedValue changes
-    useEffect(() => {
-        localStorage.setItem("invitation_code", sharedValue.invitationCode);
-        localStorage.setItem("spotify_email", sharedValue.spotifyEmail);
-    }, [sharedValue.invitationCode, sharedValue.spotifyEmail]);
+    // Only update localStorage when explicitly set, not on every change
+    // This prevents circular dependency issues
 
     return (
         <SharedContext.Provider value={{ sharedValue, setSharedValue }}>
@@ -54,4 +51,9 @@ export const useSharedContext = (): SharedContextType => {
         throw new Error("useSharedContext must be used within SharedProvider");
     }
     return ctx;
+};
+
+// Helper function to manually sync localStorage with SharedContext
+export const syncLocalStorage = (key: string, value: string) => {
+    localStorage.setItem(key, value);
 };

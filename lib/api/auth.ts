@@ -31,7 +31,6 @@ export const authAPI = {
         throw new Error(data.message || 'Failed to verify code');
       }
 
-      console.log('✅ API Success:', data);
       return data;
     } catch (error) {
       console.error('❌ Error verifying code:', error);

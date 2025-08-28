@@ -60,7 +60,6 @@ export async function GET(request: NextRequest) {
       }
     });
 
-    console.log("Profile response status:", profileResponse.status);
     if (!profileResponse.ok) {
       console.error('Profile fetch failed:', await profileResponse.text());
       return NextResponse.redirect(new URL('/join/spotify?error=profile_fetch_failed', request.url));

@@ -273,12 +273,11 @@
 }
 
 .loadingContainer {
-  min-height: 400px;
+  min-height: 800px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: white;
   border-radius: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
@@ -297,6 +296,116 @@
   color: #6B7280;
   font-size: 1rem;
   font-family: 'Ruberoid', sans-serif;
+}
+
+/* Top Right Section Layout */
+.topRightSection {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+/* Referral Share Section Styles */
+.referralShareSection {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  max-width: 600px;
+}
+
+.referralShareItem {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.referralLabel {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #332D41;
+  font-family: 'Ruberoid', sans-serif;
+}
+
+.referralInputGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.referralInput {
+  flex: 1;
+  padding: 1rem 1.5rem;
+  border: 2px solid #E5E7EB;
+  border-radius: 12px;
+  font-size: 1.4rem;
+  font-family: 'Courier New', monospace;
+  background: #F9FAFB;
+  color: #332D41;
+  cursor: text;
+}
+
+.referralInput:focus {
+  outline: none;
+  border-color: #9B51E0;
+  background: white;
+}
+
+.copyButton {
+  padding: 1rem;
+  border: none;
+  border-radius: 12px;
+  background: #9B51E0;
+  color: white;
+  font-size: 1.6rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.copyButton:hover {
+  background: #7C3AED;
+  transform: translateY(-1px);
+}
+
+.refreshButton {
+  padding: 0.75rem 1.5rem;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Ruberoid', sans-serif;
+  box-shadow: 0 2px 6px rgba(0, 123, 255, 0.2);
+}
+
+.refreshButton:hover {
+  background: #0056b3;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+}
+
+
+
+.orText {
+  font-size: 1.2rem;
+  color: #6B7280;
+  font-weight: 500;
+  text-align: center;
+  margin: 0.5rem 0;
 }
 
 .errorContainer {
@@ -360,6 +469,42 @@
   100% { transform: rotate(360deg); }
 }
 
+/* Wallet Status Overview */
+.walletStatusOverview {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.statusCard {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 120px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.statusLabel {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+  text-align: center;
+}
+
+.statusValue {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .leaderboardContainer {
@@ -372,6 +517,26 @@
   
   .title {
     font-size: 2rem;
+  }
+  
+  .topRightSection {
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .referralShareSection {
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 100%;
+  }
+  
+  .walletStatusOverview {
+    gap: 0.75rem;
+  }
+  
+  .statusCard {
+    min-width: 100px;
+    padding: 0.75rem 1rem;
   }
   
   .tableHeader th,
@@ -393,6 +558,23 @@
 @media (max-width: 480px) {
   .leaderboardContainer {
     padding: 0.5rem;
+  }
+  
+  .topRightSection {
+    margin-bottom: 0.5rem;
+  }
+  
+  .referralShareSection {
+    padding: 1rem;
+  }
+  
+  .referralLabel {
+    font-size: 1.2rem;
+  }
+  
+  .referralInput {
+    font-size: 1.2rem;
+    padding: 0.75rem 1rem;
   }
   
   .tableHeader th,

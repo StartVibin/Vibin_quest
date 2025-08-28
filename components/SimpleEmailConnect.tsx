@@ -46,22 +46,15 @@ export default function SimpleEmailConnect({
     setIsLoading(true);
     
     try {
-      console.log("📧 [Simple Email] Connecting email:", email);
-      
-      // Import the API function
       const { verifyEmailConnection } = await import('@/lib/api');
-      
-      // Send email directly to backend (without OAuth verification)
       const verificationResult = await verifyEmailConnection(address!, email, undefined);
-      
-      console.log("✅ [Simple Email] Connection successful:", verificationResult);
+
       toast.success(`Email connected successfully! Awarded ${verificationResult.data.pointsAwarded} points!`);
-      
       setShowModal(false);
       setEmail('');
       onSuccess?.();
     } catch (error) {
-      console.error("❌ [Simple Email] Connection failed:", error);
+      console.log(error);
       toast.error("Failed to connect email. Please try again.");
     } finally {
       setIsLoading(false);

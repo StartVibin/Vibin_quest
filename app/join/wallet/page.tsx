@@ -21,7 +21,7 @@ function WalletConnectionContent() {
     const spotifyEmail = localStorage.getItem('spotify_email');
 
     if (!storedCode || !spotifyEmail) {
-      toast.error('Missing registration data. Please start over.');
+      toast.error('Missing registration data, No code or email. Please start over.');
       router.push('/join');
       return;
     }

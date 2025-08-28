@@ -34,40 +34,7 @@ const WalletButton: React.FC<WalletButtonProps> = ({
     const { showWallet } = sharedValue;
 
     React.useEffect(() => setMounted(true), []);
-
-    // React.useEffect(() => {
-    //     const handleWelcomeSign = async () => {
-    //         if (isConnected && address) {
-    //             try {
-    //                 //const welcomeMessage = "Welcome to Social Quest!";
-    //                 //const signature = await signMessageAsync({ message: welcomeMessage });
-
-    //                 // Check for pending referral code
-    //                 const pendingReferralCode = localStorage.getItem('pendingReferralCode');
-
-    //                 //const authData = await authenticateWallet(address, welcomeMessage, signature, pendingReferralCode || undefined);
-    //                 //console.log('Authentication response:', authData);
-    //                 if (true) {
-    //                     //console.log('Wallet authenticated successfully');
-
-    //                     // Clear the pending referral code after successful authentication
-    //                     if (pendingReferralCode) {
-    //                         localStorage.removeItem('pendingReferralCode');
-    //                         //console.log('Referral code applied during registration');
-    //                     }
-    //                 } else {
-    //                     //console.error('Wallet authentication failed:', authData.message);
-    //                 }
-    //                 //console.log('Welcome message signed successfully:', signature);
-    //             } catch (error) {
-    //                 //console.error('Failed to sign welcome message or authenticate:', error);
-    //             }
-    //         }
-    //     };
-    //     handleWelcomeSign();
-    // }, [isConnected, address, signMessageAsync]);
-
-    // Only control rendering, not hook calls
+   
     if (!mounted) return null;
 
     if (isConnected) {

@@ -62,14 +62,9 @@ function formatMsToHrMin(ms: number): string {
 function DashboardContent() {
   const [shareModal, setShareModal] = React.useState(false);
   const toast = useToast();
-  
-  // Get invite code from localStorage
   const inviteCode = typeof window !== 'undefined' ? localStorage.getItem('spotify_id') || '' : '';
   const { data, isLoading, error } = useSpotifyData()
-
-  console.log("data------------->", data)
   const { data: userData, isLoading: userDataLoading, error: userDataError } = useUserDatabaseData()
-  console.log("userData------------->", userData)
   const { address } = useAccount();
   const signer = useEthersSigner();
   const [ethersSigner, setEthersSigner] = React.useState<JsonRpcSigner | null>(

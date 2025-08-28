@@ -115,7 +115,7 @@ export default function GoogleOAuthButton ({
     }, 1000);
 
     const handleMessage = (event: MessageEvent) => {
-      const timestamp = new Date().toISOString();
+      // const timestamp = new Date().toISOString();
       
       if (event.origin !== window.location.origin) {
         console.warn("⚠️ [Google OAuth] Message from different origin:", event.origin);
@@ -141,29 +141,18 @@ export default function GoogleOAuthButton ({
       }
       
       if (event.data.type !== 'google_auth_success' && event.data.type !== 'google_auth_error') {
-        console.log(`📨 [Google OAuth] [${timestamp}] Ignoring non-Google OAuth message:`, event.data.type);
         return;
       }
       
       if (event.data.type === 'google_auth_success' && !event.data.user) {
-        console.log(`📨 [Google OAuth] [${timestamp}] Ignoring Google OAuth message without user data`);
         return;
       }
       
       if (event.data.source !== 'google_oauth_callback') {
-        console.log(`📨 [Google OAuth] [${timestamp}] Ignoring message from unknown source:`, event.data.source);
         return;
       }
       
-      console.log(`📨 [Google OAuth] [${timestamp}] Processing legitimate Google OAuth message:`, {
-        type: event.data.type,
-        source: event.data.source,
-        timestamp: event.data.timestamp
-      });
-      
       if (event.data.type === 'google_auth_success') {
-        console.log("✅ [Google OAuth] Auth success message received");
-        console.log("👤 [Google OAuth] User data:", event.data.user);
         sendToBackend(event.data.user);
         
         try {
@@ -189,14 +178,10 @@ export default function GoogleOAuthButton ({
     };
 
     window.addEventListener('message', handleMessage);
-    console.log("👂 [Google OAuth] Message listener attached");
     
     setTimeout(() => {
-      console.warn("⚠️ [Google OAuth] No message received within 60 seconds - checking popup status");
       if (popup && !popup.closed) {
-        console.log("🪟 [Google OAuth] Popup is still open");
         try {
-          console.log("🔗 [Google OAuth] Popup location:", popup.location.href);
         } catch (error) {
           console.warn("⚠️ [Google OAuth] Cannot access popup location due to CORS:", error);
         }

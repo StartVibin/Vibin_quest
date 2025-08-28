@@ -57,10 +57,8 @@ export const useUserProfile = (): UseUserProfileReturn => {
   const [error, setError] = useState<string | null>(null)
 
   const fetchProfile = useCallback(async () => {
-    //console.log('🔍 Fetching profile for:', { address, isConnected })
     
     if (!address || !isConnected) {
-      //console.log('❌ No address or not connected, clearing profile')
       setProfile(null)
       setError(null)
       return
@@ -69,14 +67,11 @@ export const useUserProfile = (): UseUserProfileReturn => {
     try {
       setLoading(true)
       setError(null)
-      //console.log('📡 Making API call to getUserProfile with address:', address)
       
       const data = await getUserProfile(address)
-      //console.log('✅ API response:', data)
       
       setProfile(data)
     } catch (err) {
-      //console.error('❌ Error fetching user profile:', err)
       setError(err instanceof Error ? err.message : 'Failed to fetch profile')
     } finally {
       setLoading(false)
@@ -87,7 +82,6 @@ export const useUserProfile = (): UseUserProfileReturn => {
   const memoizedProfile = useMemo(() => profile, [profile])
 
   useEffect(() => {
-    //console.log('🔄 useEffect triggered:', { address, isConnected })
     
     if (!address || !isConnected) {
       setProfile(null)
@@ -100,14 +94,11 @@ export const useUserProfile = (): UseUserProfileReturn => {
 
     // Set up interval for periodic updates (every 30 seconds instead of 3)
     const interval = setInterval(() => {
-      //console.log('⏰ Periodic profile fetch triggered')
       fetchProfile()
     }, 30000)
 
     return () => clearInterval(interval)
   }, [address, isConnected, fetchProfile])
-
-  //console.log('📊 Current state:', { profile: memoizedProfile, loading, error })
 
   return {
     profile: memoizedProfile,

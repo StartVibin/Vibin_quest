@@ -9,8 +9,6 @@ export async function POST(request: NextRequest) {
     const env = process?.env ?? {};
     const SPOTIFY_CLIENT_ID = env[`SPOTIFY_CLIENT_ID_${index}`];
     const SPOTIFY_CLIENT_SECRET = env[`SPOTIFY_CLIENT_SECRET_${index}`];
-
-    console.log("email index", index);
     
     if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET) {
       return NextResponse.json(

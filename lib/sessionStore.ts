@@ -67,11 +67,11 @@ class SessionStore {
       }
     }
     
-    for (const [state, session] of this.sessions.entries()) {
-      const age = now - session.timestamp;
-      console.log("age", age)
-      console.log("state", state)
-    }
+    // for (const [state, session] of this.sessions.entries()) {
+    //   const age = now - session.timestamp;
+    //   console.log("age", age)
+    //   console.log("state", state)
+    // }
     
     return {
       total: this.sessions.size,

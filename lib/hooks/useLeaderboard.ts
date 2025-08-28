@@ -44,19 +44,14 @@ export const useLeaderboard = (): UseLeaderboardReturn => {
       setLoading(true)
       setError(null)
       
-      //console.log('🔄 Fetching leaderboard data...')
       const response = await getLeaderboard()
       
       if (response.success && response.data) {
-        //console.log('✅ Leaderboard data received:', response.data)
-        //console.log('🔍 Sample user data:', response.data.users[0])
         setLeaderboardData(response.data)
       } else {
-        //console.error('❌ Failed to fetch leaderboard data')
         setError('Failed to fetch leaderboard data')
       }
     } catch (err) {
-      //console.error('❌ Error fetching leaderboard:', err)
       setError(err instanceof Error ? err.message : 'Failed to fetch leaderboard')
     } finally {
       setLoading(false)
@@ -69,7 +64,6 @@ export const useLeaderboard = (): UseLeaderboardReturn => {
 
     // Set up interval for periodic updates (every 5 seconds)
     const interval = setInterval(() => {
-      //console.log('⏰ Periodic leaderboard fetch triggered (5s interval)')
       fetchLeaderboard()
     }, 5000)
 

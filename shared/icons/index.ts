@@ -36,3 +36,4 @@ export { Group } from "./Group";
 export { History } from "./History";
 export { Share2 } from "./Share2";
 export { Trophy } from "./Trophy";
+export { Copy } from "./Copy";

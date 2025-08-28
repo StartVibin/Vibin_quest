@@ -48,6 +48,7 @@ export default function AuthGuard({ children, requireFullAuth = true }: AuthGuar
     } catch (error) {
       console.error('Auth check error:', error);
       toast.error('Authentication check failed. Please try again.');
+      console.log("pushing to root page")
       router.push('/');
       setIsAuthenticated(false);
     } finally {

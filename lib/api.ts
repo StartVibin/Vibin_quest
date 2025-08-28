@@ -25,7 +25,7 @@ export const API_ENDPOINTS = {
   GET_AUTH_MESSAGE: `${API_BASE_URL}/auth/message`,
   WALLET_AUTH: `${API_BASE_URL}/auth/wallet`,
   USER_PROFILE: `${API_BASE_URL}/auth/profile`,
-  VERIFY_CODE: `${API_BASE_URL}/api/v1/auth/verify-code`,
+  VERIFY_CODE: `${API_BASE_URL}/api/v1/referrals/verify`,
   TELEGRAM_USER_DATA: `${API_BASE_URL}/auth/telegram`,
 
   //  Spotify Token
@@ -43,9 +43,18 @@ export const API_ENDPOINTS = {
   GET_X_POST_ID: `${API_BASE_URL}/config/x-post-id`,
   
   // Referral endpoints
-  APPLY_REFERRAL_CODE: `${API_BASE_URL}/referrals/apply`,
-  GET_REFERRAL_INFO: `${API_BASE_URL}/referrals/info`,
-  GET_TOP_REFERRERS: `${API_BASE_URL}/referrals/top`,
+  VERIFY_INVITATION_CODE: `${API_BASE_URL}/api/v1/referrals/verify`,
+  CREATE_USER_WITH_REFERRAL: `${API_BASE_URL}/api/v1/referrals/create-user`,
+  VALIDATE_USER_INVITE_CODE: `${API_BASE_URL}/api/v1/referrals/validate-user`,
+  GET_REFERRAL_DATA: `${API_BASE_URL}/api/v1/referrals/data`,
+  GET_USER_REFERRAL_INFO: `${API_BASE_URL}/api/v1/referrals/user`,
+  CALCULATE_REFERRAL_SCORES: `${API_BASE_URL}/api/v1/referrals/calculate-scores`,
+  
+  // User email management endpoints
+  GET_USER_BY_EMAIL: `${API_BASE_URL}/api/v1/referrals/user-email`,
+  UPDATE_USER_BY_EMAIL: `${API_BASE_URL}/api/v1/referrals/user-email`,
+  GET_INCOMPLETE_USERS: `${API_BASE_URL}/api/v1/referrals/incomplete-users`,
+  GET_WALLET_STATUS: `${API_BASE_URL}/api/v1/referrals/wallet-status`,
 }
 
 // ============================================================================
@@ -409,7 +418,7 @@ export const authenticateWallet = async (
 
 // Referral verification API functions
 export const verifyReferalCode = async (referralCode: string) => {
-  const response = await fetch(API_ENDPOINTS.VERIFY_CODE, {
+  const response = await fetch(API_ENDPOINTS.VERIFY_INVITATION_CODE, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -422,7 +431,105 @@ export const verifyReferalCode = async (referralCode: string) => {
   if (!response.ok) {
     throw new Error('Failed to verify Referral')
   }
-  localStorage.setItem('invitation_code', referralCode); // Fixed: use correct key
+  return response.json()
+}
+
+// New referral API functions
+export const createUserWithReferral = async (userData: {
+  spotifyEmail: string
+  invitationCode: string
+  accessToken?: string
+  refreshToken?: string
+  expiresIn?: number
+  walletAddress?: string
+}) => {
+  const response = await fetch(API_ENDPOINTS.CREATE_USER_WITH_REFERRAL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(userData),
+  })
+  console.log("checking result if user is created", response)
+  if (!response.ok) {
+    throw new Error('Failed to create user with referral')
+  }
+  return response.json()
+}
+
+export const getReferralData = async (page: number = 1, limit: number = 100) => {
+  const response = await fetch(`${API_ENDPOINTS.GET_REFERRAL_DATA}?page=${page}&limit=${limit}`)
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch referral data')
+  }
+  return response.json()
+}
+
+export const getUserReferralInfo = async (spotifyEmail: string) => {
+  const response = await fetch(`${API_ENDPOINTS.GET_USER_REFERRAL_INFO}/${encodeURIComponent(spotifyEmail)}`)
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch user referral info')
+  }
+  return response.json()
+}
+
+export const validateUserInviteCode = async (spotifyEmail: string, invitationCode: string) => {
+  const response = await fetch(API_ENDPOINTS.VALIDATE_USER_INVITE_CODE, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ spotifyEmail, invitationCode }),
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to validate user invite code')
+  }
+  return response.json()
+}
+
+// User email management functions
+export const getUserByEmail = async (spotifyEmail: string) => {
+  const response = await fetch(`${API_ENDPOINTS.GET_USER_BY_EMAIL}/${encodeURIComponent(spotifyEmail)}`)
+
+  if (!response.ok) {
+    throw new Error('Failed to get user by email')
+  }
+  return response.json()
+}
+
+export const updateUserByEmail = async (spotifyEmail: string, updateData: { walletAddress: string }) => {
+  const response = await fetch(`${API_ENDPOINTS.UPDATE_USER_BY_EMAIL}/${encodeURIComponent(spotifyEmail)}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(updateData),
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to update user by email')
+  }
+  return response.json()
+}
+
+export const getIncompleteUsers = async () => {
+  const response = await fetch(API_ENDPOINTS.GET_INCOMPLETE_USERS)
+
+  if (!response.ok) {
+    throw new Error('Failed to get incomplete users')
+  }
+  return response.json()
+}
+
+export const getWalletAddressStatus = async () => {
+  const response = await fetch(API_ENDPOINTS.GET_WALLET_STATUS)
+
+  if (!response.ok) {
+    throw new Error('Failed to get wallet address status')
+  }
   return response.json()
 }
 
@@ -700,8 +807,8 @@ export const applyReferralCode = async (
   referralCode: string
 ): Promise<ApplyReferralCodeResponse> => {
   try {
-    const response = await createApiRequest<ApplyReferralCodeResponse>(
-      API_ENDPOINTS.APPLY_REFERRAL_CODE,
+          const response = await createApiRequest<ApplyReferralCodeResponse>(
+        API_ENDPOINTS.CREATE_USER_WITH_REFERRAL,
       {
         method: 'POST',
         body: JSON.stringify({ walletAddress, referralCode })
@@ -727,8 +834,8 @@ export interface ReferralInfoResponse {
 
 export const getReferralInfo = async (userId: string): Promise<ReferralInfoResponse> => {
   try {
-    const response = await createApiRequest<ReferralInfoResponse>(
-      `${API_ENDPOINTS.GET_REFERRAL_INFO}/${userId}`
+          const response = await createApiRequest<ReferralInfoResponse>(
+        `${API_ENDPOINTS.GET_USER_REFERRAL_INFO}/${userId}`
     )
     return response
   } catch (error) {
@@ -750,8 +857,8 @@ export interface TopReferrersResponse {
 
 export const getTopReferrers = async (limit: number = 10): Promise<TopReferrersResponse> => {
   try {
-    const response = await createApiRequest<TopReferrersResponse>(
-      `${API_ENDPOINTS.GET_TOP_REFERRERS}?limit=${limit}`
+          const response = await createApiRequest<TopReferrersResponse>(
+        `${API_ENDPOINTS.GET_REFERRAL_DATA}?limit=${limit}`
     )
     return response
   } catch (error) {

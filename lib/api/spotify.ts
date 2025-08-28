@@ -83,12 +83,6 @@ export const spotifyAPI = {
     const clientId = process.env.NEXT_PUBLIC_SPOTIFY_CLIENT_ID;
     const redirectUri = `${window.location.origin}/callback`;
     const scope = 'user-read-email user-read-private user-top-read user-read-recently-played';
-    
-    // console.log('🎵 Frontend: Generating Spotify OAuth URL...');
-    // console.log('🎵 Frontend: Client ID:', clientId ? 'present' : 'missing');
-    // console.log('🎵 Frontend: Redirect URI:', redirectUri);
-    // console.log('🎵 Frontend: Window location origin:', window.location.origin);
-    
     const params = new URLSearchParams({
       client_id: clientId!,
       response_type: 'code',
@@ -98,15 +92,12 @@ export const spotifyAPI = {
     });
     
     const authUrl = `https://accounts.spotify.com/authorize?${params.toString()}`;
-    //console.log('🎵 Frontend: Generated auth URL:', authUrl);
     
     return authUrl;
   },
 
   // Exchange code for access token via Next.js API route (SECURE)
   exchangeCodeForToken: async (code: string): Promise<SpotifyAuthResponse> => {
-    // console.log('🎵 Frontend: Sending code to backend for token exchange...');
-    // console.log('🎵 Frontend: Code length:', code.length);
     
     const response = await fetch('/api/auth/spotify/token', {
       method: 'POST',
@@ -116,30 +107,19 @@ export const spotifyAPI = {
       body: JSON.stringify({ code }),
     });
 
-    // console.log('🎵 Frontend: Response status:', response.status);
-    // console.log('🎵 Frontend: Response headers:', Object.fromEntries(response.headers.entries()));
-
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.error || 'Failed to exchange code for token');
     }
 
     const responseData = await response.json();
-    // console.log('✅ Frontend: Token exchange successful!');
-    // console.log('🎵 Frontend: Received token data:', {
-    //   access_token: responseData.access_token ? `${responseData.access_token.substring(0, 20)}...` : 'undefined',
-    //   token_type: responseData.token_type,
-    //   expires_in: responseData.expires_in,
-    //   scope: responseData.scope
-    // });
+
 
     return responseData;
   },
 
   // Get user profile from Spotify
   getUserProfile: async (accessToken: string): Promise<SpotifyUser> => {
-   // console.log('🎵 Frontend: Getting user profile from Spotify...');
-   // console.log('🎵 Frontend: Using access token:', accessToken ? `${accessToken.substring(0, 20)}...` : 'undefined');
     
     const response = await fetch('https://api.spotify.com/v1/me', {
       headers: {
@@ -152,22 +132,13 @@ export const spotifyAPI = {
     }
 
     const userData = await response.json();
-   // console.log('✅ Frontend: Successfully got user profile!');
-    // console.log('🎵 Frontend: User profile data:', {
-    //   id: userData.id,
-    //   email: userData.email,
-    //   display_name: userData.display_name,
-    //   country: userData.country,
-    //   product: userData.product,
-    //   images_count: userData.images?.length || 0
-    // });
+
 
     return userData;
   },
 
   // Get user's top tracks
   getTopTracks: async (accessToken: string, limit: number = 20): Promise<SpotifyTopTrack[]> => {
-    //console.log('🎵 Frontend: Getting user top tracks...');
     
     const response = await fetch(`https://api.spotify.com/v1/me/top/tracks?limit=${limit}&time_range=short_term`, {
       headers: {
@@ -185,7 +156,6 @@ export const spotifyAPI = {
 
   // Get user's recently played tracks
   getRecentlyPlayed: async (accessToken: string, limit: number = 20): Promise<SpotifyRecentlyPlayed[]> => {
-    //console.log('🎵 Frontend: Getting recently played tracks...');
     
     const response = await fetch(`https://api.spotify.com/v1/me/player/recently-played?limit=${limit}`, {
       headers: {
@@ -203,7 +173,6 @@ export const spotifyAPI = {
 
   // Get user's playlists
   getPlaylists: async (accessToken: string, limit: number = 20): Promise<SpotifyPlaylist[]> => {
-    //console.log('🎵 Frontend: Getting user playlists...');
     
     const response = await fetch(`https://api.spotify.com/v1/me/playlists?limit=${limit}`, {
       headers: {
@@ -212,12 +181,10 @@ export const spotifyAPI = {
     });
 
     if (!response.ok) {
-      console.error('❌ Frontend: Failed to get playlists');
       throw new Error('Failed to get playlists');
     }
 
     const data = await response.json();
-    console.log('✅ Frontend: Got playlists:', data.items.length);
     return data.items;
   },
 
@@ -348,15 +315,7 @@ export const spotifyAPI = {
       topArtists: topArtistsInfo
     };
     
-    console.log('📊 Enhanced listening stats calculated:', {
-      totalTracks: stats.totalTracksPlayed,
-      uniqueArtists: stats.uniqueArtistsCount,
-      totalTimeMinutes: Math.round(stats.totalListeningTimeMs / 60000),
-      anonymousTracks: stats.anonymousTrackCount,
-      topTracks: stats.topTracks.length,
-      topArtists: stats.topArtists.length,
-      dataSource: `Top tracks: ${topTracks.length}, Recently played: ${recentlyPlayedTracks.length}, Unique combined: ${uniqueTracks.length}`
-    });
+    
     
     return stats;
   },
@@ -380,7 +339,6 @@ export const spotifyAPI = {
     userData: SpotifyUserData
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): Promise<any> => {
-   // console.log('🎵 Frontend: Submitting comprehensive Spotify data...');
     
     // Calculate listening statistics
     const listeningStats = spotifyAPI.getListeningStats(userData);

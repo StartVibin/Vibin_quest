@@ -13,9 +13,11 @@ function CallbackContent() {
       const invitationCode = localStorage.getItem('invitation_code');
       const walletAddress = localStorage.getItem('walletAddress');
       const spotifyId = localStorage.getItem('spotify_id');
+
+
       
       if (!invitationCode || !walletAddress || !spotifyId) {
-        toast.error('Missing registration data 1. Please start over.');
+        toast.error('Missing registration data. No code or email or access token or wallet address. Please start over.');
         router.push('/join');
         return;
       }
@@ -33,6 +35,7 @@ function CallbackContent() {
     } catch (error) {
       console.error('Registration completion error:', error);
       toast.error('Failed to complete registration');
+      console.log("pushing to root page", error)
       router.push('/');
     }
   }, [router]);
@@ -47,12 +50,14 @@ function CallbackContent() {
         if (error) {
           //console.error('Spotify OAuth error:', error);
           toast.error('Spotify authorization failed');
+          console.log("pushing to root page", error)
           router.push('/');
           return;
         }
 
         if (!code) {
           toast.error('No authorization code received');
+          console.log("pushing to root page", error)
           router.push('/');
           return;
         }
@@ -97,6 +102,7 @@ function CallbackContent() {
       } catch (error) {
         console.error('Callback error:', error);
         toast.error('Failed to complete Spotify connection');
+        console.log("pushing to root page", error)
         router.push('/');
       }
     };

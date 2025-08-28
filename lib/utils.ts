@@ -120,18 +120,14 @@ export const handleXConnect = async (toast: ToastInstance) => {
 const getAccessToken = () => {
   if (typeof window === 'undefined') return null;
   const token = localStorage.getItem('x_access_token');
-  console.log('🔍 [getAccessToken] Token from localStorage:', token ? `${token.substring(0, 20)}...` : 'null');
   return token;
 }
 
 export const handleXFollow = async (username: string = 'StartVibin', toast: ToastInstance, walletAddress?: string) => {
-  console.log('🔄 [X Follow] Starting follow process for:', username);
   
   const accessToken = getAccessToken();
-  console.log('🔑 [X Follow] Access token status:', !!accessToken);
   
   if (!accessToken) {
-    console.error('❌ [X Follow] No access token found');
     toast.error('Please connect your X account first')
     return
   }
@@ -143,32 +139,19 @@ export const handleXFollow = async (username: string = 'StartVibin', toast: Toas
   }
   
   try {
-    console.log('📡 [X Follow] Calling X follow API...');
     const requestBody = { accessToken, username };
-    console.log('📤 [X Follow] Request body:', {
-      hasAccessToken: !!accessToken,
-      username,
-      accessTokenPreview: accessToken ? `${accessToken.substring(0, 20)}...` : null
-    });
-    
-    // First perform the X action
     const response = await fetch('/api/x/follow', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(requestBody),
     });
     
-    console.log('📊 [X Follow] API response status:', response.status);
     const data = await response.json();
-    console.log('📊 [X Follow] API response data:', data);
     
     if (response.ok) {
-      console.log('✅ [X Follow] X follow successful, verifying with backend...');
-      // Then verify with backend
       const { verifyXFollow } = await import('./api');
       const verificationResult = await verifyXFollow(walletAddress, username);
       
-      console.log('✅ [X Follow] Backend verification successful:', verificationResult);
       toast.success(`Successfully followed @${username}! Awarded ${verificationResult.data.pointsAwarded} points!`)
       localStorage.setItem('x_followed_vibin', 'true')
     } else {
@@ -358,10 +341,6 @@ export async function postXStats({
   uniqueArtistsCount: number;
   topArtists: { name: string; trackCount?: number }[];
 }) {
-    console.log("topTracks", topTracks)
-    console.log("totalListeningTimeMs", totalListeningTimeMs)
-    console.log("uniqueArtistsCount", uniqueArtistsCount)
-    console.log("topArtists", topArtists)   
   if (typeof window === 'undefined') return;
   const accessToken = getAccessToken();
   if (!accessToken) {
@@ -404,7 +383,6 @@ export async function postXStats({
       body: JSON.stringify({ accessToken, text: tweet }),
     });
     const result = await response.json();
-    console.log('✅ [postXStats] Tweet posted:', result);
     
     if (result.success) {
       // Store timestamp of successful post
