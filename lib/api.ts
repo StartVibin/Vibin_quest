@@ -450,7 +450,6 @@ export const createUserWithReferral = async (userData: {
     },
     body: JSON.stringify(userData),
   })
-  console.log("checking result if user is created", response)
   if (!response.ok) {
     throw new Error('Failed to create user with referral')
   }

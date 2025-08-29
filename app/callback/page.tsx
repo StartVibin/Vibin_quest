@@ -35,7 +35,7 @@ function CallbackContent() {
     } catch (error) {
       console.error('Registration completion error:', error);
       toast.error('Failed to complete registration');
-      console.log("pushing to root page", error)
+      console.error("pushing to root page", error)
       router.push('/');
     }
   }, [router]);
@@ -50,14 +50,14 @@ function CallbackContent() {
         if (error) {
           //console.error('Spotify OAuth error:', error);
           toast.error('Spotify authorization failed');
-          console.log("pushing to root page", error)
+          console.error("pushing to root page", error)
           router.push('/');
           return;
         }
 
         if (!code) {
           toast.error('No authorization code received');
-          console.log("pushing to root page", error)
+          console.error("pushing to root page", error)
           router.push('/');
           return;
         }
@@ -102,7 +102,7 @@ function CallbackContent() {
       } catch (error) {
         console.error('Callback error:', error);
         toast.error('Failed to complete Spotify connection');
-        console.log("pushing to root page", error)
+        console.error("pushing to root page", error)
         router.push('/');
       }
     };

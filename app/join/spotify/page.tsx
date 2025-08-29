@@ -26,12 +26,10 @@ function SpotifyLoginContent() {
     spotifyEmail
   } = sharedValue
 
-  console.log(invitationCode);
-  
+  console.log("invitationCode", typeof invitationCode)
+
   const handleSpotifyOAuthSuccess = useCallback(async () => {
     try {
-
-
       const spotifyEmail = localStorage.getItem('spotify_email');
       const spotifyAccessToken = localStorage.getItem('spotify_access_token');
       const invitationCode = localStorage.getItem('invitation_code') || sharedValue.invitationCode;
@@ -44,7 +42,7 @@ function SpotifyLoginContent() {
 
       // Create user with referral information
       try {
-        // First validate the user's invite code again before creating
+
         const validationResponse = await validateUserInviteCode(spotifyEmail, invitationCode);
 
         if (!validationResponse.success) {
@@ -53,7 +51,6 @@ function SpotifyLoginContent() {
             // Clear the wrong invitation code and redirect to first step
             localStorage.removeItem('invitation_code');
             setSharedValue(prev => ({ ...prev, invitationCode: '' }));
-            console.log("pushing to root page")
             router.push('/');
             return;
           } else {
@@ -67,21 +64,17 @@ function SpotifyLoginContent() {
           invitationCode,
           accessToken: spotifyAccessToken,
           refreshToken: localStorage.getItem('spotify_refresh_token') || '',
-          expiresIn: parseInt(localStorage.getItem('spotify_expires_in') || '3600'),
+          expiresIn: parseInt(localStorage.getItem('spotify_expires_in') || '7200'),
           walletAddress: '' // Will be set later when wallet connects
         });
 
         if (createUserResponse.success) {
-          console.log('User created/updated with referral:', createUserResponse.data);
-          
-          // Store referral code for the user
           if (createUserResponse.data.referralCode) {
             localStorage.setItem('user_referral_code', createUserResponse.data.referralCode);
           }
         }
       } catch (referralError) {
         console.error('Error creating user with referral:', referralError);
-        // Continue with the flow even if referral creation fails
         toast.warning('Referral setup incomplete, but continuing with registration...');
       }
 
@@ -97,14 +90,12 @@ function SpotifyLoginContent() {
   }, [router]);
 
   useEffect(() => {
-    console.log("success to verify invite code and now joining to email verification page")
     const code = localStorage.getItem('invitation_code');
    
     if (!code) {
       // Check if user came from invitation code page
       const referrer = document.referrer;
       if (!referrer.includes('/join') && !referrer.includes(window.location.origin)) {
-        console.log("pushing to root page")
         router.push('/');
       }
       return;
@@ -168,7 +159,6 @@ function SpotifyLoginContent() {
     
     if (!invitationCode) {
       toast.error('No invitation code found. Please start over.');
-      console.log("pushing to root page")
       router.push('/');
       return;
     }
@@ -183,7 +173,6 @@ function SpotifyLoginContent() {
           // Clear the wrong invitation code and redirect to first step
           localStorage.removeItem('invitation_code');
           setSharedValue(prev => ({ ...prev, invitationCode: '' }));
-          console.log("pushing to root page")
           router.push('/');
           return;
         } else {

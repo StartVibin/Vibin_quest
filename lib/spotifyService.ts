@@ -206,16 +206,12 @@ export function createSpotifyService(): SpotifyService | null {
 
   // Check if token is expired
   if (tokenExpiry && Date.now() > parseInt(tokenExpiry)) {
-    //console.log('Spotify access token expired, attempting refresh...');
-    // For now, return null and let the hook handle the refresh
-    // In a real app, you might want to handle this differently
     return null;
   }
 
   return new SpotifyService(accessToken);
 }
 
-// Function to refresh the Spotify token (unused but kept for future use)
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function refreshSpotifyToken(): Promise<SpotifyService | null> {
   const refreshToken = localStorage.getItem('spotify_refresh_token');

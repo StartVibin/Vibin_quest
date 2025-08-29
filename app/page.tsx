@@ -52,21 +52,15 @@ export default function Home() {
       const result = await verifyReferalCode(invitationCode);
       if (result.success) {
         toast.success("Valid invitation code.");
-        
-        // Store in localStorage
+
         localStorage.setItem('invitation_code', invitationCode);
-        
-        // Store in cookies
         document.cookie = `invitation_code=${invitationCode}; path=/; max-age=86400`; // 24 hours
-        
-        // Update shared context
+
         setSharedValue({ ...sharedValue, invitationCode: invitationCode, showWallet: false });
         router.push('/join/spotify');
       } else {
         toast.error("Invalid invitation code. Please try again.");
-        // Clear the input field on error to allow retry
         setInvitationCode('');
-        // Focus the input field for better UX
         const inputElement = document.getElementById('invitationCode') as HTMLInputElement;
         if (inputElement) {
           inputElement.focus();
@@ -75,9 +69,7 @@ export default function Home() {
     } catch (error) {
       console.error('Invitation code error:', error);
       toast.error('Invalid invitation code. Please try again.');
-      // Clear the input field on error to allow retry
       setInvitationCode('');
-      // Focus the input field for better UX
       const inputElement = document.getElementById('invitationCode') as HTMLInputElement;
       if (inputElement) {
         inputElement.focus();

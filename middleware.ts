@@ -1,26 +1,19 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-// Define protected routes that require full authentication
 const protectedRoutes = ['/dashboard', '/leaderboard', '/staking', '/referal'];
-// Define join routes that require partial authentication
 const joinRoutes = ['/join', '/join/spotify', '/join/wallet', '/join/complete'];
-// Define public routes that don't require authentication
+console.log("joinRoutes", joinRoutes);
 const publicRoutes = ['/invite', '/invite/code'];
 
 export function middleware(request: NextRequest) {
-  console.log("checking route", request.nextUrl.pathname)
   const { pathname } = request.nextUrl;
   
-  // Check if it's a public route (allow access without any checks)
   if (publicRoutes.some(route => pathname.startsWith(route))) {
     return NextResponse.next();
   }
   
-  // Check if it's a protected route
   if (protectedRoutes.some(route => pathname.startsWith(route))) {
-    // For protected routes, check if user has completed full authentication
-    // Note: invitationCode is not required for dashboard access
     const spotifyId = request.cookies.get('spotify_id')?.value || 
                      request.headers.get('x-spotify-id') || 
                      request.nextUrl.searchParams.get('spotify_id');
@@ -33,7 +26,6 @@ export function middleware(request: NextRequest) {
                               request.headers.get('x-spotify-token') || 
                               request.nextUrl.searchParams.get('spotify_access_token');
     
-    // If any required auth data is missing, redirect to home
     if (!spotifyId || !spotifyEmail || !spotifyAccessToken) {
       return NextResponse.redirect(new URL('/', request.url));
     }

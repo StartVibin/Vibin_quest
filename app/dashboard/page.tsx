@@ -62,7 +62,6 @@ function formatMsToHrMin(ms: number): string {
 function DashboardContent() {
   const [shareModal, setShareModal] = React.useState(false);
   const toast = useToast();
-  const inviteCode = typeof window !== 'undefined' ? localStorage.getItem('spotify_id') || '' : '';
   const { data, isLoading, error } = useSpotifyData()
   const { data: userData, isLoading: userDataLoading, error: userDataError } = useUserDatabaseData()
   const { address } = useAccount();
@@ -78,25 +77,22 @@ function DashboardContent() {
     }
   }, [signer]);
 
-  
-  // Debug logging for Spotify data
-  React.useEffect(() => {
-    console.log('🎵 Dashboard - Spotify Data:', {
-      data,
-      isLoading,
-      error,
-      inviteCode,
-      hasData: !!data,
-      topTracksCount: data?.topTracks?.length || 0,
-      totalTracksPlayed: data?.totalTracksPlayed,
-      uniqueArtistsCount: data?.uniqueArtistsCount,
-      totalListeningTimeMs: data?.totalListeningTimeMs
-    });
-  }, [data, isLoading, error, inviteCode]);
+  // React.useEffect(() => {
+  //   console.log('🎵 Dashboard - Spotify Data:', {
+  //     data,
+  //     isLoading,
+  //     error,
+  //     inviteCode,
+  //     hasData: !!data,
+  //     topTracksCount: data?.topTracks?.length || 0,
+  //     totalTracksPlayed: data?.totalTracksPlayed,
+  //     uniqueArtistsCount: data?.uniqueArtistsCount,
+  //     totalListeningTimeMs: data?.totalListeningTimeMs
+  //   });
+  // }, [data, isLoading, error, inviteCode]);
 
   const handleXConnectWithWallet = () => {
     handleXConnect(toast as ToastInstance);
-    // Add your X connection logic here
   };
 
   const { claimStatus, loading: claimStatusLoading} = useClaimStatus(

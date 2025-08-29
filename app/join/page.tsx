@@ -44,7 +44,6 @@ export default function JoinPage() {
     try {
       verifyReferalCode(inviteCode).then(e => {
         if (e.success) {
-          console.log("valid invitation code")
           toast.success("Valid invitation code.");
           localStorage.setItem('invitation_code', inviteCode);
         } else toast.error("Invalid invitation code. Please try again.")

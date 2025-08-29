@@ -186,7 +186,6 @@ export default function GoogleOAuthButton ({
           console.warn("⚠️ [Google OAuth] Cannot access popup location due to CORS:", error);
         }
       } else {
-        console.log("🪟 [Google OAuth] Popup is closed");
       }
     }, 60000);
    }
