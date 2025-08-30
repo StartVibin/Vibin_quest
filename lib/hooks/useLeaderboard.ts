@@ -56,7 +56,7 @@ export const useLeaderboard = (): UseLeaderboardReturn => {
         // Log top 3 users for debugging
         if (response.data.users.length > 0) {
           console.log(`🏆 [Frontend] Top 3 users:`)
-          response.data.users.slice(0, 3).forEach((user: any, index: number) => {
+          response.data.users.slice(0, 3).forEach((user: { walletAddress: string; totalPoints: number; referralPoints: number }, index: number) => {
             console.log(`  ${index + 1}. ${user.walletAddress}: ${user.totalPoints} total points (${user.referralPoints} referral)`)
           })
         }
