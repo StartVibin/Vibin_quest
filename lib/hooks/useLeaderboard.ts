@@ -44,14 +44,30 @@ export const useLeaderboard = (): UseLeaderboardReturn => {
       setLoading(true)
       setError(null)
       
+      console.log(`🔍 [Frontend] Fetching leaderboard data (page: ${currentPage}, limit: ${limit})`)
+      
       const response = await getLeaderboard()
       
       if (response.success && response.data) {
+        console.log(`✅ [Frontend] Leaderboard data fetched successfully`)
+        console.log(`📊 [Frontend] Total users: ${response.data.users.length}`)
+        console.log(`📊 [Frontend] Pagination: page ${response.data.pagination.page} of ${response.data.pagination.totalPages}`)
+        
+        // Log top 3 users for debugging
+        if (response.data.users.length > 0) {
+          console.log(`🏆 [Frontend] Top 3 users:`)
+          response.data.users.slice(0, 3).forEach((user, index) => {
+            console.log(`  ${index + 1}. ${user.walletAddress}: ${user.totalPoints} total points (${user.referralPoints} referral)`)
+          })
+        }
+        
         setLeaderboardData(response.data)
       } else {
+        console.error(`❌ [Frontend] Leaderboard fetch failed:`, response)
         setError('Failed to fetch leaderboard data')
       }
     } catch (err) {
+      console.error(`❌ [Frontend] Error fetching leaderboard:`, err)
       setError(err instanceof Error ? err.message : 'Failed to fetch leaderboard')
     } finally {
       setLoading(false)

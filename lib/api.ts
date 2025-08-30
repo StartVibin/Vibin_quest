@@ -365,19 +365,25 @@ export const getUserProfile = async (walletAddress: string): Promise<UserProfile
 // LEADERBOARD API FUNCTIONS
 // ============================================================================
 
-export const getLeaderboard = async (): Promise<LeaderboardResponse> => {
+// Get leaderboard data
+export const getLeaderboard = async (page: number = 1, limit: number = 100) => {
   try {
-    const response = await createApiRequest<LeaderboardResponse>(API_ENDPOINTS.LEADERBOARD)
-    return response
+    console.log(`🌐 [API] Calling leaderboard endpoint: ${API_ENDPOINTS.LEADERBOARD}?page=${page}&limit=${limit}`)
+    
+    const response = await fetch(`${API_ENDPOINTS.LEADERBOARD}?page=${page}&limit=${limit}`)
+    const data = await response.json()
+    
+    console.log(`✅ [API] Leaderboard response received:`, {
+      success: data.success,
+      totalUsers: data.data?.users?.length || 0,
+      page: data.data?.pagination?.page,
+      totalPages: data.data?.pagination?.totalPages
+    })
+    
+    return data
   } catch (error) {
-    console.error('Error fetching leaderboard:', error)
-    return { 
-      success: false, 
-      data: { 
-        users: [], 
-        pagination: { page: 1, limit: 100, total: 0, totalPages: 0 } 
-      } 
-    }
+    console.error(`❌ [API] Error fetching leaderboard:`, error)
+    throw error
   }
 }
 

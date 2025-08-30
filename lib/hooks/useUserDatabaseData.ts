@@ -18,6 +18,8 @@ async function fetchUserDatabaseData(email: string): Promise<UserDatabaseData> {
     throw new Error('Email is required');
   }
 
+  console.log(`🔍 [Frontend] Fetching user database data for: ${email}`);
+
   try {
     const response = await fetch(`https://api.startvibin.io/api/v1/spotify/user/${encodeURIComponent(email)}`, {
       method: 'GET',
@@ -36,6 +38,13 @@ async function fetchUserDatabaseData(email: string): Promise<UserDatabaseData> {
       throw new Error(data.message || 'Failed to fetch user data');
     }
 
+    console.log(`✅ [Frontend] User data fetched successfully for: ${email}`);
+    console.log(`📊 [Frontend] Referral Score: ${data.data.referralScore || 0}`);
+    console.log(`📊 [Frontend] Total Base Points: ${data.data.totalBasePoints || 0}`);
+    console.log(`📊 [Frontend] Tracks Played: ${data.data.tracksPlayedCount || 0}`);
+    console.log(`📊 [Frontend] Diversity Score: ${data.data.diversityScore || 0}`);
+    console.log(`📊 [Frontend] History Score: ${data.data.historyScore || 0}`);
+
     return {
       tracksPlayedCount: data.data.tracksPlayedCount || 0,
       diversityScore: data.data.diversityScore || 0,
@@ -49,7 +58,7 @@ async function fetchUserDatabaseData(email: string): Promise<UserDatabaseData> {
       updatedAt: data.data.updatedAt || '',
     };
   } catch (error) {
-    console.error('Error fetching user database data:', error);
+    console.error(`❌ [Frontend] Error fetching user database data for ${email}:`, error);
     throw error;
   }
 }
