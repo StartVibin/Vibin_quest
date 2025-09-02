@@ -643,13 +643,7 @@ function DashboardContent() {
                           </p>
                         </div>
                       </div>
-                      <a
-                        href="https://google.com"
-                        target="_blank"
-                        className={styles.dashboardTableItemLink}
-                      >
-                        <Link2 />
-                      </a>
+                      <img src="/img/wav.gif" alt="wav" className={styles.dashboardTableItemLink} />
                     </div>
                   ))}
                 </div>
