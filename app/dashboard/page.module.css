@@ -630,6 +630,11 @@
   background: linear-gradient(to right, #000, #99A1DF);
 }
 
+.dashboardScreenRewardClaimButton:disabled{
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 @media (max-width: 768px) {
   .dashboardScreenRewardClaimButton{
       font-size: 1.6rem;

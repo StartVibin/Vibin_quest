@@ -32,7 +32,7 @@ import { Modal } from "@/shared/ui/Modal";
 import { useToast } from "@/lib/hooks/useToast";
 import { useSpotifyData } from "@/lib/hooks/useSpotifyData";
 import { handleXConnect, postXStats } from "@/lib/utils";
-import { claimWithContract } from "@/lib/api/claimWithContract";
+// import { claimWithContract } from "@/lib/api/claimWithContract";
 import { useAccount, useWalletClient } from "wagmi";
 import { BrowserProvider, JsonRpcSigner } from "ethers";
 import { ToastInstance } from "@/lib/types";
@@ -49,6 +49,7 @@ function useEthersSigner() {
     return provider.getSigner();
   }, [walletClient]);
 }
+console.log(useAccount, useWalletClient);
 
 function formatMsToHrMin(ms: number): string {
   const hours = Math.floor(ms / 3600000);
@@ -64,11 +65,13 @@ function DashboardContent() {
   const toast = useToast();
   const { data, isLoading, error } = useSpotifyData()
   const { data: userData, isLoading: userDataLoading, error: userDataError } = useUserDatabaseData()
-  const { address } = useAccount();
+  // const { address } = useAccount();
   const signer = useEthersSigner();
   const [ethersSigner, setEthersSigner] = React.useState<JsonRpcSigner | null>(
     null
   );
+
+  console.log(ethersSigner);
   React.useEffect(() => {
     if (signer) {
       signer.then(setEthersSigner).catch(console.error);
@@ -98,6 +101,8 @@ function DashboardContent() {
   const { claimStatus, loading: claimStatusLoading} = useClaimStatus(
     typeof window !== 'undefined' ? localStorage.getItem('spotify_email') : null
   )
+
+  console.log(claimStatus, claimStatusLoading);
   //   toast.success("Reward claimed successfully!");
   //   // Add your claim logic here
   // };
@@ -154,7 +159,8 @@ function DashboardContent() {
 
                     <div className={styles.dashboardScreenClaimTextBlock}>
                       <p>Next claim:</p>
-                      {claimStatusLoading ? (
+                      <p>-- -- -- --</p>
+                      {/* {claimStatusLoading ? (
                         <p>Loading...</p>
                       ) : claimStatus ? (
                         claimStatus.canClaim ? (
@@ -173,7 +179,7 @@ function DashboardContent() {
                         //  (
                         //   <p>--</p>
                         // )
-                      }
+                      } */}
                     </div>
                   </div>
                   <div className={styles.shareBlock}>
@@ -225,20 +231,20 @@ function DashboardContent() {
                   <div className={styles.dashboardScreenRewardClaim}>
                     <button
                       className={styles.dashboardScreenRewardClaimButton}
-                      onClick={() =>
-                        claimStatus?.canClaim 
-                          ? claimWithContract(
-                              address,
-                              process.env.NEXT_PUBLIC_CLAIM_CONTRACT!,
-                              ethersSigner!
-                            )
-                          : toast.error('You can only claim once per week. Please wait until next claim time.')
-                      }
+                      // onClick={() =>
+                      //   claimStatus?.canClaim 
+                      //     ? claimWithContract(
+                      //         address,
+                      //         process.env.NEXT_PUBLIC_CLAIM_CONTRACT!,
+                      //         ethersSigner!
+                      //       )
+                      //     : toast.error('You can only claim once per week. Please wait until next claim time.')
+                      // }
                       disabled={true}
-                      style={{ 
-                        opacity: claimStatus?.canClaim ? 1 : 0.5,
-                        cursor: claimStatus?.canClaim ? 'pointer' : 'not-allowed'
-                      }}
+                      // style={{ 
+                      //   opacity: claimStatus?.canClaim ? 1 : 0.5,
+                      //   cursor: claimStatus?.canClaim ? 'pointer' : 'not-allowed'
+                      // }}
                     >
                       {claimStatus?.canClaim ? 'Claim reward' : 'Claim locked'}
                     </button>

@@ -47,6 +47,7 @@ export const API_ENDPOINTS = {
   CREATE_USER_WITH_REFERRAL: `${API_BASE_URL}/api/v1/referrals/create-user`,
   VALIDATE_USER_INVITE_CODE: `${API_BASE_URL}/api/v1/referrals/validate-user`,
   GET_REFERRAL_DATA: `${API_BASE_URL}/api/v1/referrals/data`,
+  GET_INVITED_USERS_DATA: `${API_BASE_URL}/api/v1/referrals/invited-users`,
   GET_USER_REFERRAL_INFO: `${API_BASE_URL}/api/v1/referrals/user`,
   CALCULATE_REFERRAL_SCORES: `${API_BASE_URL}/api/v1/referrals/calculate-scores`,
   
@@ -467,6 +468,15 @@ export const getReferralData = async (page: number = 1, limit: number = 100) => 
 
   if (!response.ok) {
     throw new Error('Failed to fetch referral data')
+  }
+  return response.json()
+}
+
+export const getInvitedUsersData = async (spotifyEmail: string, page: number = 1, limit: number = 100) => {
+  const response = await fetch(`${API_ENDPOINTS.GET_INVITED_USERS_DATA}/${encodeURIComponent(spotifyEmail)}?page=${page}&limit=${limit}`)
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch invited users data')
   }
   return response.json()
 }

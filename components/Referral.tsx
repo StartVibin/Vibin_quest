@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { getReferralData, getUserReferralInfo } from '@/lib/api'
+import { getReferralData, getInvitedUsersData, getUserReferralInfo } from '@/lib/api'
 import styles from './Referral.module.css'
 import { toast } from 'react-toastify'
 import { Copy } from '@/shared/icons'
@@ -32,43 +32,31 @@ export const Referral: React.FC = () => {
   const [limit, setCurrentLimit] = useState(100)
 
   console.log(setCurrentLimit);
+  console.log(getReferralData, getInvitedUsersData, getUserReferralInfo);
   
   const fetchReferral = async () => {
     try {
       setLoading(true)
       setError(null)
       
-      const response = await getReferralData(currentPage, limit)
+      const spotifyEmail = localStorage.getItem('spotify_email')
+      if (!spotifyEmail) {
+        setError('No Spotify email found')
+        return
+      }
+
+      // Use the new API to get only invited users
+      const response = await getInvitedUsersData(spotifyEmail, currentPage, limit)
       
-        
       if (response.success && response.data) {
-        // Also fetch user's referral info to get their referral code
-        try {
-          const spotifyEmail = localStorage.getItem('spotify_email')
-          if (spotifyEmail) {
-            const userReferralResponse = await getUserReferralInfo(spotifyEmail)
-            if (userReferralResponse.success && userReferralResponse.data) {
-              setReferralData({
-                ...response.data,
-                userReferralCode: userReferralResponse.data.referralCode
-              })
-            } else {
-              setReferralData(response.data)
-            }
-          } else {
-            setReferralData(response.data)
-          }
-        } catch (referralError) {
-          console.error('Error fetching user referral info:', referralError)
-          setReferralData(response.data)
-        }
+        setReferralData(response.data)
       } else {
-        console.error('Referral API error:', response)
-        setError('Failed to fetch referral data')
+        console.error('Invited users API error:', response)
+        setError('Failed to fetch invited users data')
       }
     } catch (err) {
-      console.error('Error fetching referral:', err)
-      setError(err instanceof Error ? err.message : 'Failed to fetch referral')
+      console.error('Error fetching invited users:', err)
+      setError(err instanceof Error ? err.message : 'Failed to fetch invited users')
     } finally {
       setLoading(false)
     }
@@ -289,9 +277,9 @@ export const Referral: React.FC = () => {
           </>
         ) : (
           <div className={styles.emptyState}>
-            <div className={styles.emptyStateIcon}>🏆</div>
-            <h3 className={styles.emptyStateTitle}>No Referral Data</h3>
-            <p className={styles.emptyStateText}>No users have earned referral points yet. Start referring friends to earn rewards!</p>
+            <div className={styles.emptyStateIcon}>👥</div>
+            <h3 className={styles.emptyStateTitle}>No Invited Users Yet</h3>
+            <p className={styles.emptyStateText}>You haven&apos;t invited any users yet. Share your referral code with friends to start earning referral rewards!</p>
           </div>
         )}
       </div>
