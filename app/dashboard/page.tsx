@@ -234,7 +234,7 @@ function DashboardContent() {
                             )
                           : toast.error('You can only claim once per week. Please wait until next claim time.')
                       }
-                      disabled={!claimStatus?.canClaim}
+                      disabled={true}
                       style={{ 
                         opacity: claimStatus?.canClaim ? 1 : 0.5,
                         cursor: claimStatus?.canClaim ? 'pointer' : 'not-allowed'
