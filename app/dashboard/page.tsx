@@ -502,6 +502,7 @@ function DashboardContent() {
                   Top Artist
                 </div>
 
+
                 <div className={styles.dashboardTableItems}>
                   {/* <div className={styles.dashboardTableItem}>
                     <div className={styles.dashboardTableItemWrap}>
