@@ -56,6 +56,9 @@ export const API_ENDPOINTS = {
   UPDATE_USER_BY_EMAIL: `${API_BASE_URL}/api/v1/referrals/user-email`,
   GET_INCOMPLETE_USERS: `${API_BASE_URL}/api/v1/referrals/incomplete-users`,
   GET_WALLET_STATUS: `${API_BASE_URL}/api/v1/referrals/wallet-status`,
+  
+  // Email whitelist endpoints
+  CHECK_EMAIL_WHITELIST: `${API_BASE_URL}/api/v1/email/check-whitelist`,
 }
 
 // ============================================================================
@@ -544,6 +547,23 @@ export const getWalletAddressStatus = async () => {
 
   if (!response.ok) {
     throw new Error('Failed to get wallet address status')
+  }
+  return response.json()
+}
+
+// Email whitelist functions
+export const checkEmailWhitelist = async (email: string, invitationCode: string) => {
+  console.log(API_ENDPOINTS.CHECK_EMAIL_WHITELIST)
+  const response = await fetch(API_ENDPOINTS.CHECK_EMAIL_WHITELIST, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, invitationCode }),
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to check email whitelist')
   }
   return response.json()
 }

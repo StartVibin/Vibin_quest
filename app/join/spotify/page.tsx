@@ -11,7 +11,7 @@ import LeftHalfModal from '@/components/LeftHalfModal';
 import SpotifyOAuthModal from '@/components/SpotifyOAuthModal';
 import { useSharedContext } from '@/provider/SharedContext';
 import { getIndexOfEmail } from '@/lib/api/getIndexOfEmail';
-import { createUserWithReferral, validateUserInviteCode } from '@/lib/api';
+import { createUserWithReferral, validateUserInviteCode, checkEmailWhitelist } from '@/lib/api';
 
 function SpotifyLoginContent() {
 
@@ -27,6 +27,8 @@ function SpotifyLoginContent() {
   } = sharedValue
 
   console.log("invitationCode", typeof invitationCode)
+
+
 
   const handleSpotifyOAuthSuccess = useCallback(async () => {
     try {
@@ -165,29 +167,45 @@ function SpotifyLoginContent() {
 
     setIsLoading(true);
     try {
-      // First validate the user's invite code
-      const validationResponse = await validateUserInviteCode(spotifyEmail, invitationCode);
-      if (!validationResponse.success) {
-        if (validationResponse.data?.reason === 'code_mismatch') {
-          toast.error('Please use correct invite code.');
-          // Clear the wrong invitation code and redirect to first step
-          localStorage.removeItem('invitation_code');
-          setSharedValue(prev => ({ ...prev, invitationCode: '' }));
-          router.push('/');
-          return;
+      const whitelistResponse = await checkEmailWhitelist(spotifyEmail, invitationCode);
+      
+      if (whitelistResponse.success) {
+        if (whitelistResponse.data.isWhitelisted) {
+          // Email is whitelisted - proceed with normal flow
+          console.log(`✅ Email ${spotifyEmail} is whitelisted - proceeding with Spotify OAuth`);
+          
+          // Get email index for Spotify OAuth
+          const index = await getIndexOfEmail(spotifyEmail);
+          setIndex(index);
+          setShowSpotifyModal(true);
         } else {
-          toast.error(validationResponse.message || 'Invalid invitation code');
-          return;
+          // Email not whitelisted - check if it's second time
+          if (whitelistResponse.data.isSecondTime) {
+            // Second time login - show "already booked" message
+            console.log(`🔄 Email ${spotifyEmail} already in whitelist - second time login`);
+            toast.info("You already booked, please wait until we register your info");
+          } else {
+            // First time - show "successfully booked" message
+            console.log(`❌ Email ${spotifyEmail} not whitelisted - first time, adding to whitelist`);
+            toast.success("You successfully booked. Currently we're experiencing busy on server, please come back later");
+            
+            // Store the referral code for later use
+            if (whitelistResponse.data.referralCode) {
+              localStorage.setItem('user_referral_code', whitelistResponse.data.referralCode);
+            }
+          }
+          
+          // Redirect to home page for both cases
+          setTimeout(() => {
+            router.push('/');
+          }, 2000);
         }
+      } else {
+        toast.error(whitelistResponse.message || 'Failed to check email whitelist');
       }
-
-      // If validation passes, proceed with email index check
-      const index = await getIndexOfEmail(spotifyEmail);
-      setIndex(index);
-      setShowSpotifyModal(true);
     } catch (error) {
-      console.error('Email validation error:', error);
-      toast.error('Invalid email. Please try again.');
+      console.error('Email whitelist check error:', error);
+      toast.error('Failed to check email whitelist. Please try again.');
     } finally {
       setIsLoading(false);
     }
