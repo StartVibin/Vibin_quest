@@ -136,9 +136,9 @@ function DashboardContent() {
                   <div style={{ 
                     marginTop: '10px',
                     fontSize: '14px',
-                    color: '#ff6b6b'
+                    color: '#af9749ff'
                   }}>
-                    ⚠️ Error loading data. Your spotify token is expired.
+                    ⚠️ Data isn't fetched anymore. Please reconnect to the app.
                   </div>
                 )}
               </div>
@@ -218,7 +218,7 @@ function DashboardContent() {
                       {userDataLoading ? (
                         <span>Loading...</span>
                       ) : userDataError ? (
-                        <span>Error loading data</span>
+                        <span>Data isn't fetched anymore. Please reconnect to the app.</span>
                       ) : (
                         <>
                           {userData?.totalBasePoints || 0} pts
