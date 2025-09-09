@@ -26,6 +26,24 @@ export function middleware(request: NextRequest) {
                               request.headers.get('x-spotify-token') || 
                               request.nextUrl.searchParams.get('spotify_access_token');
     
+    // Allow access if user has email and either:
+    // 1. Has valid Spotify tokens (normal flow)
+    // 2. Has restored session (login modal flow) - spotifyAccessToken can be 'restored_session'
+    if (!spotifyEmail) {
+      return NextResponse.redirect(new URL('/', request.url));
+    }
+    
+    // If user has email but no access token, redirect to home
+    if (!spotifyAccessToken) {
+      return NextResponse.redirect(new URL('/', request.url));
+    }
+    
+    // If user has restored session, allow access (spotifyId can be email in this case)
+    if (spotifyAccessToken === 'restored_session') {
+      return NextResponse.next();
+    }
+    
+    // For normal Spotify flow, require all three
     if (!spotifyId || !spotifyEmail || !spotifyAccessToken) {
       return NextResponse.redirect(new URL('/', request.url));
     }

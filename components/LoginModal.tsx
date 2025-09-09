@@ -80,6 +80,11 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginMod
           }
           
           console.log('💾 Session data stored successfully');
+          console.log('🍪 Cookies set:', {
+            spotify_id: document.cookie.split(';').find(c => c.trim().startsWith('spotify_id=')),
+            spotify_email: document.cookie.split(';').find(c => c.trim().startsWith('spotify_email=')),
+            spotify_access_token: document.cookie.split(';').find(c => c.trim().startsWith('spotify_access_token='))
+          });
           
           // Show success message
           toast.success('Welcome back! You are now logged in.');
@@ -91,6 +96,11 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginMod
           // Wait a moment for the toast to show, then redirect
           setTimeout(() => {
             console.log('🔄 Redirecting to dashboard...');
+            console.log('🔍 Current localStorage:', {
+              spotify_id: localStorage.getItem('spotify_id'),
+              spotify_email: localStorage.getItem('spotify_email'),
+              spotify_access_token: localStorage.getItem('spotify_access_token')
+            });
             router.push('/dashboard');
           }, 1000);
           

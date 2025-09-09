@@ -29,6 +29,19 @@ export default function AuthGuard({ children, requireFullAuth = true }: AuthGuar
       
       // For full authentication, we need all these items
       if (requireFullAuth) {
+        // Check if user has restored session (login modal flow)
+        const isRestoredSession = spotifyAccessToken === 'restored_session';
+        
+        if (isRestoredSession) {
+          // For restored sessions, only require email and access token
+          const hasRestoredAuth = spotifyEmail && spotifyAccessToken;
+          if (hasRestoredAuth) {
+            setIsAuthenticated(true);
+            return;
+          }
+        }
+        
+        // For normal Spotify flow, require all items including wallet connection
         const hasFullAuth = spotifyId && spotifyEmail && spotifyAccessToken && isConnected;
         
         if (!hasFullAuth) {
