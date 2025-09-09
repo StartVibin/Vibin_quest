@@ -138,7 +138,7 @@ function DashboardContent() {
                     fontSize: '14px',
                     color: '#af9749ff'
                   }}>
-                    ⚠️ Data isn't fetched anymore. Please reconnect to the app.
+                    ⚠️ Data isn`&apos;`t fetched anymore. Please reconnect to the app.
                   </div>
                 )}
               </div>
@@ -218,7 +218,7 @@ function DashboardContent() {
                       {userDataLoading ? (
                         <span>Loading...</span>
                       ) : userDataError ? (
-                        <span>Data isn't fetched anymore. Please reconnect to the app.</span>
+                        <span>Data isn`&apos;`t fetched anymore. Please reconnect to the app.np</span>
                       ) : (
                         <>
                           {userData?.totalBasePoints || 0} pts

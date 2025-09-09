@@ -139,7 +139,7 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginMod
           </form>
           
           <div className={styles.helpText}>
-            <p>Don't have an account? <button onClick={() => { onClose(); router.push('/join'); }} className={styles.registerLink}>Register here</button></p>
+            <p>Don`&apos;`t have an account? <button onClick={() => { onClose(); router.push('/join'); }} className={styles.registerLink}>Register here</button></p>
           </div>
         </div>
       </div>
