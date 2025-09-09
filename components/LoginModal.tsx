@@ -29,56 +29,86 @@ export default function LoginModal({ isOpen, onClose, onLoginSuccess }: LoginMod
 
     setIsLoading(true);
     try {
+      console.log('🔍 Attempting login for email:', email);
+      
       // Check if user has existing authentication data
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/spotify/user/${encodeURIComponent(email)}`, {
+      const apiUrl = `https://api.startvibin.io/api/v1/referrals/user-email/${encodeURIComponent(email)}`;
+      console.log('🌐 API URL:', apiUrl);
+      
+      const response = await fetch(apiUrl, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
       });
 
+      console.log('📡 Response status:', response.status);
+      console.log('📡 Response ok:', response.ok);
+
       if (response.ok) {
         const userData = await response.json();
+        console.log('📊 User data received:', userData);
         
         if (userData.success && userData.data) {
           // User exists - restore their session data
           const user = userData.data;
+          console.log('✅ User found, restoring session data:', user);
           
           // Store user data in localStorage
-          localStorage.setItem('spotify_id', user.spotifyId || '');
+          // Note: The getUserByEmail API doesn't return Spotify tokens, so we'll use the email as the identifier
+          localStorage.setItem('spotify_id', user.spotifyEmail || email); // Use email as ID since we don't have Spotify ID
           localStorage.setItem('spotify_email', user.spotifyEmail || email);
-          localStorage.setItem('spotify_name', user.spotifyName || '');
-          localStorage.setItem('spotify_access_token', user.spotifyAccessToken || '');
-          localStorage.setItem('spotify_refresh_token', user.spotifyRefreshToken || '');
-          localStorage.setItem('spotify_expires_in', user.spotifyExpiresIn || '7200');
-          localStorage.setItem('spotify_token_expiry', (Date.now() + (parseInt(user.spotifyExpiresIn || '7200') * 1000)).toString());
+          localStorage.setItem('spotify_name', user.spotifyEmail || email); // Use email as name
+          localStorage.setItem('spotify_access_token', 'restored_session'); // Placeholder token
+          localStorage.setItem('spotify_refresh_token', 'restored_session'); // Placeholder token
+          localStorage.setItem('spotify_expires_in', '7200');
+          localStorage.setItem('spotify_token_expiry', (Date.now() + (7200 * 1000)).toString());
           
           // Set cookies for middleware access
-          document.cookie = `spotify_id=${user.spotifyId || ''}; path=/; max-age=86400`;
+          document.cookie = `spotify_id=${user.spotifyEmail || email}; path=/; max-age=86400`;
           document.cookie = `spotify_email=${user.spotifyEmail || email}; path=/; max-age=86400`;
-          document.cookie = `spotify_access_token=${user.spotifyAccessToken || ''}; path=/; max-age=86400`;
+          document.cookie = `spotify_access_token=restored_session; path=/; max-age=86400`;
           
           // Store referral code if available
           if (user.referralCode) {
             localStorage.setItem('user_referral_code', user.referralCode);
           }
           
-          toast.success('Welcome back! You are now logged in.');
-          onLoginSuccess();
-          onClose();
+          // Store invitation code if available
+          if (user.invitationCode) {
+            localStorage.setItem('invitation_code', user.invitationCode);
+          }
           
-          // Redirect to dashboard
-          router.push('/dashboard');
+          console.log('💾 Session data stored successfully');
+          
+          // Show success message
+          toast.success('Welcome back! You are now logged in.');
+          
+          // Close modal first
+          onClose();
+          onLoginSuccess();
+          
+          // Wait a moment for the toast to show, then redirect
+          setTimeout(() => {
+            console.log('🔄 Redirecting to dashboard...');
+            router.push('/dashboard');
+          }, 1000);
+          
         } else {
+          console.log('❌ User data not found in response');
           toast.error('No account found with this email address. Please register first.');
         }
       } else if (response.status === 404) {
+        console.log('❌ User not found (404)');
         toast.error('No account found with this email address. Please register first.');
       } else {
+        console.log('❌ API error:', response.status, response.statusText);
+        const errorText = await response.text();
+        console.log('❌ Error details:', errorText);
         toast.error('Login failed. Please try again.');
       }
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('❌ Login error:', error);
       toast.error('Login failed. Please try again.');
     } finally {
       setIsLoading(false);
