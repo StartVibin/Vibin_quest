@@ -1647,6 +1647,45 @@
   cursor: not-allowed;
 }
 
+.loginButton {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: 2px solid transparent;
+  color: white;
+  margin-left: 1rem;
+  padding: 0.8rem 1.2rem;
+  border-radius: 10px;
+  font-size: 1.4rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+  min-height: 44px;
+  min-width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.loginButton:hover:not(:disabled) {
+  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.loginButton:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.loginButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
 /* Mobile-specific improvements */
 @media (max-width: 768px) {
   .alreadyHaveAccount {
@@ -1656,6 +1695,14 @@
   }
   
   .skipButton {
+    margin-left: 0;
+    padding: 1rem 1.5rem;
+    min-height: 48px; /* Larger touch target on mobile */
+    min-width: 48px;
+    font-size: 1.6rem; /* Larger text for mobile */
+  }
+  
+  .loginButton {
     margin-left: 0;
     padding: 1rem 1.5rem;
     min-height: 48px; /* Larger touch target on mobile */

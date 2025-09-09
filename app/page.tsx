@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 
 import styles from "./page.module.css";
 import LeftHalfModal from '@/components/LeftHalfModal';
+import LoginModal from '@/components/LoginModal';
 import { verifyReferalCode } from '@/lib/api';
 import { useSharedContext } from '@/provider/SharedContext';
 
@@ -15,6 +16,7 @@ export default function Home() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [invitationCode, setInvitationCode] = useState(''); // Local state for input
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   useEffect(() => {
     // Only clear data if user is starting fresh (no existing data)
@@ -134,17 +136,27 @@ export default function Home() {
             </p>
             <button
               onClick={() => {
-                router.push('/join/spotify');
+                setShowLoginModal(true);
               }}
-              className={styles.skipButton}
+              className={styles.loginButton}
               disabled={isLoading}
               type="button"
             >
-              →
+              Login
             </button>
           </div>
         </div>
       </LeftHalfModal>
+
+      {/* Login Modal */}
+      <LoginModal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        onLoginSuccess={() => {
+          // User successfully logged in
+          console.log('User logged in successfully');
+        }}
+      />
     </div>
   );
 }
