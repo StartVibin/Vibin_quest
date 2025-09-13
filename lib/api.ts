@@ -59,6 +59,10 @@ export const API_ENDPOINTS = {
   
   // Email whitelist endpoints
   CHECK_EMAIL_WHITELIST: `${API_BASE_URL}/api/v1/email/check-whitelist`,
+  
+  // Share endpoints
+  VERIFY_INSIGHTS_SHARE: `${API_BASE_URL}/share/verify-insights-share`,
+  GET_SHARING_STATS: `${API_BASE_URL}/share/stats`,
 }
 
 // ============================================================================
@@ -898,6 +902,80 @@ export const getTopReferrers = async (limit: number = 10): Promise<TopReferrersR
     return response
   } catch (error) {
     //console.error('Error getting top referrers:', error)
+    throw error
+  }
+}
+
+// ============================================================================
+// SHARE API FUNCTIONS
+// ============================================================================
+
+export interface InsightsShareRequest {
+  walletAddress: string
+  tweetId?: string
+  shareType?: string
+}
+
+export interface InsightsShareResponse {
+  success: boolean
+  message: string
+  data: {
+    lastShareDate: string | null;
+    pointsAwarded: number
+    totalSocialPoints: number
+    totalPoints: number
+    insightsSharesCount: number
+    canShareAgain: boolean
+    nextShareTime: string
+  }
+  error?: string
+}
+
+export interface SharingStatsResponse {
+  success: boolean
+  data: {
+    walletAddress: string
+    insightsSharesCount: number
+    lastInsightsShare: string | null
+    canShareAgain: boolean
+    nextShareTime: string | null
+    totalSocialPoints: number
+    totalPoints: number
+  }
+  error?: string
+}
+
+export const verifyInsightsShare = async (
+  walletAddress: string,
+  tweetId?: string
+): Promise<InsightsShareResponse> => {
+  try {
+    const requestData: InsightsShareRequest = {
+      walletAddress,
+      tweetId,
+      shareType: 'insights'
+    }
+
+    return await createApiRequest<InsightsShareResponse>(
+      API_ENDPOINTS.VERIFY_INSIGHTS_SHARE,
+      {
+        method: 'POST',
+        body: JSON.stringify(requestData)
+      }
+    )
+  } catch (error) {
+    //console.error('Error verifying insights share:', error)
+    throw error
+  }
+}
+
+export const getSharingStats = async (walletAddress: string): Promise<SharingStatsResponse> => {
+  try {
+    return await createApiRequest<SharingStatsResponse>(
+      `${API_ENDPOINTS.GET_SHARING_STATS}/${walletAddress}`
+    )
+  } catch (error) {
+    //console.error('Error getting sharing stats:', error)
     throw error
   }
 }

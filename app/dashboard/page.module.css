@@ -27,6 +27,25 @@
   gap: 10px;
 }
 
+.shareCount {
+  background: #4CAF50;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-weight: bold;
+  margin-left: 8px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.cooldownText {
+  font-size: 12px;
+  color: #ff9800;
+  margin-left: 8px;
+  font-weight: 500;
+}
+
 @media (max-width: 1400px) {
   .dashboard{
       min-height: calc(100dvh - 84px);
@@ -472,7 +491,7 @@
   padding: 4.5rem 3rem;
   background: rgba(218, 224, 255, .6);
   position: relative;
-  z-index: 2;
+  z-index: 1;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;

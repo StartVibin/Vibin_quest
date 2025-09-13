@@ -34,6 +34,7 @@ export async function GET(request: NextRequest) {
     const SPOTIFY_CLIENT_ID = process.env[`SPOTIFY_CLIENT_ID_${index}`];
     const SPOTIFY_CLIENT_SECRET = process.env[`SPOTIFY_CLIENT_SECRET_${index}`];
 
+    
     const tokenResponse = await fetch('https://accounts.spotify.com/api/token', {
       method: 'POST',
       headers: {
@@ -62,6 +63,8 @@ export async function GET(request: NextRequest) {
 
     if (!profileResponse.ok) {
       console.error('Profile fetch failed:', await profileResponse.text());
+
+
       return NextResponse.redirect(new URL('/join/spotify?error=profile_fetch_failed', request.url));
     }
 

@@ -11,6 +11,9 @@ interface SpotifyOAuthModalProps {
 export default function SpotifyOAuthModal({ isOpen, onClose, email, index }: SpotifyOAuthModalProps) {
   const [isLoading, setIsLoading] = useState(false);
 
+  console.log("EMAIL", email);
+  console.log("INDEX", index);
+
   const handleSpotifyAuth = async () => {
     setIsLoading(true);
     try {

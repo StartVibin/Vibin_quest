@@ -32,6 +32,8 @@ import { Modal } from "@/shared/ui/Modal";
 import { useToast } from "@/lib/hooks/useToast";
 import { useSpotifyData } from "@/lib/hooks/useSpotifyData";
 import { handleXConnect, postXStats } from "@/lib/utils";
+import { verifyInsightsShare, getSharingStats } from "@/lib/api";
+import { ShareInsightsTooltip } from "@/components/ShareInsightsTooltip";
 // import { claimWithContract } from "@/lib/api/claimWithContract";
 import { useAccount, useWalletClient } from "wagmi";
 import { BrowserProvider, JsonRpcSigner } from "ethers";
@@ -60,8 +62,17 @@ function formatMsToHrMin(ms: number): string {
   return `${minutes}min`;
 }
 
+interface sharingStats {
+  canShareAgain: boolean;
+  nextShareTime: string | number | Date;
+  insightsSharesCount: number;
+  lastShareDate: string | null;
+}
+
 function DashboardContent() {
   const [shareModal, setShareModal] = React.useState(false);
+  const [showTooltip, setShowTooltip] = React.useState(false);
+  const [sharingStats, setSharingStats] = React.useState<sharingStats | null>(null);
   const toast = useToast();
   const { data, isLoading, error } = useSpotifyData()
   const { data: userData, isLoading: userDataLoading, error: userDataError } = useUserDatabaseData()
@@ -103,6 +114,27 @@ function DashboardContent() {
   )
 
   console.log(claimStatus, claimStatusLoading);
+
+  // Load sharing stats when component mounts
+  React.useEffect(() => {
+    const loadSharingStats = async () => {
+      if (userData?.walletAddress) {
+        try {
+          const stats = await getSharingStats(userData.walletAddress);
+          setSharingStats({
+            canShareAgain: stats.data.canShareAgain,
+            nextShareTime: stats.data.nextShareTime ?? "",
+            insightsSharesCount: stats.data.insightsSharesCount,
+            lastShareDate: stats.data.lastInsightsShare ?? null,
+          });
+        } catch (error) {
+          console.error('Failed to load sharing stats:', error);
+        }
+      }
+    };
+
+    loadSharingStats();
+  }, [userData?.walletAddress]);
   //   toast.success("Reward claimed successfully!");
   //   // Add your claim logic here
   // };
@@ -189,13 +221,22 @@ function DashboardContent() {
                     >
                       Connect X
                     </button>
-                    <button
-                      className={styles.dashboardScreenTopShare}
-                      onClick={() => setShareModal(true)}
-                    >
-                      <Share />
-                      Share Insights
-                    </button>
+                    <ShareInsightsTooltip isVisible={showTooltip}>
+                      <button
+                        className={styles.dashboardScreenTopShare}
+                        onClick={() => setShareModal(true)}
+                        onMouseEnter={() => setShowTooltip(true)}
+                        onMouseLeave={() => setShowTooltip(false)}
+                      >
+                        <Share />
+                        Share Insights
+                        {sharingStats && sharingStats.insightsSharesCount > 0 && (
+                          <span className={styles.shareCount}>
+                            {sharingStats.insightsSharesCount}
+                          </span>
+                        )}
+                      </button>
+                    </ShareInsightsTooltip>
                     
                     {/* Test button for Spotify data refetch */}
                     {/* <button
@@ -1018,42 +1059,91 @@ function DashboardContent() {
                   toast.error('Please connect your X account first to share your stats!');
                   return;
                 }
-                
-                const result = await postXStats({
-                  topTracks: data?.topTracks || [],
-                  totalListeningTimeMs: data?.totalListeningTimeMs || 0,
-                  uniqueArtistsCount: data?.uniqueArtistsCount || 0,
-                  topArtists: data?.topArtists || [],
-                });
 
-                // Handle different response cases
-                if (result?.alreadyShared) {
-                  toast.info('Your update already shared on X! 🎉');
-                } else if (result?.success) {
-                  toast.success('Successfully shared your stats on X! 🎉');
-                  
-                  // Try to redirect to X to show the posted tweet
-                  try {
-                    // Get the tweet ID from the response if available
-                    if (result.data?.id) {
-                      const tweetUrl = `https://twitter.com/i/status/${result.data.id}`;
-                      window.open(tweetUrl, '_blank');
+                // Check if user can share again
+                if (sharingStats && !sharingStats.canShareAgain) {
+                  const nextShareTime = new Date(sharingStats.nextShareTime);
+                  const timeUntilNext = Math.ceil((nextShareTime.getTime() - Date.now()) / (1000 * 60 * 60));
+                  toast.info(`You can share again in ${timeUntilNext} hours! ⏰`);
+                  return;
+                }
+                
+                try {
+                  // First post to X
+                  const result = await postXStats({
+                    topTracks: data?.topTracks || [],
+                    totalListeningTimeMs: data?.totalListeningTimeMs || 0,
+                    uniqueArtistsCount: data?.uniqueArtistsCount || 0,
+                    topArtists: data?.topArtists || [],
+                  });
+
+                  // Handle different response cases
+                  if (result?.alreadyShared) {
+                    toast.info('Your update already shared on X! 🎉');
+                  } else if (result?.success) {
+                    // Now verify with backend to award points
+                    if (userData?.walletAddress) {
+                      try {
+                        const rewardResult = await verifyInsightsShare(
+                          userData.walletAddress,
+                          result.data?.id
+                        );
+                        
+                        if (rewardResult.success) {
+                          toast.success(`Successfully shared your stats on X! 🎉 Earned ${rewardResult.data.pointsAwarded} points!`);
+                          
+                          // Update local sharing stats
+                          setSharingStats((prev: sharingStats | null) => ({
+                            ...(prev || {}),
+                            insightsSharesCount: rewardResult.data.insightsSharesCount,
+                            canShareAgain: rewardResult.data.canShareAgain,
+                            nextShareTime: rewardResult.data.nextShareTime,
+                            totalSocialPoints: rewardResult.data.totalSocialPoints,
+                            totalPoints: rewardResult.data.totalPoints,
+                            lastShareDate: rewardResult.data.lastShareDate ?? (prev ? prev.lastShareDate : null)
+                          }));
+                        } else {
+                          toast.success('Successfully shared your stats on X! 🎉');
+                        }
+                      } catch (rewardError) {
+                        console.error('Failed to verify share with backend:', rewardError);
+                        toast.success('Successfully shared your stats on X! 🎉');
+                      }
                     } else {
-                      // Fallback: open X profile to see recent tweets
-                      const profileUrl = 'https://twitter.com/home';
-                      window.open(profileUrl, '_blank');
+                      toast.success('Successfully shared your stats on X! 🎉');
                     }
-                  } catch (redirectError) {
-                    console.log('Could not redirect to X:', redirectError);
+                    
+                    // Try to redirect to X to show the posted tweet
+                    try {
+                      // Get the tweet ID from the response if available
+                      if (result.data?.id) {
+                        const tweetUrl = `https://twitter.com/i/status/${result.data.id}`;
+                        window.open(tweetUrl, '_blank');
+                      } else {
+                        // Fallback: open X profile to see recent tweets
+                        const profileUrl = 'https://twitter.com/home';
+                        window.open(profileUrl, '_blank');
+                      }
+                    } catch (redirectError) {
+                      console.log('Could not redirect to X:', redirectError);
+                    }
+                  } else if (result?.success === false) {
+                    toast.error(`Failed to share on X: ${result.error || 'Unknown error'}`);
+                  } else {
+                    toast.error('Failed to share on X. Please try again.');
                   }
-                } else if (result?.success === false) {
-                  toast.error(`Failed to share on X: ${result.error || 'Unknown error'}`);
-                } else {
+                } catch (error) {
+                  console.error('Error sharing insights:', error);
                   toast.error('Failed to share on X. Please try again.');
                 }
               }}
             >
               Share on X
+              {sharingStats && !sharingStats.canShareAgain && (
+                <span className={styles.cooldownText}>
+                  (Next share in {Math.ceil((new Date(sharingStats.nextShareTime).getTime() - Date.now()) / (1000 * 60 * 60))}h)
+                </span>
+              )}
             </button>
           </div>
         </div>

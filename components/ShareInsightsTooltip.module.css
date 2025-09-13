@@ -1,0 +1,215 @@
+.tooltipContainer {
+  position: relative;
+  display: inline-block;
+  z-index: auto;
+}
+
+.tooltip {
+  position: fixed;
+  z-index: 999999;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-out, visibility 0.3s ease-out, transform 0.3s ease-out;
+  isolation: isolate;
+}
+
+.tooltipVisible {
+  opacity: 1;
+  visibility: visible;
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.tooltipContent {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border: 1px solid #4a5568;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  min-width: 300px;
+  max-width: 350px;
+  position: relative;
+}
+
+.tooltipHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.tooltipIcon {
+  font-size: 20px;
+}
+
+.tooltipTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.tooltipBody {
+  color: #e2e8f0;
+}
+
+.tooltipText {
+  margin: 0 0 16px 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: #f7fafc;
+}
+
+.tooltipFeatures {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tooltipFeature {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: #e2e8f0;
+  padding: 4px 0;
+}
+
+.featureIcon {
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+
+.tooltipArrow {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-top: 10px solid #4a5568;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.tooltipArrow::after {
+  content: '';
+  position: absolute;
+  top: -11px;
+  left: -8px;
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid #1a1a2e;
+}
+
+/* Arrow positioning for tooltip below button */
+.tooltipBelow .tooltipArrow {
+  top: -10px;
+  border-top: none;
+  border-bottom: 10px solid #4a5568;
+}
+
+.tooltipBelow .tooltipArrow::after {
+  top: 2px;
+  border-top: none;
+  border-bottom: 8px solid #1a1a2e;
+}
+
+/* Arrow positioning for tooltip to the right */
+.tooltipRight .tooltipArrow {
+  top: 50%;
+  left: -10px;
+  transform: translateY(-50%);
+  border-right: 10px solid #4a5568;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: none;
+}
+
+.tooltipRight .tooltipArrow::after {
+  top: -8px;
+  left: 2px;
+  border-right: 8px solid #1a1a2e;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-left: none;
+}
+
+/* Arrow positioning for tooltip to the left */
+.tooltipLeft .tooltipArrow {
+  top: 50%;
+  right: -10px;
+  left: auto;
+  transform: translateY(-50%);
+  border-left: 10px solid #4a5568;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-right: none;
+}
+
+.tooltipLeft .tooltipArrow::after {
+  top: -8px;
+  right: 2px;
+  left: auto;
+  border-left: 8px solid #1a1a2e;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-right: none;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Ensure tooltip is always visible */
+.tooltipContainer {
+  position: relative;
+  display: inline-block;
+  z-index: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .tooltip {
+    left: 0;
+    right: 0;
+    transform: none;
+    margin-left: 0;
+    margin-right: 0;
+    bottom: calc(100% + 8px);
+  }
+  
+  .tooltipContent {
+    min-width: 280px;
+    max-width: calc(100vw - 40px);
+    margin: 0 20px;
+  }
+}
+
+/* Additional visibility fixes */
+.tooltipContainer:hover .tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Ensure tooltip appears above all dashboard elements */
+.tooltip {
+  position: fixed !important;
+  z-index: 999999 !important;
+}
+
+/* Override any potential stacking context issues */
+.tooltipContent {
+  position: relative;
+  z-index: 1000000;
+}
